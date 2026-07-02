@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitas Tejar - Sistema de Inventario y Reportes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/roboto@5.0.0/400.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/roboto@5.0.0/700.css">
+    <style>
+        * { font-family: 'Roboto', sans-serif; }
+        body { font-family: 'Roboto', sans-serif; }
+        .tab-active { background: linear-gradient(135deg, #1f2937 0%, #000000 100%); color: #FBBF24; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-overlay { background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
+        .signature-pad { border: 2px dashed #cbd5e1; border-radius: 8px; background: white; touch-action: none; }
+        .photo-upload { border: 2px dashed #94a3b8; transition: all 0.3s; }
+        .photo-upload:hover { border-color: #FBBF24; background: #FFFBEB; }
+        .btn-primary { background: linear-gradient(135deg, #1f2937 0%, #000000 100%); color: #FBBF24; transition: all 0.3s; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(31,41,55,0.4); }
+        .btn-yellow { background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%); color: #000000; transition: all 0.3s; }
+        .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(251,191,36,0.4); }
+        .card-hover { transition: all 0.3s; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .badge { padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .badge-computadora { background: #FEF3C7; color: #78350f; }
+        .badge-impresora { background: #1f2937; color: #FBBF24; }
+        .badge-monitor { background: #F3F4F6; color: #1f2937; }
+        .badge-tablet { background: #FEF3C7; color: #78350f; }
+        .badge-tienda { background: #FBBF24; color: #000000; }
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .gradient-header { background: linear-gradient(135deg, #1f2937 0%, #000000 100%); }
+        .text-gradient { background: linear-gradient(135deg, #000000 0%, #FBBF24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .filter-select { background-color: #FEF3C7; border: 2px solid #000000; color: #000000; font-weight: 600; }
+        .filter-select:focus { outline: none; border-color: #FBBF24; box-shadow: 0 0 0 3px rgba(251,191,36,0.3); }
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #FBBF24;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-yellow-50 to-amber-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-40 border-b-4 border-yellow-400">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-14 w-14 rounded-xl bg-gradient-to-br from-yellow-100 to-yellow-200 flex items-center justify-center shadow-lg border-2 border-black">
+                    <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 50 15 L 15 45 L 20 45 L 20 80 L 80 80 L 80 45 L 85 45 Z" fill="#1f2937" stroke="#000000" stroke-width="2"/>
+                        <rect x="65" y="25" width="10" height="15" fill="#000000"/>
+                        <circle cx="50" cy="60" r="22" fill="#FBBF24" stroke="#000000" stroke-width="3"/>
+                        <text x="50" y="70" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#000000" text-anchor="middle">T</text>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-gradient">Visitas Tejar</h1>
+                    <p class="text-xs text-slate-600">Sistema de Inventario y Reportes de Visita</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="connectionStatus" class="hidden items-center gap-2 text-sm">
+                    <div class="loading-spinner"></div>
+                    <span class="text-slate-600">Conectando...</span>
+                </div>
+                <div class="text-sm text-slate-600 hidden md:block">
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 pb-3 flex gap-2 overflow-x-auto">
+            <button onclick="switchTab('inventario')" id="tab-inventario" class="tab-btn tab-active px-5 py-2 rounded-lg font-medium whitespace-nowrap transition-all">📦 Inventario</button>
+            <button onclick="switchTab('reportes')" id="tab-reportes" class="tab-btn bg-white text-slate-700 px-5 py-2 rounded-lg font-medium whitespace-nowrap transition-all hover:bg-slate-50">📋 Reportes de Visita</button>
+            <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn bg-white text-slate-700 px-5 py-2 rounded-lg font-medium whitespace-nowrap transition-all hover:bg-slate-50">📊 Estadísticas</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        <!-- Inventario Section -->
+        <section id="section-inventario" class="fade-in">
+            <!-- Filtros -->
+            <div class="bg-white rounded-xl shadow-md p-4 mb-6 border-l-4 border-yellow-400">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1"> Filtrar por Tienda:</label>
+                        <select id="storeFilterSelect" onchange="filterStore(this.value)" class="filter-select w-full px-4 py-2 rounded-lg cursor-pointer">
+                            <option value="all">Todas las tiendas</option>
+                            <option value="Tienda Zona 1">Tienda Zona 1</option>
+                            <option value="Tienda Jutiapa">Tienda Jutiapa</option>
+                            <option value="Tienda Zacapa">Tienda Zacapa</option>
+                            <option value="Tienda Coatepeque">Tienda Coatepeque</option>
+                            <option value="Tienda Escuintla">Tienda Escuintla</option>
+                            <option value="Tienda Chiquimula">Tienda Chiquimula</option>
+                            <option value="Tienda Coban">Tienda Cobán</option>
+                            <option value="Tienda Chimaltenango">Tienda Chimaltenango</option>
+                            <option value="Tienda Mazatenango">Tienda Mazatenango</option>
+                            <option value="Tienda Xela">Tienda Xela</option>
+                            <option value="Tienda Retalhuleu">Tienda Retalhuleu</option>
+                            <option value="Tienda Huehuetenango">Tienda Huehuetenango</option>
+                            <option value="Tienda Puerto Barrios">Tienda Puerto Barrios</option>
+                            <option value="Tienda Quiche">Tienda Quiché</option>
+                            <option value="Tienda Morales">Tienda Morales</option>
+                            <option value="Tienda Salama">Tienda Salamá</option>
+                            <option value="Tienda Jalapa">Tienda Jalapa</option>
+                            <option value="Tienda Trinidad Malacatan">Tienda Trinidad Malacatán</option>
+                            <option value="Tienda Santa Lucia">Tienda Santa Lucía</option>
+                            <option value="Tienda San Marcos">Tienda San Marcos</option>
+                            <option value="Tienda Poptun">Tienda Poptún</option>
+                            <option value="Tienda Tactic">Tienda Tactic</option>
+                            <option value="Tienda Santa Elena">Tienda Santa Elena</option>
+                            <option value="Tienda Tiquisate">Tienda Tiquisate</option>
+                            <option value="Tienda Salcaja">Tienda Salcajá</option>
+                            <option value="Tienda Asuncion Mita">Tienda Asunción Mita</option>
+                            <option value="Tienda Totonicapa">Tienda Totonicapán</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">📦 Filtrar por Categoría:</label>
+                        <select id="categoryFilterSelect" onchange="filterCategory(this.value)" class="filter-select w-full px-4 py-2 rounded-lg cursor-pointer">
+                            <option value="all">Todas las categorías</option>
+                            <option value="computadora">💻 Computadoras</option>
+                            <option value="impresora">️ Impresoras</option>
+                            <option value="monitor">🖥️ Monitores</option>
+                            <option value="tablet"> Tablets</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">🔍 Buscar:</label>
+                        <input type="text" id="searchInput" placeholder="Modelo, serie, codificación..." class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" oninput="renderInventory()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="flex flex-wrap gap-3 mb-6 justify-between items-center">
+                <div class="text-sm text-slate-600">
+                    Mostrando <span id="filteredCount" class="font-bold text-black">0</span> de <span id="totalCount" class="font-bold text-black">0</span> equipos
+                </div>
+                <div class="flex gap-2 flex-wrap">
+                    <button onclick="openModal()" class="btn-primary px-5 py-2 rounded-lg font-medium flex items-center gap-2">
+                        <span>➕</span> Agregar Equipo
+                    </button>
+                    <button onclick="exportToExcel()" class="btn-yellow px-5 py-2 rounded-lg font-bold flex items-center gap-2">
+                        💾 Excel Local
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-xl p-4 shadow card-hover border-l-4 border-black">
+                    <p class="text-sm text-slate-500">Total Equipos</p>
+                    <p class="text-2xl font-bold text-slate-800" id="stat-total">0</p>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow card-hover border-l-4 border-yellow-400">
+                    <p class="text-sm text-slate-500">Computadoras</p>
+                    <p class="text-2xl font-bold text-slate-800" id="stat-computadora">0</p>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow card-hover border-l-4 border-yellow-500">
+                    <p class="text-sm text-slate-500">Impresoras</p>
+                    <p class="text-2xl font-bold text-slate-800" id="stat-impresora">0</p>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow card-hover border-l-4 border-slate-800">
+                    <p class="text-sm text-slate-500">Monitores/Tablets</p>
+                    <p class="text-2xl font-bold text-slate-800" id="stat-otros">0</p>
+                </div>
+            </div>
+
+            <!-- Inventory Table -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="overflow-x-auto scrollbar-thin">
+                    <table class="w-full">
+                        <thead class="gradient-header text-yellow-400">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-sm font-semibold">Categoría</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold">Tienda</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold">Modelo</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold">No. Serie</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold">Codificación</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold">Notas</th>
+                                <th class="px-4 py-3 text-center text-sm font-semibold">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                </div>
+                <div id="emptyState" class="hidden p-12 text-center text-slate-500">
+                    <div class="text-6xl mb-4">📦</div>
+                    <p class="text-lg">No hay equipos registrados</p>
+                    <p class="text-sm">Haz clic en "Agregar Equipo" para comenzar</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reportes Section -->
+        <section id="section-reportes" class="hidden fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">Reportes de Visita</h2>
+                <button onclick="openReportModal()" class="btn-primary px-5 py-2 rounded-lg font-medium flex items-center gap-2">
+                    <span>➕</span> Nuevo Reporte
+                </button>
+            </div>
+            <div id="reportsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            <div id="emptyReports" class="hidden bg-white rounded-xl p-12 text-center text-slate-500 shadow">
+                <div class="text-6xl mb-4"></div>
+                <p class="text-lg">No hay reportes de visita</p>
+                <p class="text-sm">Crea tu primer reporte para documentar tus visitas</p>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section id="section-stats" class="hidden fade-in">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">Estadísticas del Inventario</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow">
+                    <h3 class="text-lg font-semibold mb-4 text-slate-700">Distribución por Categoría</h3>
+                    <div id="categoryChart" class="space-y-3"></div>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow">
+                    <h3 class="text-lg font-semibold mb-4 text-slate-700">Resumen General</h3>
+                    <div id="summaryStats" class="space-y-3"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Agregar/Editar Equipo -->
+    <div id="equipmentModal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div class="gradient-header text-yellow-400 px-6 py-4 rounded-t-2xl flex justify-between items-center">
+                <h3 class="text-xl font-bold" id="modalTitle">Agregar Equipo</h3>
+                <button onclick="closeModal()" class="text-yellow-400 hover:text-yellow-200 text-2xl leading-none">&times;</button>
+            </div>
+            <form id="equipmentForm" class="p-6 space-y-4">
+                <input type="hidden" id="equipmentId">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">🏪 Tienda *</label>
+                    <select id="eqStore" required class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-yellow-50">
+                        <option value="">-- Selecciona una tienda --</option>
+                        <option value="Tienda Zona 1">Tienda Zona 1</option>
+                        <option value="Tienda Jutiapa">Tienda Jutiapa</option>
+                        <option value="Tienda Zacapa">Tienda Zacapa</option>
+                        <option value="Tienda Coatepeque">Tienda Coatepeque</option>
+                        <option value="Tienda Escuintla">Tienda Escuintla</option>
+                        <option value="Tienda Chiquimula">Tienda Chiquimula</option>
+                        <option value="Tienda Coban">Tienda Cobán</option>
+                        <option value="Tienda Chimaltenango">Tienda Chimaltenango</option>
+                        <option value="Tienda Mazatenango">Tienda Mazatenango</option>
+                        <option value="Tienda Xela">Tienda Xela</option>
+                        <option value="Tienda Retalhuleu">Tienda Retalhuleu</option>
+                        <option value="Tienda Huehuetenango">Tienda Huehuetenango</option>
+                        <option value="Tienda Puerto Barrios">Tienda Puerto Barrios</option>
+                        <option value="Tienda Quiche">Tienda Quiché</option>
+                        <option value="Tienda Morales">Tienda Morales</option>
+                        <option value="Tienda Salama">Tienda Salamá</option>
+                        <option value="Tienda Jalapa">Tienda Jalapa</option>
+                        <option value="Tienda Trinidad Malacatan">Tienda Trinidad Malacatán</option>
+                        <option value="Tienda Santa Lucia">Tienda Santa Lucía</option>
+                        <option value="Tienda San Marcos">Tienda San Marcos</option>
+                        <option value="Tienda Poptun">Tienda Poptún</option>
+                        <option value="Tienda Tactic">Tienda Tactic</option>
+                        <option value="Tienda Santa Elena">Tienda Santa Elena</option>
+                        <option value="Tienda Tiquisate">Tienda Tiquisate</option>
+                        <option value="Tienda Salcaja">Tienda Salcajá</option>
+                        <option value="Tienda Asuncion Mita">Tienda Asunción Mita</option>
+                        <option value="Tienda Totonicapa">Tienda Totonicapán</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">📦 Categoría *</label>
+                    <select id="eqCategory" required class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-yellow-50">
+                        <option value="computadora">💻 Computadora</option>
+                        <option value="impresora">🖨️ Impresora</option>
+                        <option value="monitor">🖥️ Monitor</option>
+                        <option value="tablet"> Tablet</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Modelo *</label>
+                    <input type="text" id="eqModel" required class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" placeholder="Ej: HP ProDesk 400">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Número de Serie *</label>
+                    <input type="text" id="eqSerial" required class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" placeholder="Ej: SN123456789">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Número de Codificación *</label>
+                    <input type="text" id="eqCode" required class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" placeholder="Ej: COD-2024-001">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Notas / Observaciones</label>
+                    <textarea id="eqNotes" rows="3" class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400" placeholder="Estado, ubicación, etc."></textarea>
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeModal()" class="flex-1 px-4 py-2 border-2 border-black rounded-lg text-black hover:bg-yellow-50 font-medium">Cancelar</button>
+                    <button type="button" onclick="saveEquipment(event)" class="flex-1 btn-yellow px-4 py-2 rounded-lg font-bold">💾 Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Reporte -->
+    <div id="reportModal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[95vh] overflow-y-auto">
+            <div class="gradient-header text-yellow-400 px-6 py-4 rounded-t-2xl flex justify-between items-center">
+                <h3 class="text-xl font-bold">Nuevo Reporte de Visita</h3>
+                <button onclick="closeReportModal()" class="text-yellow-400 hover:text-yellow-200 text-2xl leading-none">&times;</button>
+            </div>
+            <form id="reportForm" class="p-6 space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Nombre de la Tienda/Ubicación *</label>
+                        <input type="text" id="repStore" required class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Fecha de Visita *</label>
+                        <input type="date" id="repDate" required class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Técnico Responsable *</label>
+                    <input type="text" id="repTech" required class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Descripción / Observaciones</label>
+                    <textarea id="repDesc" rows="3" class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">📷 Fotos ANTES de la visita</label>
+                    <div class="photo-upload rounded-lg p-6 text-center cursor-pointer" onclick="document.getElementById('photosBefore').click()">
+                        <input type="file" id="photosBefore" multiple accept="image/*" class="hidden" onchange="handlePhotos(event, 'before')">
+                        <div class="text-4xl mb-2">📷</div>
+                        <p class="text-sm text-slate-600">Haz clic para subir fotos del estado inicial</p>
+                    </div>
+                    <div id="beforePreview" class="grid grid-cols-3 gap-2 mt-3"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">📸 Fotos DESPUÉS de la visita</label>
+                    <div class="photo-upload rounded-lg p-6 text-center cursor-pointer" onclick="document.getElementById('photosAfter').click()">
+                        <input type="file" id="photosAfter" multiple accept="image/*" class="hidden" onchange="handlePhotos(event, 'after')">
+                        <div class="text-4xl mb-2">📸</div>
+                        <p class="text-sm text-slate-600">Haz clic para subir fotos del estado final</p>
+                    </div>
+                    <div id="afterPreview" class="grid grid-cols-3 gap-2 mt-3"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">✍️ Firma del Responsable</label>
+                    <canvas id="signatureCanvas" class="signature-pad w-full" width="600" height="200" style="width:100%; height:200px;"></canvas>
+                    <button type="button" onclick="clearSignature()" class="mt-2 text-sm text-black hover:text-yellow-600 font-medium">🗑️ Limpiar firma</button>
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeReportModal()" class="flex-1 px-4 py-2 border-2 border-black rounded-lg text-black hover:bg-yellow-50 font-medium">Cancelar</button>
+                    <button type="button" onclick="saveReport()" class="flex-1 btn-yellow px-4 py-2 rounded-lg font-bold">💾 Guardar Reporte</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Ver Reporte -->
+    <div id="viewReportModal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[95vh] overflow-y-auto">
+            <div class="gradient-header text-yellow-400 px-6 py-4 rounded-t-2xl flex justify-between items-center">
+                <h3 class="text-xl font-bold">Detalle del Reporte</h3>
+                <button onclick="closeViewReportModal()" class="text-yellow-400 hover:text-yellow-200 text-2xl leading-none">&times;</button>
+            </div>
+            <div id="reportDetailContent" class="p-6"></div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="hidden fixed bottom-4 right-4 bg-black text-yellow-400 px-6 py-3 rounded-lg shadow-lg z-[60] fade-in font-medium"></div>
+
+    <script>
+        // ============ CONFIGURACIÓN DE FIREBASE ============
+        const firebaseConfig = {
+            apiKey: "AIzaSyDSIatt4gvo5TSMXVmHYCI_EkjHn9VhpCs",
+            authDomain: "visitastejar.firebaseapp.com",
+            projectId: "visitastejar",
+            storageBucket: "visitastejar.firebasestorage.app",
+            messagingSenderId: "703864308538",
+            appId: "1:703864308538:web:9eafa86dbc00b2b1cd8603"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ============ LISTA DE TIENDAS ============
+        const TIENDAS = [
+            'Tienda Zona 1', 'Tienda Jutiapa', 'Tienda Zacapa', 'Tienda Coatepeque',
+            'Tienda Escuintla', 'Tienda Chiquimula', 'Tienda Coban', 'Tienda Chimaltenango',
+            'Tienda Mazatenango', 'Tienda Xela', 'Tienda Retalhuleu', 'Tienda Huehuetenango',
+            'Tienda Puerto Barrios', 'Tienda Quiche', 'Tienda Morales', 'Tienda Salama',
+            'Tienda Jalapa', 'Tienda Trinidad Malacatan', 'Tienda Santa Lucia', 'Tienda San Marcos',
+            'Tienda Poptun', 'Tienda Tactic', 'Tienda Santa Elena', 'Tienda Tiquisate',
+            'Tienda Salcaja', 'Tienda Asuncion Mita', 'Tienda Totonicapa'
+        ];
+
+        // ============ DATOS ============
+        let inventory = [];
+        let reports = [];
+        let currentFilter = 'all';
+        let currentStoreFilter = 'all';
+        let currentPhotos = { before: [], after: [] };
+        let signaturePad = null;
+        let dataLoaded = false;
+
+        // ============ FUNCIONES DE BASE DE DATOS FIREBASE ============
+        
+        // Mostrar/ocultar indicador de conexión
+        function showConnectionStatus(show) {
+            const status = document.getElementById('connectionStatus');
+            if (show) {
+                status.classList.remove('hidden');
+                status.classList.add('flex');
+            } else {
+                status.classList.add('hidden');
+                status.classList.remove('flex');
+            }
+        }
+
+        // Cargar datos desde la nube
+        async function loadData() {
+            showConnectionStatus(true);
+            try {
+                // Cargar inventario
+                const invSnap = await db.collection("inventario").get();
+                inventory = invSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                // Cargar reportes
+                const repSnap = await db.collection("reportes").get();
+                reports = repSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                dataLoaded = true;
+                
+                // Renderizar todo
+                renderInventory();
+                renderReports();
+                updateStats();
+                
+                showToast('✅ Conectado a la base de datos');
+            } catch (e) {
+                console.error("Error cargando datos:", e);
+                showToast('❌ Error al conectar con la base de datos', 'error');
+            } finally {
+                showConnectionStatus(false);
+            }
+        }
+
+        // Guardar o Actualizar Equipo
+        async function saveEquipment(e) {
+            if (e) e.preventDefault();
+            
+            const store = document.getElementById('eqStore').value.trim();
+            const category = document.getElementById('eqCategory').value;
+            const model = document.getElementById('eqModel').value.trim();
+            const serial = document.getElementById('eqSerial').value.trim();
+            const code = document.getElementById('eqCode').value.trim();
+            const notes = document.getElementById('eqNotes').value.trim();
+            const id = document.getElementById('equipmentId').value;
+
+            if (!store || !model || !serial || !code) {
+                showToast('Por favor completa todos los campos obligatorios', 'error');
+                return;
+            }
+
+            const data = { 
+                store, category, model, serial, code, notes,
+                updatedAt: new Date().toISOString() 
+            };
+
+            try {
+                if (id) {
+                    // Actualizar equipo existente
+                    await db.collection("inventario").doc(id).update(data);
+                    showToast('✅ Equipo actualizado correctamente');
+                } else {
+                    // Crear nuevo equipo
+                    data.createdAt = new Date().toISOString();
+                    await db.collection("inventario").add(data);
+                    showToast('✅ Equipo agregado correctamente');
+                }
+                
+                // Recargar datos desde la nube
+                await loadData();
+                closeModal();
+            } catch (e) {
+                console.error("Error guardando equipo:", e);
+                showToast('❌ Error al guardar equipo', 'error');
+            }
+        }
+
+        // Eliminar Equipo
+        async function deleteEquipment(id) {
+            if (confirm('¿Estás seguro de eliminar este equipo?')) {
+                try {
+                    await db.collection("inventario").doc(id).delete();
+                    await loadData();
+                    showToast('🗑️ Equipo eliminado');
+                } catch (e) {
+                    console.error("Error eliminando:", e);
+                    showToast('❌ Error al eliminar equipo', 'error');
+                }
+            }
+        }
+
+        // Guardar Reporte
+        async function saveReport() {
+            const store = document.getElementById('repStore').value.trim();
+            const date = document.getElementById('repDate').value;
+            const tech = document.getElementById('repTech').value.trim();
+            const description = document.getElementById('repDesc').value.trim();
+
+            if (!store || !date || !tech) {
+                showToast('Por favor completa los campos obligatorios', 'error');
+                return;
+            }
+
+            let signatureData = null;
+            if (signaturePad && !signaturePad.isEmpty()) {
+                try { 
+                    signatureData = signaturePad.toDataURL('image/png'); 
+                } catch(e) {
+                    console.error("Error obteniendo firma:", e);
+                }
+            }
+
+            const report = {
+                store, 
+                date, 
+                tech, 
+                description,
+                photosBefore: [...currentPhotos.before],
+                photosAfter: [...currentPhotos.after],
+                signature: signatureData,
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                await db.collection("reportes").add(report);
+                await loadData();
+                closeReportModal();
+                showToast('✅ Reporte guardado en la nube correctamente');
+            } catch (e) {
+                console.error("Error guardando reporte:", e);
+                showToast('❌ Error al guardar reporte', 'error');
+            }
+        }
+
+        // Eliminar Reporte
+        async function deleteReport(id) {
+            if (confirm('¿Eliminar este reporte?')) {
+                try {
+                    await db.collection("reportes").doc(id).delete();
+                    await loadData();
+                    showToast('🗑️ Reporte eliminado');
+                } catch (e) {
+                    console.error("Error eliminando reporte:", e);
+                    showToast('❌ Error al eliminar reporte', 'error');
+                }
+            }
+        }
+
+        // ============ GUARDAR ARCHIVO LOCAL ============
+        async function saveFileLocally(blob, suggestedName, description) {
+            if ('showSaveFilePicker' in window) {
+                try {
+                    const ext = suggestedName.split('.').pop().toLowerCase();
+                    const types = ext === 'pdf' 
+                        ? [{ description: 'PDF', accept: {'application/pdf': ['.pdf']} }]
+                        : [{ description: 'Excel', accept: {'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx']} }];
+                    
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: suggestedName,
+                        types: types
+                    });
+                    
+                    const writable = await handle.createWritable();
+                    await writable.write(blob);
+                    await writable.close();
+                    
+                    showToast(`💾 ${description} guardado en: ${handle.name}`);
+                    return true;
+                } catch (err) {
+                    if (err.name === 'AbortError') {
+                        showToast('Guardado cancelado por el usuario', 'error');
+                        return false;
+                    }
+                    console.error('Error con File System API:', err);
+                }
+            }
+            return fallbackDownload(blob, suggestedName, description);
+        }
+
+        function fallbackDownload(blob, filename, description) {
+            try {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                showToast(`💾 ${description} descargado: ${filename}`);
+                return true;
+            } catch(e) {
+                console.error('Error en descarga:', e);
+                showToast('Error al descargar el archivo', 'error');
+                return false;
+            }
+        }
+
+        // ============ INICIALIZACIÓN ============
+        document.addEventListener('DOMContentLoaded', async () => {
+            const dateStr = new Date().toLocaleDateString('es-ES', { 
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+            });
+            document.getElementById('currentDate').textContent = dateStr;
+            document.getElementById('repDate').value = new Date().toISOString().split('T')[0];
+            
+            // Cargar datos desde Firebase
+            await loadData();
+        });
+
+        // ============ TABS ============
+        function switchTab(tab) {
+            ['inventario', 'reportes', 'stats'].forEach(t => {
+                const section = document.getElementById('section-' + t);
+                const tabBtn = document.getElementById('tab-' + t);
+                if (t === tab) {
+                    section.classList.remove('hidden');
+                    tabBtn.classList.add('tab-active');
+                    tabBtn.classList.remove('bg-white', 'text-slate-700');
+                } else {
+                    section.classList.add('hidden');
+                    tabBtn.classList.remove('tab-active');
+                    tabBtn.classList.add('bg-white', 'text-slate-700');
+                }
+            });
+            if (tab === 'stats') renderStatsSection();
+        }
+
+        // ============ FILTROS ============
+        function filterStore(store) {
+            currentStoreFilter = store;
+            renderInventory();
+        }
+
+        function filterCategory(cat) {
+            currentFilter = cat;
+            renderInventory();
+        }
+
+        // ============ FUNCIÓN PARA OBTENER INVENTARIO FILTRADO ============
+        function getFilteredInventory() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            return inventory.filter(item => {
+                const matchCat = currentFilter === 'all' || item.category === currentFilter;
+                const matchStore = currentStoreFilter === 'all' || item.store === currentStoreFilter;
+                const matchSearch = !search || 
+                    (item.model && item.model.toLowerCase().includes(search)) || 
+                    (item.serial && item.serial.toLowerCase().includes(search)) || 
+                    (item.code && item.code.toLowerCase().includes(search)) ||
+                    (item.store && item.store.toLowerCase().includes(search));
+                return matchCat && matchStore && matchSearch;
+            });
+        }
+
+        // ============ INVENTARIO ============
+        function renderInventory() {
+            const filtered = getFilteredInventory();
+            const tbody = document.getElementById('inventoryTableBody');
+            const empty = document.getElementById('emptyState');
+            document.getElementById('filteredCount').textContent = filtered.length;
+            document.getElementById('totalCount').textContent = inventory.length;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '';
+                empty.classList.remove('hidden');
+            } else {
+                empty.classList.add('hidden');
+                tbody.innerHTML = filtered.map(item => `
+                    <tr class="hover:bg-yellow-50 transition">
+                        <td class="px-4 py-3"><span class="badge badge-${item.category}">${getCategoryLabel(item.category)}</span></td>
+                        <td class="px-4 py-3"><span class="badge badge-tienda">🏪 ${escapeHtml(getStoreShortName(item.store))}</span></td>
+                        <td class="px-4 py-3 font-medium text-slate-800">${escapeHtml(item.model)}</td>
+                        <td class="px-4 py-3 text-slate-600 font-mono text-sm">${escapeHtml(item.serial)}</td>
+                        <td class="px-4 py-3 text-slate-600 font-mono text-sm">${escapeHtml(item.code)}</td>
+                        <td class="px-4 py-3 text-slate-600 text-sm max-w-xs truncate">${escapeHtml(item.notes || '-')}</td>
+                        <td class="px-4 py-3 text-center whitespace-nowrap">
+                            <button onclick="editEquipment('${item.id}')" class="text-yellow-600 hover:text-yellow-800 mr-2 text-lg" title="Editar">✏️</button>
+                            <button onclick="deleteEquipment('${item.id}')" class="text-black hover:text-yellow-600 text-lg" title="Eliminar">🗑️</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            updateStats();
+        }
+
+        function getStoreShortName(store) {
+            if (!store) return 'Sin tienda';
+            return store.replace('Tienda ', '');
+        }
+
+        function getCategoryLabel(cat) {
+            const labels = {
+                computadora: '💻 Computadora',
+                impresora: '🖨️ Impresora',
+                monitor: '🖥️ Monitor',
+                tablet: '📱 Tablet'
+            };
+            return labels[cat] || cat;
+        }
+
+        // ============ MODAL EQUIPO ============
+        function openModal(id) {
+            const modal = document.getElementById('equipmentModal');
+            const form = document.getElementById('equipmentForm');
+            form.reset();
+            document.getElementById('equipmentId').value = '';
+            
+            if (id) {
+                const item = inventory.find(i => i.id === id);
+                if (item) {
+                    document.getElementById('modalTitle').textContent = 'Editar Equipo';
+                    document.getElementById('equipmentId').value = item.id;
+                    document.getElementById('eqStore').value = item.store || '';
+                    document.getElementById('eqCategory').value = item.category;
+                    document.getElementById('eqModel').value = item.model;
+                    document.getElementById('eqSerial').value = item.serial;
+                    document.getElementById('eqCode').value = item.code;
+                    document.getElementById('eqNotes').value = item.notes || '';
+                }
+            } else {
+                document.getElementById('modalTitle').textContent = 'Agregar Equipo';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('equipmentModal').classList.add('hidden');
+        }
+
+        function editEquipment(id) { openModal(id); }
+
+        // ============ REPORTES ============
+        function openReportModal() {
+            const modal = document.getElementById('reportModal');
+            const form = document.getElementById('reportForm');
+            form.reset();
+            document.getElementById('repDate').value = new Date().toISOString().split('T')[0];
+            currentPhotos = { before: [], after: [] };
+            document.getElementById('beforePreview').innerHTML = '';
+            document.getElementById('afterPreview').innerHTML = '';
+            modal.classList.remove('hidden');
+            setTimeout(() => initSignaturePad(), 200);
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.add('hidden');
+            if (signaturePad) {
+                try { signaturePad.off(); } catch(e) {}
+                signaturePad = null;
+            }
+        }
+
+        function initSignaturePad() {
+            try {
+                const canvas = document.getElementById('signatureCanvas');
+                if (!canvas) return;
+                const ratio = Math.max(window.devicePixelRatio || 1, 1);
+                canvas.width = canvas.offsetWidth * ratio;
+                canvas.height = canvas.offsetHeight * ratio;
+                const ctx = canvas.getContext('2d');
+                ctx.scale(ratio, ratio);
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                if (signaturePad) { try { signaturePad.off(); } catch(e) {} }
+                signaturePad = new SignaturePad(canvas, {
+                    backgroundColor: 'rgb(255, 255, 255)',
+                    penColor: 'rgb(0, 0, 0)',
+                    minWidth: 1, maxWidth: 2.5
+                });
+            } catch(e) { console.error('Error firma:', e); }
+        }
+
+        function clearSignature() {
+            if (signaturePad) signaturePad.clear();
+        }
+
+        function handlePhotos(e, type) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    compressImage(ev.target.result, 800, 0.7, (compressed) => {
+                        currentPhotos[type].push(compressed);
+                        renderPhotoPreview(type);
+                    });
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function compressImage(dataUrl, maxWidth, quality, callback) {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width, height = img.height;
+                if (width > maxWidth) {
+                    height = (height * maxWidth) / width;
+                    width = maxWidth;
+                }
+                canvas.width = width; canvas.height = height;
+                canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.src = dataUrl;
+        }
+
+        function renderPhotoPreview(type) {
+            const container = document.getElementById(type + 'Preview');
+            container.innerHTML = currentPhotos[type].map((src, idx) => `
+                <div class="relative group">
+                    <img src="${src}" class="w-full h-24 object-cover rounded-lg border border-slate-200">
+                    <button type="button" onclick="removePhoto('${type}', ${idx})" class="absolute top-1 right-1 bg-black text-yellow-400 rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-yellow-400 hover:text-black shadow font-bold">&times;</button>
+                </div>
+            `).join('');
+        }
+
+        function removePhoto(type, idx) {
+            currentPhotos[type].splice(idx, 1);
+            renderPhotoPreview(type);
+        }
+
+        function renderReports() {
+            const container = document.getElementById('reportsList');
+            const empty = document.getElementById('emptyReports');
+
+            if (reports.length === 0) {
+                container.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            container.innerHTML = reports.slice().reverse().map(r => `
+                <div class="bg-white rounded-xl shadow card-hover overflow-hidden border-t-4 border-yellow-400">
+                    <div class="gradient-header p-4 text-yellow-400">
+                        <h3 class="font-bold text-lg">🏪 ${escapeHtml(r.store)}</h3>
+                        <p class="text-sm opacity-90">📅 ${formatDate(r.date)}</p>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-sm text-slate-600 mb-2"><strong>👨‍🔧 Técnico:</strong> ${escapeHtml(r.tech)}</p>
+                        <div class="flex gap-2 mb-3 flex-wrap">
+                            <span class="text-xs bg-yellow-100 text-black px-2 py-1 rounded font-medium">📷 Antes: ${r.photosBefore.length}</span>
+                            <span class="text-xs bg-slate-800 text-yellow-400 px-2 py-1 rounded font-medium">📸 Después: ${r.photosAfter.length}</span>
+                            ${r.signature ? '<span class="text-xs bg-yellow-400 text-black px-2 py-1 rounded font-bold">✍️ Firmado</span>' : ''}
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="viewReport('${r.id}')" class="flex-1 bg-yellow-100 text-black px-3 py-2 rounded-lg text-sm font-bold hover:bg-yellow-200 transition">👁️ Ver</button>
+                            <button onclick="exportReportPDF('${r.id}')" class="flex-1 bg-slate-800 text-yellow-400 px-3 py-2 rounded-lg text-sm font-bold hover:bg-black transition">💾 PDF</button>
+                            <button onclick="deleteReport('${r.id}')" class="bg-black text-yellow-400 px-3 py-2 rounded-lg text-sm hover:bg-yellow-400 hover:text-black transition font-bold">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewReport(id) {
+            const r = reports.find(rep => rep.id === id);
+            if (!r) return;
+
+            const content = document.getElementById('reportDetailContent');
+            content.innerHTML = `
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-yellow-50 p-4 rounded-lg border-l-4 border-black">
+                        <div><strong>🏪 Tienda:</strong> ${escapeHtml(r.store)}</div>
+                        <div><strong>📅 Fecha:</strong> ${formatDate(r.date)}</div>
+                        <div><strong>👨‍🔧 Técnico:</strong> ${escapeHtml(r.tech)}</div>
+                        <div><strong>🕐 Creado:</strong> ${new Date(r.createdAt).toLocaleString('es-ES')}</div>
+                    </div>
+                    ${r.description ? `<div class="bg-slate-50 p-4 rounded-lg border-l-4 border-yellow-400"><strong>📝 Descripción:</strong><p class="text-slate-600 mt-1">${escapeHtml(r.description)}</p></div>` : ''}
+                    ${r.photosBefore.length > 0 ? `
+                        <div>
+                            <h4 class="font-semibold text-slate-700 mb-2 border-l-4 border-yellow-400 pl-2">📷 Fotos ANTES</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                ${r.photosBefore.map(p => `<img src="${p}" class="w-full h-40 object-cover rounded-lg border-2 border-black cursor-pointer hover:scale-105 transition" onclick="window.open('${p}')">`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    ${r.photosAfter.length > 0 ? `
+                        <div>
+                            <h4 class="font-semibold text-slate-700 mb-2 border-l-4 border-black pl-2">📸 Fotos DESPUÉS</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                ${r.photosAfter.map(p => `<img src="${p}" class="w-full h-40 object-cover rounded-lg border-2 border-black cursor-pointer hover:scale-105 transition" onclick="window.open('${p}')">`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    ${r.signature ? `
+                        <div>
+                            <h4 class="font-semibold text-slate-700 mb-2 border-l-4 border-yellow-400 pl-2">✍️ Firma del Responsable</h4>
+                            <div class="border-2 border-black rounded-lg p-2 bg-white inline-block">
+                                <img src="${r.signature}" style="max-width: 300px; height: auto;">
+                            </div>
+                        </div>
+                    ` : ''}
+                    <div class="flex gap-3 pt-4 border-t flex-wrap">
+                        <button onclick="exportReportPDF('${r.id}')" class="btn-yellow px-5 py-2 rounded-lg font-bold">💾 Guardar PDF Local</button>
+                        <button onclick="closeViewReportModal()" class="px-5 py-2 border-2 border-black rounded-lg text-black hover:bg-yellow-50 font-medium">Cerrar</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('viewReportModal').classList.remove('hidden');
+        }
+
+        function closeViewReportModal() {
+            document.getElementById('viewReportModal').classList.add('hidden');
+        }
+
+        // ============ EXPORTAR EXCEL LOCAL (CON FILTROS) ============
+        async function exportToExcel() {
+            const filteredInventory = getFilteredInventory();
+            
+            if (filteredInventory.length === 0) {
+                showToast('No hay datos para exportar con los filtros actuales', 'error');
+                return;
+            }
+
+            try {
+                const data = filteredInventory.map(item => ({
+                    'Tienda': item.store || '',
+                    'Categoría': getCategoryLabel(item.category),
+                    'Modelo': item.model,
+                    'Número de Serie': item.serial,
+                    'Número de Codificación': item.code,
+                    'Notas': item.notes || '',
+                    'Fecha de Registro': item.createdAt ? new Date(item.createdAt).toLocaleString('es-ES') : '',
+                    'Última Actualización': item.updatedAt ? new Date(item.updatedAt).toLocaleString('es-ES') : ''
+                }));
+
+                const ws = XLSX.utils.json_to_sheet(data);
+                ws['!cols'] = [{ wch: 22 }, { wch: 18 }, { wch: 25 }, { wch: 20 }, { wch: 22 }, { wch: 30 }, { wch: 20 }, { wch: 20 }];
+                
+                const filterInfo = [];
+                if (currentStoreFilter !== 'all') {
+                    filterInfo.push(`Tienda: ${currentStoreFilter.replace('Tienda ', '')}`);
+                }
+                if (currentFilter !== 'all') {
+                    filterInfo.push(`Categoría: ${getCategoryLabel(currentFilter)}`);
+                }
+                const search = document.getElementById('searchInput').value.trim();
+                if (search) {
+                    filterInfo.push(`Búsqueda: "${search}"`);
+                }
+
+                if (filterInfo.length > 0) {
+                    const ws2 = XLSX.utils.aoa_to_sheet([
+                        ['Filtros aplicados:', filterInfo.join(' | ')],
+                        ['Total de registros:', filteredInventory.length],
+                        ['Fecha de exportación:', new Date().toLocaleString('es-ES')],
+                        []
+                    ]);
+                    
+                    const range = XLSX.utils.decode_range(ws2['!ref']);
+                    range.e.r += 1;
+                    ws2['!ref'] = XLSX.utils.encode_range(range);
+                    
+                    const invRange = XLSX.utils.decode_range(ws['!ref']);
+                    for (let R = invRange.s.r; R <= invRange.e.r; ++R) {
+                        for (let C = invRange.s.c; C <= invRange.e.c; ++C) {
+                            const cellAddress = XLSX.utils.encode_cell({r: R + 4, c: C});
+                            const oldAddress = XLSX.utils.encode_cell({r: R, c: C});
+                            ws2[cellAddress] = ws[oldAddress];
+                        }
+                    }
+                    ws2['!ref'] = XLSX.utils.encode_range({s: {r: 0, c: 0}, e: {r: invRange.e.r + 4, c: invRange.e.c}});
+                    
+                    const wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, ws2, 'Inventario Filtrado');
+                    
+                    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                    const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                    
+                    const filename = `VisitasTejar_Inventario_Filtrado_${new Date().toISOString().split('T')[0]}.xlsx`;
+                    await saveFileLocally(blob, filename, `Excel con ${filteredInventory.length} registros filtrados`);
+                } else {
+                    const wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
+                    
+                    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                    const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                    
+                    const filename = `VisitasTejar_Inventario_${new Date().toISOString().split('T')[0]}.xlsx`;
+                    await saveFileLocally(blob, filename, `Excel con ${filteredInventory.length} registros`);
+                }
+            } catch(e) {
+                console.error('Error exportando Excel:', e);
+                showToast('Error al exportar Excel', 'error');
+            }
+        }
+
+        // ============ EXPORTAR PDF LOCAL ============
+        async function exportReportPDF(id) {
+            const r = reports.find(rep => rep.id === id);
+            if (!r) return;
+
+            try {
+                showToast('⏳ Generando PDF...');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                let y = 20;
+
+                pdf.setFillColor(31, 41, 55);
+                pdf.rect(0, 0, pageWidth, 30, 'F');
+                pdf.setFillColor(251, 191, 36);
+                pdf.rect(0, 30, pageWidth, 5, 'F');
+                
+                pdf.setTextColor(251, 191, 36);
+                pdf.setFontSize(20);
+                pdf.setFont(undefined, 'bold');
+                pdf.text('Reporte de Visita - Visitas Tejar', pageWidth/2, 15, { align: 'center' });
+                pdf.setFontSize(10);
+                pdf.setFont(undefined, 'normal');
+                pdf.setTextColor(255, 255, 255);
+                pdf.text('Sistema de Inventario y Reportes', pageWidth/2, 22, { align: 'center' });
+                y = 45;
+
+                pdf.setTextColor(0, 0, 0);
+                pdf.setFontSize(13);
+                pdf.setFont(undefined, 'bold');
+                pdf.text('Informacion General', 15, y);
+                y += 8;
+                pdf.setFont(undefined, 'normal');
+                pdf.setFontSize(10);
+                pdf.text(`Tienda/Ubicacion: ${r.store}`, 15, y); y += 6;
+                pdf.text(`Fecha de Visita: ${formatDate(r.date)}`, 15, y); y += 6;
+                pdf.text(`Tecnico Responsable: ${r.tech}`, 15, y); y += 6;
+                if (r.description) {
+                    pdf.setFont(undefined, 'bold');
+                    pdf.text(`Descripcion:`, 15, y); y += 6;
+                    pdf.setFont(undefined, 'normal');
+                    const splitDesc = pdf.splitTextToSize(r.description, pageWidth - 30);
+                    pdf.text(splitDesc, 15, y);
+                    y += splitDesc.length * 5 + 3;
+                }
+                y += 5;
+
+                const addPhotos = async (photos, title) => {
+                    if (photos.length === 0) return;
+                    if (y > 230) { pdf.addPage(); y = 20; }
+                    pdf.setFontSize(13);
+                    pdf.setFont(undefined, 'bold');
+                    pdf.setTextColor(31, 41, 55);
+                    pdf.text(title, 15, y);
+                    pdf.setDrawColor(251, 191, 36);
+                    pdf.setLineWidth(1);
+                    pdf.line(15, y + 2, pageWidth - 15, y + 2);
+                    y += 8;
+                    pdf.setFont(undefined, 'normal');
+                    pdf.setTextColor(0, 0, 0);
+                    for (let i = 0; i < photos.length; i++) {
+                        if (y > 220) { pdf.addPage(); y = 20; }
+                        try {
+                            pdf.addImage(photos[i], 'JPEG', 15, y, 90, 65);
+                            pdf.setFontSize(9);
+                            pdf.text(`Foto ${i+1}`, 15, y + 68);
+                            y += 75;
+                        } catch(e) { y += 10; }
+                    }
+                    y += 5;
+                };
+
+                await addPhotos(r.photosBefore, 'Fotos ANTES de la visita');
+                await addPhotos(r.photosAfter, 'Fotos DESPUES de la visita');
+
+                if (r.signature) {
+                    if (y > 200) { pdf.addPage(); y = 20; }
+                    y += 10;
+                    pdf.setFontSize(13);
+                    pdf.setFont(undefined, 'bold');
+                    pdf.setTextColor(31, 41, 55);
+                    pdf.text('Firma del Responsable', 15, y);
+                    y += 5;
+                    try { pdf.addImage(r.signature, 'PNG', 15, y, 60, 25); } catch(e) {}
+                    y += 35;
+                }
+
+                if (y > 240) { pdf.addPage(); y = 20; }
+                y += 10;
+                pdf.setDrawColor(0, 0, 0);
+                pdf.line(15, y + 15, 100, y + 15);
+                pdf.setFontSize(9);
+                pdf.setFont(undefined, 'normal');
+                pdf.setTextColor(0, 0, 0);
+                pdf.text('Firma y Sello del Responsable', 15, y + 20);
+                pdf.line(120, y + 15, 195, y + 15);
+                pdf.text('Firma del Tecnico', 120, y + 20);
+
+                pdf.setFillColor(31, 41, 55);
+                pdf.rect(0, pageHeight - 15, pageWidth, 15, 'F');
+                pdf.setFontSize(8);
+                pdf.setTextColor(251, 191, 36);
+                pdf.text(`Documento generado el ${new Date().toLocaleString('es-ES')} - Visitas Tejar`, pageWidth/2, pageHeight - 5, { align: 'center' });
+
+                const pdfBlob = pdf.output('blob');
+                const filename = `VisitasTejar_Reporte_${r.store.replace(/\s+/g, '_')}_${r.date}.pdf`;
+                await saveFileLocally(pdfBlob, filename, 'Reporte PDF');
+            } catch(e) {
+                console.error('Error generando PDF:', e);
+                showToast('Error al generar PDF: ' + e.message, 'error');
+            }
+        }
+
+        // ============ ESTADÍSTICAS ============
+        function updateStats() {
+            const counts = {
+                computadora: inventory.filter(i => i.category === 'computadora').length,
+                impresora: inventory.filter(i => i.category === 'impresora').length,
+                monitor: inventory.filter(i => i.category === 'monitor').length,
+                tablet: inventory.filter(i => i.category === 'tablet').length
+            };
+            document.getElementById('stat-total').textContent = inventory.length;
+            document.getElementById('stat-computadora').textContent = counts.computadora;
+            document.getElementById('stat-impresora').textContent = counts.impresora;
+            document.getElementById('stat-otros').textContent = counts.monitor + counts.tablet;
+        }
+
+        function renderStatsSection() {
+            const counts = {
+                computadora: inventory.filter(i => i.category === 'computadora').length,
+                impresora: inventory.filter(i => i.category === 'impresora').length,
+                monitor: inventory.filter(i => i.category === 'monitor').length,
+                tablet: inventory.filter(i => i.category === 'tablet').length
+            };
+            const total = inventory.length || 1;
+            const colors = { computadora: 'bg-yellow-400', impresora: 'bg-yellow-500', monitor: 'bg-slate-800', tablet: 'bg-black' };
+            
+            document.getElementById('categoryChart').innerHTML = Object.entries(counts).map(([cat, count]) => {
+                const pct = (count / total * 100).toFixed(0);
+                return `
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-medium text-slate-700">${getCategoryLabel(cat)}</span>
+                            <span class="text-slate-600">${count} (${pct}%)</span>
+                        </div>
+                        <div class="w-full bg-slate-200 rounded-full h-3">
+                            <div class="${colors[cat]} h-3 rounded-full transition-all" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const storeCounts = {};
+            inventory.forEach(item => {
+                const store = item.store || 'Sin tienda';
+                storeCounts[store] = (storeCounts[store] || 0) + 1;
+            });
+            
+            const storeStatsHTML = Object.entries(storeCounts).sort((a, b) => b[1] - a[1]).map(([store, count]) => `
+                <div class="flex justify-between p-2 bg-yellow-50 rounded-lg border-l-4 border-black">
+                    <span class="text-slate-700 text-sm">🏪 ${escapeHtml(store.replace('Tienda ', ''))}</span>
+                    <span class="font-bold text-black">${count}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('summaryStats').innerHTML = `
+                <div class="space-y-2">
+                    <div class="flex justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-black"><span class="text-slate-600">Total de Equipos</span><span class="font-bold text-slate-800">${inventory.length}</span></div>
+                    <div class="flex justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400"><span class="text-slate-600">Total de Reportes</span><span class="font-bold text-slate-800">${reports.length}</span></div>
+                    <div class="flex justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-black"><span class="text-slate-600">Tiendas con equipos</span><span class="font-bold text-slate-800">${Object.keys(storeCounts).length}</span></div>
+                    <div class="flex justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400"><span class="text-slate-600">Última Actualización</span><span class="font-bold text-slate-800 text-sm">${inventory.length ? new Date(Math.max(...inventory.map(i => new Date(i.updatedAt || i.createdAt)))).toLocaleDateString('es-ES') : '-'}</span></div>
+                    <div class="mt-4">
+                        <h4 class="font-semibold text-slate-700 mb-2 border-l-4 border-yellow-400 pl-2"> Equipos por Tienda:</h4>
+                        <div class="space-y-1 max-h-64 overflow-y-auto scrollbar-thin">
+                            ${storeStatsHTML || '<p class="text-sm text-slate-500">Sin datos</p>'}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============ UTILIDADES ============
+        function escapeHtml(s) { 
+            if (s === null || s === undefined) return ''; 
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); 
+        }
+
+        function formatDate(d) { 
+            if (!d) return '-'; 
+            try {
+                const date = new Date(d + 'T00:00:00');
+                return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+            } catch(e) { return d; }
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            if (type === 'error') {
+                toast.className = 'fixed bottom-4 right-4 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg z-[60] fade-in font-medium';
+            } else {
+                toast.className = 'fixed bottom-4 right-4 bg-black text-yellow-400 px-6 py-3 rounded-lg shadow-lg z-[60] fade-in font-medium';
+            }
+            toast.classList.remove('hidden');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => toast.classList.add('hidden'), 3500);
+        }
+    </script>
+</body>
