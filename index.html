@@ -812,7 +812,7 @@
             files.forEach(file => {
                 const reader = new FileReader();
                 reader.onload = (ev) => {
-                    compressImage(ev.target.result, 800, 0.7, (compressed) => {
+                    compressImage(ev.target.result, 600, 0.5, (compressed) => {
                         currentPhotos[type].push(compressed);
                         renderPhotoPreview(type);
                     });
