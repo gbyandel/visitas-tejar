@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
     
@@ -30,6 +31,8 @@
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(31,41,55,0.4); }
         .btn-yellow { background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%); color: #000000; transition: all 0.3s; }
         .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(251,191,36,0.4); }
+        .btn-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; transition: all 0.3s; }
+        .btn-green:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(16,185,129,0.4); }
         .card-hover { transition: all 0.3s; }
         .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         .badge { padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; }
@@ -88,7 +91,7 @@
         <div class="max-w-7xl mx-auto px-4 pb-3 flex gap-2 overflow-x-auto">
             <button onclick="switchTab('inventario')" id="tab-inventario" class="tab-btn tab-active px-5 py-2 rounded-lg font-medium whitespace-nowrap transition-all">📦 Inventario</button>
             <button onclick="switchTab('reportes')" id="tab-reportes" class="tab-btn bg-white text-slate-700 px-5 py-2 rounded-lg font-medium whitespace-nowrap transition-all hover:bg-slate-50">📋 Reportes de Visita</button>
-            <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn bg-white text-slate-700 px-5 py-2 rounded-lg font-medium whitespace-nowrap transition-all hover:bg-slate-50"> Estadísticas</button>
+            <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn bg-white text-slate-700 px-5 py-2 rounded-lg font-medium whitespace-nowrap transition-all hover:bg-slate-50">📊 Estadísticas</button>
         </div>
     </header>
 
@@ -159,6 +162,9 @@
                     <button onclick="openModal()" class="btn-primary px-5 py-2 rounded-lg font-medium flex items-center gap-2">
                         <span>➕</span> Agregar Equipo
                     </button>
+                    <button onclick="exportInventoryPDF()" class="btn-green px-5 py-2 rounded-lg font-bold flex items-center gap-2">
+                        📄 Reporte PDF
+                    </button>
                     <button onclick="exportToExcel()" class="btn-yellow px-5 py-2 rounded-lg font-bold flex items-center gap-2">
                         💾 Excel Local
                     </button>
@@ -210,7 +216,7 @@
                     </table>
                 </div>
                 <div id="emptyState" class="hidden p-12 text-center text-slate-500">
-                    <div class="text-6xl mb-4"></div>
+                    <div class="text-6xl mb-4">📦</div>
                     <p class="text-lg">No hay equipos registrados</p>
                     <p class="text-sm">Haz clic en "Agregar Equipo" para comenzar</p>
                 </div>
@@ -227,7 +233,7 @@
             </div>
             <div id="reportsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             <div id="emptyReports" class="hidden bg-white rounded-xl p-12 text-center text-slate-500 shadow">
-                <div class="text-6xl mb-4"></div>
+                <div class="text-6xl mb-4">📋</div>
                 <p class="text-lg">No hay reportes de visita</p>
                 <p class="text-sm">Crea tu primer reporte para documentar tus visitas</p>
             </div>
@@ -292,12 +298,12 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1"> Categoría *</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">📦 Categoría *</label>
                     <select id="eqCategory" required class="w-full px-4 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-yellow-50">
                         <option value="computadora">💻 Computadora</option>
                         <option value="impresora">🖨️ Impresora</option>
                         <option value="monitor">🖥️ Monitor</option>
-                        <option value="tablet"> Tablet</option>
+                        <option value="tablet">📱 Tablet</option>
                         <option value="telefono">📞 Teléfono</option>
                     </select>
                 </div>
@@ -465,7 +471,6 @@
 
         // ============ FUNCIONES DE BASE DE DATOS FIREBASE ============
         
-        // Mostrar/ocultar indicador de conexión
         function showConnectionStatus(show) {
             const status = document.getElementById('connectionStatus');
             if (show) {
@@ -477,21 +482,17 @@
             }
         }
 
-        // Cargar datos desde la nube
         async function loadData() {
             showConnectionStatus(true);
             try {
-                // Cargar inventario
                 const invSnap = await db.collection("inventario").get();
                 inventory = invSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
-                // Cargar reportes
                 const repSnap = await db.collection("reportes").get();
                 reports = repSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
                 dataLoaded = true;
                 
-                // Renderizar todo
                 renderInventory();
                 renderReports();
                 updateStats();
@@ -499,13 +500,12 @@
                 showToast('✅ Conectado a la base de datos');
             } catch (e) {
                 console.error("Error cargando datos:", e);
-                showToast(' Error al conectar con la base de datos', 'error');
+                showToast('❌ Error al conectar con la base de datos', 'error');
             } finally {
                 showConnectionStatus(false);
             }
         }
 
-        // Guardar o Actualizar Equipo
         async function saveEquipment(e) {
             if (e) e.preventDefault();
             
@@ -531,17 +531,14 @@
 
             try {
                 if (id) {
-                    // Actualizar equipo existente
                     await db.collection("inventario").doc(id).update(data);
                     showToast('✅ Equipo actualizado correctamente');
                 } else {
-                    // Crear nuevo equipo
                     data.createdAt = new Date().toISOString();
                     await db.collection("inventario").add(data);
                     showToast('✅ Equipo agregado correctamente');
                 }
                 
-                // Recargar datos desde la nube
                 await loadData();
                 closeModal();
             } catch (e) {
@@ -550,7 +547,6 @@
             }
         }
 
-        // Eliminar Equipo
         async function deleteEquipment(id) {
             if (confirm('¿Estás seguro de eliminar este equipo?')) {
                 try {
@@ -564,7 +560,6 @@
             }
         }
 
-        // Guardar Reporte
         async function saveReport() {
             const store = document.getElementById('repStore').value.trim();
             const date = document.getElementById('repDate').value;
@@ -607,7 +602,6 @@
             }
         }
 
-        // Eliminar Reporte
         async function deleteReport(id) {
             if (confirm('¿Eliminar este reporte?')) {
                 try {
@@ -711,7 +705,6 @@
             document.getElementById('currentDate').textContent = dateStr;
             document.getElementById('repDate').value = new Date().toISOString().split('T')[0];
             
-            // Cargar datos desde Firebase
             await loadData();
         });
 
@@ -744,7 +737,6 @@
             renderInventory();
         }
 
-        // ============ FUNCIÓN PARA OBTENER INVENTARIO FILTRADO ============
         function getFilteredInventory() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             return inventory.filter(item => {
@@ -809,7 +801,7 @@
                 impresora: '🖨️ Impresora',
                 monitor: '🖥️ Monitor',
                 tablet: '📱 Tablet',
-                telefono: ' Teléfono'
+                telefono: '📞 Teléfono'
             };
             return labels[cat] || cat;
         }
@@ -959,11 +951,11 @@
             container.innerHTML = reports.slice().reverse().map(r => `
                 <div class="bg-white rounded-xl shadow card-hover overflow-hidden border-t-4 border-yellow-400">
                     <div class="gradient-header p-4 text-yellow-400">
-                        <h3 class="font-bold text-lg"> ${escapeHtml(r.store)}</h3>
+                        <h3 class="font-bold text-lg">🏪 ${escapeHtml(r.store)}</h3>
                         <p class="text-sm opacity-90">📅 ${formatDate(r.date)}</p>
                     </div>
                     <div class="p-4">
-                        <p class="text-sm text-slate-600 mb-2"><strong>‍🔧 Técnico:</strong> ${escapeHtml(r.tech)}</p>
+                        <p class="text-sm text-slate-600 mb-2"><strong>👨‍🔧 Técnico:</strong> ${escapeHtml(r.tech)}</p>
                         <div class="flex gap-2 mb-3 flex-wrap">
                             <span class="text-xs bg-yellow-100 text-black px-2 py-1 rounded font-medium">📷 Antes: ${r.photosBefore.length}</span>
                             <span class="text-xs bg-slate-800 text-yellow-400 px-2 py-1 rounded font-medium">📸 Después: ${r.photosAfter.length}</span>
@@ -988,7 +980,7 @@
                 <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-yellow-50 p-4 rounded-lg border-l-4 border-black">
                         <div><strong>🏪 Tienda:</strong> ${escapeHtml(r.store)}</div>
-                        <div><strong> Fecha:</strong> ${formatDate(r.date)}</div>
+                        <div><strong>📅 Fecha:</strong> ${formatDate(r.date)}</div>
                         <div><strong>👨‍🔧 Técnico:</strong> ${escapeHtml(r.tech)}</div>
                         <div><strong>🕐 Creado:</strong> ${new Date(r.createdAt).toLocaleString('es-ES')}</div>
                     </div>
@@ -1028,6 +1020,194 @@
 
         function closeViewReportModal() {
             document.getElementById('viewReportModal').classList.add('hidden');
+        }
+
+        // ============ EXPORTAR REPORTE PDF DEL INVENTARIO FILTRADO (ORDENADO POR CATEGORÍA) ============
+        async function exportInventoryPDF() {
+            const filteredInventory = getFilteredInventory();
+            
+            if (filteredInventory.length === 0) {
+                showToast('No hay datos para exportar con los filtros actuales', 'error');
+                return;
+            }
+
+            try {
+                showToast('⏳ Generando reporte PDF...');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                let y = 20;
+
+                // Header
+                pdf.setFillColor(31, 41, 55);
+                pdf.rect(0, 0, pageWidth, 30, 'F');
+                pdf.setFillColor(251, 191, 36);
+                pdf.rect(0, 30, pageWidth, 5, 'F');
+                
+                pdf.setTextColor(251, 191, 36);
+                pdf.setFontSize(20);
+                pdf.setFont(undefined, 'bold');
+                pdf.text('Reporte de Inventario - Visitas Tejar', pageWidth/2, 15, { align: 'center' });
+                pdf.setFontSize(10);
+                pdf.setFont(undefined, 'normal');
+                pdf.setTextColor(255, 255, 255);
+                pdf.text('Sistema de Inventario y Reportes', pageWidth/2, 22, { align: 'center' });
+                y = 45;
+
+                // Información de filtros
+                pdf.setTextColor(0, 0, 0);
+                pdf.setFontSize(13);
+                pdf.setFont(undefined, 'bold');
+                pdf.text('Informacion del Filtro', 15, y);
+                y += 8;
+                pdf.setFont(undefined, 'normal');
+                pdf.setFontSize(10);
+                
+                const filterInfo = [];
+                if (currentStoreFilter !== 'all') {
+                    filterInfo.push(`Tienda: ${currentStoreFilter}`);
+                }
+                if (currentFilter !== 'all') {
+                    filterInfo.push(`Categoria: ${getCategoryLabel(currentFilter).replace(/[^a-zA-ZÀ-ÿ\s]/g, '').trim()}`);
+                }
+                const search = document.getElementById('searchInput').value.trim();
+                if (search) {
+                    filterInfo.push(`Busqueda: "${search}"`);
+                }
+                
+                if (filterInfo.length > 0) {
+                    pdf.text(filterInfo.join(' | '), 15, y);
+                    y += 6;
+                } else {
+                    pdf.text('Sin filtros aplicados - Mostrando todos los equipos', 15, y);
+                    y += 6;
+                }
+                
+                pdf.text(`Total de equipos: ${filteredInventory.length}`, 15, y);
+                y += 6;
+                pdf.text(`Fecha de generacion: ${new Date().toLocaleString('es-ES')}`, 15, y);
+                y += 10;
+
+                // Estadísticas resumidas
+                const counts = {
+                    computadora: filteredInventory.filter(i => i.category === 'computadora').length,
+                    impresora: filteredInventory.filter(i => i.category === 'impresora').length,
+                    monitor: filteredInventory.filter(i => i.category === 'monitor').length,
+                    tablet: filteredInventory.filter(i => i.category === 'tablet').length,
+                    telefono: filteredInventory.filter(i => i.category === 'telefono').length
+                };
+
+                pdf.setFontSize(12);
+                pdf.setFont(undefined, 'bold');
+                pdf.text('Resumen por Categoria:', 15, y);
+                y += 6;
+                pdf.setFontSize(9);
+                pdf.setFont(undefined, 'normal');
+                pdf.text(`Computadoras: ${counts.computadora} | Impresoras: ${counts.impresora} | Monitores: ${counts.monitor} | Tablets: ${counts.tablet} | Telefonos: ${counts.telefono}`, 15, y);
+                y += 10;
+
+                // ============================================
+                // ORDENAR POR CATEGORÍA
+                // ============================================
+                const categoryOrder = {
+                    'computadora': 1,
+                    'impresora': 2,
+                    'monitor': 3,
+                    'tablet': 4,
+                    'telefono': 5
+                };
+
+                const sortedInventory = [...filteredInventory].sort((a, b) => {
+                    const orderA = categoryOrder[a.category] || 99;
+                    const orderB = categoryOrder[b.category] || 99;
+                    
+                    // Primero ordenar por categoría
+                    if (orderA !== orderB) {
+                        return orderA - orderB;
+                    }
+                    // Si son de la misma categoría, ordenar por tienda
+                    return (a.store || '').localeCompare(b.store || '');
+                });
+
+                // Preparar datos para la tabla (SIN EMOJIS)
+                const tableData = sortedInventory.map(item => {
+                    const categoryText = {
+                        'computadora': 'Computadora',
+                        'impresora': 'Impresora',
+                        'monitor': 'Monitor',
+                        'tablet': 'Tablet',
+                        'telefono': 'Telefono'
+                    }[item.category] || item.category;
+                    
+                    return [
+                        categoryText,
+                        getStoreShortName(item.store),
+                        item.marca || '-',
+                        item.model,
+                        item.serial,
+                        item.code,
+                        item.notes || '-'
+                    ];
+                });
+
+                // Título de la tabla
+                pdf.setFontSize(13);
+                pdf.setFont(undefined, 'bold');
+                pdf.text('Detalle del Inventario (Ordenado por Categoria)', 15, y);
+                y += 5;
+
+                // Generar tabla con autoTable
+                pdf.autoTable({
+                    startY: y,
+                    head: [['Categoria', 'Tienda', 'Marca', 'Modelo', 'No. Serie', 'Codificacion', 'Notas']],
+                    body: tableData,
+                    theme: 'grid',
+                    headStyles: {
+                        fillColor: [31, 41, 55],
+                        textColor: [251, 191, 36],
+                        fontStyle: 'bold',
+                        fontSize: 8
+                    },
+                    bodyStyles: {
+                        fontSize: 7,
+                        textColor: [0, 0, 0]
+                    },
+                    // Colorear filas por categoría para mejor visualización
+                    didParseCell: function(data) {
+                        if (data.section === 'body' && data.column.index === 0) {
+                            const categoria = data.cell.raw;
+                            if (categoria === 'Computadora') {
+                                data.cell.styles.fillColor = [254, 243, 199]; // Amarillo claro
+                            } else if (categoria === 'Impresora') {
+                                data.cell.styles.fillColor = [226, 232, 240]; // Gris claro
+                            } else if (categoria === 'Monitor') {
+                                data.cell.styles.fillColor = [241, 245, 249]; // Gris muy claro
+                            } else if (categoria === 'Tablet') {
+                                data.cell.styles.fillColor = [254, 243, 199]; // Amarillo claro
+                            } else if (categoria === 'Telefono') {
+                                data.cell.styles.fillColor = [209, 250, 229]; // Verde claro
+                            }
+                        }
+                    },
+                    margin: { top: 10, left: 15, right: 15 },
+                    didDrawPage: function(data) {
+                        pdf.setFillColor(31, 41, 55);
+                        pdf.rect(0, pageHeight - 15, pageWidth, 15, 'F');
+                        pdf.setFontSize(8);
+                        pdf.setTextColor(251, 191, 36);
+                        pdf.text(`Pagina ${pdf.internal.getNumberOfPages()} - Visitas Tejar - ${new Date().toLocaleString('es-ES')}`, pageWidth/2, pageHeight - 5, { align: 'center' });
+                    }
+                });
+
+                const pdfBlob = pdf.output('blob');
+                const storeName = currentStoreFilter !== 'all' ? currentStoreFilter.replace(/\s+/g, '_') : 'Todas';
+                const filename = `Reporte_Inventario_${storeName}_${new Date().toISOString().split('T')[0]}.pdf`;
+                await saveFileLocally(pdfBlob, filename, 'Reporte de Inventario PDF');
+            } catch(e) {
+                console.error('Error generando reporte PDF:', e);
+                showToast('Error al generar reporte PDF: ' + e.message, 'error');
+            }
         }
 
         // ============ EXPORTAR EXCEL LOCAL (CON FILTROS) ============
@@ -1227,9 +1407,8 @@
             }
         }
 
-        // ============ ESTADÍSTICAS (CORREGIDO - MUESTRA SOLO LOS FILTRADOS) ============
+        // ============ ESTADÍSTICAS ============
         function updateStats() {
-            // Usar el inventario filtrado en lugar del total
             const filtered = getFilteredInventory();
             
             const counts = {
@@ -1293,7 +1472,7 @@
                     <div class="flex justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-black"><span class="text-slate-600">Tiendas con equipos</span><span class="font-bold text-slate-800">${Object.keys(storeCounts).length}</span></div>
                     <div class="flex justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400"><span class="text-slate-600">Última Actualización</span><span class="font-bold text-slate-800 text-sm">${inventory.length ? new Date(Math.max(...inventory.map(i => new Date(i.updatedAt || i.createdAt)))).toLocaleDateString('es-ES') : '-'}</span></div>
                     <div class="mt-4">
-                        <h4 class="font-semibold text-slate-700 mb-2 border-l-4 border-yellow-400 pl-2"> Equipos por Tienda:</h4>
+                        <h4 class="font-semibold text-slate-700 mb-2 border-l-4 border-yellow-400 pl-2">📊 Equipos por Tienda:</h4>
                         <div class="space-y-1 max-h-64 overflow-y-auto scrollbar-thin">
                             ${storeStatsHTML || '<p class="text-sm text-slate-500">Sin datos</p>'}
                         </div>
@@ -1330,3 +1509,4 @@
         }
     </script>
 </body>
+</html>
