@@ -295,12 +295,10 @@
             letter-spacing: 0.5px;
         }
         .badge-status:hover { transform: scale(1.1); }
-        .status-activo { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: 2px solid #047857; }
-        .status-reparacion { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: 2px solid #b45309; }
-        .status-fallas { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; border: 2px solid #c2410c; }
-        .status-baja { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; border: 2px solid #7f1d1d; }
+        .status-nuevo { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: 2px solid #047857; }
+        .status-usado { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: 2px solid #b45309; }
+        .status-danado { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; border: 2px solid #7f1d1d; }
         .status-bodega { background: linear-gradient(135deg, #64748b 0%, #475569 100%); color: white; border: 2px solid #334155; }
-        .status-pendiente { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); color: white; border: 2px solid #475569; }
         
         .scrollbar-thin::-webkit-scrollbar { width: 10px; height: 10px; }
         .scrollbar-thin::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 5px; }
@@ -360,7 +358,7 @@
             background-size: 1.5em 1.5em;
             padding-right: 2.5rem;
             appearance: none;
-            border-radius:12px;
+            border-radius: 12px;
         }
         .filter-select:hover {
             border-color: #FBBF24;
@@ -622,34 +620,60 @@
             background: #f3f4f6;
         }
         
+        /* ✅ ESTILOS DE IMPRESIÓN OPTIMIZADOS */
         @media print {
+            @page {
+                margin: 0;
+                size: auto;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
             body * {
                 visibility: hidden;
             }
+            
             .print-area, .print-area * {
                 visibility: visible;
             }
+            
             .print-area {
                 position: absolute;
                 left: 0;
                 top: 0;
                 width: 100%;
-                padding: 10mm !important;
+                padding: 5mm !important;
                 margin: 0 !important;
             }
+            
+            .print-area .container {
+                border: 2px solid #000;
+                padding: 10px;
+                width: 100%;
+            }
+            
+            .print-area table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            
+            .print-area th, .print-area td {
+                border: 1px solid #000;
+                padding: 4px;
+            }
+            
             .no-print {
                 display: none !important;
-            }
-            @page {
-                margin: 10mm;
-                size: auto;
             }
         }
         
         .print-area {
             background: white;
-            padding: 10mm;
-            margin: 2rem auto;
+            padding: 5mm;
+            margin: 1rem auto;
             max-width: 210mm;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
@@ -664,12 +688,13 @@
             font-weight: 700;
             display: inline-block;
             margin: 2px;
+            cursor: pointer;
         }
         
         .el-tejar-logo {
-            width: 120px;
-            height: auto;
-            margin-bottom: 0.5rem;
+            width: 60px;
+            height: 60px;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -703,7 +728,7 @@
         </div>
         <div class="max-w-7xl mx-auto px-4 pb-4 flex gap-3 overflow-x-auto">
             <button onclick="switchTab('inventario')" id="tab-inventario" class="tab-btn tab-active px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all ripple">📦 Inventario</button>
-            <button onclick="switchTab('reportes')" id="tab-reportes" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple">📋 Reportes de Visita</button>
+            <button onclick="switchTab('reportes')" id="tab-reportes" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple"> Reportes de Visita</button>
             <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple">📊 Estadísticas</button>
             <button onclick="switchTab('utilidades')" id="tab-utilidades" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple">🛠️ Utilidades</button>
         </div>
@@ -716,22 +741,22 @@
             <div class="glass-card shadow-2xl p-6 mb-6 border-l-8 border-yellow-400 slide-in">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">🏪 / 🏢 Filtrar por Tienda o Área:</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2"> / 🏢 Filtrar por Tienda o Área:</label>
                         <select id="storeFilterSelect" onchange="filterStore(this.value)" class="filter-select w-full px-4 py-3 cursor-pointer">
                             <option value="all">Todas las tiendas / áreas</option>
                             <option value="Tienda Zona 1">🏪 Tienda Zona 1</option>
                             <option value="Tienda Jutiapa">🏪 Tienda Jutiapa</option>
-                            <option value="Tienda Zacapa"> Tienda Zacapa</option>
-                            <option value="Tienda Coatepeque"> Tienda Coatepeque</option>
-                            <option value="Tienda Escuintla"> Tienda Escuintla</option>
-                            <option value="Tienda Chiquimula"> Tienda Chiquimula</option>
-                            <option value="Tienda Coban"> Tienda Cobán</option>
+                            <option value="Tienda Zacapa">🏪 Tienda Zacapa</option>
+                            <option value="Tienda Coatepeque">🏪 Tienda Coatepeque</option>
+                            <option value="Tienda Escuintla">🏪 Tienda Escuintla</option>
+                            <option value="Tienda Chiquimula">🏪 Tienda Chiquimula</option>
+                            <option value="Tienda Coban">🏪 Tienda Cobán</option>
                             <option value="Tienda Chimaltenango">🏪 Tienda Chimaltenango</option>
                             <option value="Tienda Mazatenango">🏪 Tienda Mazatenango</option>
                             <option value="Tienda Xela">🏪 Tienda Xela</option>
                             <option value="Tienda Retalhuleu">🏪 Tienda Retalhuleu</option>
                             <option value="Tienda Huehuetenango">🏪 Tienda Huehuetenango</option>
-                            <option value="Tienda Puerto Barrios">🏪 Tienda Puerto Barrios</option>
+                            <option value="Tienda Puerto Barrios"> Tienda Puerto Barrios</option>
                             <option value="Tienda Quiche">🏪 Tienda Quiché</option>
                             <option value="Tienda Morales">🏪 Tienda Morales</option>
                             <option value="Tienda Salama">🏪 Tienda Salamá</option>
@@ -746,48 +771,45 @@
                             <option value="Tienda Salcaja">🏪 Tienda Salcajá</option>
                             <option value="Tienda Asuncion Mita">🏪 Tienda Asunción Mita</option>
                             <option value="Tienda Totonicapa">🏪 Tienda Totonicapán</option>
-                            <option value="Contabilidad"> Contabilidad</option>
+                            <option value="Contabilidad">🏢 Contabilidad</option>
                             <option value="Tesorería">🏢 Tesorería</option>
-                            <option value="Mercadeo"> Mercadeo</option>
+                            <option value="Mercadeo">🏢 Mercadeo</option>
                             <option value="Categorías">🏢 Categorías</option>
                             <option value="Auditoría">🏢 Auditoría</option>
                             <option value="Gerentes Regionales">🏢 Gerentes Regionales</option>
                             <option value="SAC">🏢 SAC</option>
                             <option value="Sistemas">🏢 Sistemas</option>
-                            <option value="Monitoreo"> Monitoreo</option>
-                            <option value="Proyectos">🏢 Proyectos</option>
+                            <option value="Monitoreo">🏢 Monitoreo</option>
+                            <option value="Proyectos"> Proyectos</option>
                             <option value="Recepción">🏢 Recepción</option>
-                            <option value="Logística">🏢 Logística</option>
+                            <option value="Logística"> Logística</option>
                             <option value="GTH">🏢 GTH</option>
                             <option value="Supervisores de Bodega">🏢 Supervisores de Bodega</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2"> Filtrar por Categoría:</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">📦 Filtrar por Categoría:</label>
                         <select id="categoryFilterSelect" onchange="filterCategory(this.value)" class="filter-select w-full px-4 py-3 cursor-pointer">
                             <option value="all">Todas las categorías</option>
-                            <option value="computadora">💻 Computadoras</option>
+                            <option value="computadora"> Computadoras</option>
                             <option value="impresora">🖨️ Impresoras</option>
                             <option value="monitor">🖥️ Monitores</option>
                             <option value="tablet">📱 Tablets</option>
-                            <option value="telefono">📞 Teléfonos</option>
+                            <option value="telefono"> Teléfonos</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">🚦 Filtrar por Estado:</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2"> Filtrar por Estado:</label>
                         <select id="statusFilterSelect" onchange="filterStatus(this.value)" class="filter-select w-full px-4 py-3 cursor-pointer">
                             <option value="all">Todos los estados</option>
-                            <option value="activo">✅ Activo</option>
-                            <option value="reparacion">🔧 En reparación</option>
-                            <option value="fallas">⚠️ Con fallas</option>
-                            <option value="baja">❌ Dado de baja</option>
-                            <option value="bodega"> En bodega</option>
-                            <option value="pendiente">⏳ Pendiente</option>
+                            <option value="nuevo">✅ Nuevo</option>
+                            <option value="usado">🔄 Usado</option>
+                            <option value="danado">⚠️ Dañado</option>
+                            <option value="bodega">📦 En Bodega</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- ✅ BÚSQUEDA AVANZADA -->
                 <div class="mt-4 pt-4 border-t-2 border-slate-200">
                     <button onclick="toggleAdvancedSearch()" class="flex items-center gap-2 text-sm font-bold text-slate-700 hover:text-yellow-600 transition-colors">
                         <span id="advancedSearchIcon">▶</span> 🔍 Búsqueda Avanzada
@@ -799,7 +821,7 @@
                                 <input type="text" id="searchUsuario" placeholder="Buscar por nombre de usuario..." class="w-full px-3 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all text-sm" oninput="renderInventory()">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">🔍 Búsqueda General:</label>
+                                <label class="block text-xs font-bold text-slate-700 mb-1"> Búsqueda General:</label>
                                 <input type="text" id="searchGeneral" placeholder="Marca, modelo, serie, código, notas..." class="w-full px-3 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all text-sm" oninput="renderInventory()">
                             </div>
                         </div>
@@ -876,7 +898,7 @@
                 </div>
                 <div class="glass-card rounded-3xl p-6 shadow-2xl card-hover border-l-8 border-green-500 stagger-5 scale-in glow-border">
                     <div class="flex items-center justify-between mb-3">
-                        <p class="text-sm text-slate-500 font-semibold">📞 Teléfonos</p>
+                        <p class="text-sm text-slate-500 font-semibold"> Teléfonos</p>
                         <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                         </svg>
@@ -944,7 +966,7 @@
             </div>
         </section>
 
-        <!-- ✅ NUEVA SECCIÓN: UTILIDADES -->
+        <!-- Utilidades Section -->
         <section id="section-utilidades" class="hidden fade-in">
             <h2 class="text-3xl font-black text-slate-800 mb-6">🛠️ Utilidades</h2>
             
@@ -964,7 +986,7 @@
             <!-- Formulario de Etiqueta de Envío -->
             <div id="form-etiqueta" class="utility-form hidden">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold text-slate-800">📦 Etiqueta de Envío</h3>
+                    <h3 class="text-2xl font-bold text-slate-800"> Etiqueta de Envío</h3>
                     <button onclick="hideUtilityForm()" class="text-slate-500 hover:text-slate-700 text-2xl">&times;</button>
                 </div>
                 
@@ -1026,26 +1048,30 @@
                     </button>
                 </div>
 
-                <!-- Área de impresión -->
                 <div id="print-etiqueta" class="print-area hidden mt-6">
-                    <div class="border-4 border-black p-4 rounded-lg">
-                        <!-- Logo El Tejar -->
+                    <div class="container">
                         <div class="text-center mb-3">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBGb25kbyBhbWFyaWxsbyAtLT4KICA8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI0ZGQjEyNCIvPgogIDwhLS0gQ2FzYSAtLT4KICA8cGF0aCBkPSJNIDYwIDE2IEwgMjQgNDQgTCAyOCA0NCBMIDI4IDc2IEwgOTIgNzYgTCA5MiA0NCBMIDk2IDQ0IFoiIGZpbGw9IiNCMzEzMTUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPCEtLSBDaXJjdWxvIGFtYXJpbGxvIC0tPgogIDxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjIyIiBmaWxsPSIjRkZCMTI0IiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMyIvPgogIDwhLS0gTGV0cmEgVCAtLT4KICA8dGV4dCB4PSI2MCIgeT0iNjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNCMzEzMTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlQ8L3RleHQ+CiAgPCEtLSBUZXh0byAtLT4KICA8dGV4dCB4PSI2MCIgeT0iMTA4IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5FTCBURUpBUjwvdGV4dD4KPC9zdmc+" alt="El Tejar" class="el-tejar-logo">
+                            <svg class="el-tejar-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="100" fill="#FFB124"/>
+                                <path d="M 50 13 L 20 37 L 23 37 L 23 63 L 77 63 L 77 37 L 80 37 Z" fill="#B31315" stroke="#000000" stroke-width="2"/>
+                                <circle cx="50" cy="50" r="18" fill="#FFB124" stroke="#000000" stroke-width="3"/>
+                                <text x="50" y="57" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#B31315" text-anchor="middle">T</text>
+                                <text x="50" y="88" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#000000" text-anchor="middle">EL TEJAR</text>
+                            </svg>
                         </div>
                         
-                        <h2 class="text-xl font-bold mb-3 text-center">ETIQUETA DE ENVÍO</h2>
-                        <div class="text-left space-y-1.5 mb-3 text-sm">
-                            <p><strong>PARA:</strong> <span id="preview-para"></span></p>
-                            <p><strong>TEL:</strong> <span id="preview-tel"></span></p>
-                            <p><strong>Tienda:</strong> <span id="preview-tienda"></span></p>
-                            <p><strong>Dirección:</strong> <span id="preview-direccion"></span></p>
-                            <p><strong>DE:</strong> <span id="preview-de"></span></p>
+                        <h2 style="font-size: 16pt; font-weight: bold; text-align: center; margin: 5px 0;">ETIQUETA DE ENVÍO</h2>
+                        <div style="margin: 10px 0; font-size: 10pt;">
+                            <p style="margin: 3px 0;"><strong>PARA:</strong> <span id="preview-para"></span></p>
+                            <p style="margin: 3px 0;"><strong>TEL:</strong> <span id="preview-tel"></span></p>
+                            <p style="margin: 3px 0;"><strong>Tienda:</strong> <span id="preview-tienda"></span></p>
+                            <p style="margin: 3px 0;"><strong>Dirección:</strong> <span id="preview-direccion"></span></p>
+                            <p style="margin: 3px 0;"><strong>DE:</strong> <span id="preview-de"></span></p>
                         </div>
-                        <div class="mt-4 p-3 bg-yellow-100 rounded-lg border-2 border-red-600">
-                            <p class="text-lg font-bold text-red-600 text-center">⚠️ FRÁGIL</p>
-                            <p class="text-base font-bold text-red-600 text-center">FAVOR NO GOLPEAR</p>
-                            <p class="text-xs text-center">Maneje con cuidado</p>
+                        <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border: 2px solid #dc3545; text-align: center;">
+                            <p style="font-size: 14pt; font-weight: bold; color: #dc3545; margin: 5px 0;">️ FRÁGIL</p>
+                            <p style="font-size: 12pt; font-weight: bold; color: #dc3545; margin: 5px 0;">FAVOR NO GOLPEAR</p>
+                            <p style="font-size: 9pt; margin: 5px 0;">Maneje con cuidado</p>
                         </div>
                     </div>
                 </div>
@@ -1054,7 +1080,7 @@
             <!-- Formulario de Recepción/Entrega -->
             <div id="form-entrega" class="utility-form hidden">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold text-slate-800">📋 Recepción y Entrega de Equipo</h3>
+                    <h3 class="text-2xl font-bold text-slate-800"> Recepción y Entrega de Equipo</h3>
                     <button onclick="hideUtilityForm()" class="text-slate-500 hover:text-slate-700 text-2xl">&times;</button>
                 </div>
                 
@@ -1184,87 +1210,102 @@
 
                 <!-- Área de impresión -->
                 <div id="print-entrega" class="print-area hidden mt-6">
-                    <div class="border border-slate-400 p-4">
-                        <!-- Logo El Tejar -->
-                        <div class="text-center mb-3">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBGb25kbyBhbWFyaWxsbyAtLT4KICA8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI0ZGQjEyNCIvPgogIDwhLS0gQ2FzYSAtLT4KICA8cGF0aCBkPSJNIDYwIDE2IEwgMjQgNDQgTCAyOCA0NCBMIDI4IDc2IEwgOTIgNzYgTCA5MiA0NCBMIDk2IDQ0IFoiIGZpbGw9IiNCMzEzMTUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPCEtLSBDaXJjdWxvIGFtYXJpbGxvIC0tPgogIDxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjIyIiBmaWxsPSIjRkZCMTI0IiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMyIvPgogIDwhLS0gTGV0cmEgVCAtLT4KICA8dGV4dCB4PSI2MCIgeT0iNjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNCMzEzMTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlQ8L3RleHQ+CiAgPCEtLSBUZXh0byAtLT4KICA8dGV4dCB4PSI2MCIgeT0iMTA4IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5FTCBURUpBUjwvdGV4dD4KPC9zdmc+" alt="El Tejar" class="el-tejar-logo">
+                    <div class="container">
+                        <!-- Logo -->
+                        <div class="text-center mb-2">
+                            <svg class="el-tejar-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="100" fill="#FFB124"/>
+                                <path d="M 50 13 L 20 37 L 23 37 L 23 63 L 77 63 L 77 37 L 80 37 Z" fill="#B31315" stroke="#000000" stroke-width="2"/>
+                                <circle cx="50" cy="50" r="18" fill="#FFB124" stroke="#000000" stroke-width="3"/>
+                                <text x="50" y="57" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#B31315" text-anchor="middle">T</text>
+                                <text x="50" y="88" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#000000" text-anchor="middle">EL TEJAR</text>
+                            </svg>
                         </div>
                         
-                        <h2 class="text-xl font-bold text-center mb-4">ENTREGA/RECEPCIÓN DE EQUIPO DE CÓMPUTO</h2>
+                        <h2 style="font-size: 14pt; font-weight: bold; text-align: center; margin: 5px 0;">ENTREGA/RECEPCIÓN DE EQUIPO DE CÓMPUTO</h2>
                         
-                        <div class="grid grid-cols-2 gap-3 mb-4 text-xs">
-                            <div>
-                                <p><strong>Recibe:</strong> <span id="preview-recibe"></span></p>
-                                <p><strong>Departamento:</strong> <span id="preview-depto"></span></p>
-                                <p><strong>Jefe Inmediato:</strong> <span id="preview-jefe"></span></p>
-                                <p><strong>Puesto:</strong> <span id="preview-puesto"></span></p>
-                            </div>
-                            <div>
-                                <p><strong>Entrega:</strong> <span id="preview-it"></span></p>
-                                <p><strong>Ubicación:</strong> <span id="preview-ubicacion"></span></p>
-                                <p><strong>Fecha:</strong> <span id="preview-fecha"></span></p>
-                            </div>
-                        </div>
+                        <!-- Información básica -->
+                        <table style="width: 100%; margin-bottom: 10px; font-size: 9pt;">
+                            <tr>
+                                <td style="width: 50%;"><strong>Recibe:</strong> <span id="preview-recibe"></span></td>
+                                <td style="width: 50%;"><strong>Entrega:</strong> <span id="preview-it">Departamento IT</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Departamento:</strong> <span id="preview-depto"></span></td>
+                                <td><strong>Ubicación:</strong> <span id="preview-ubicacion">Oficinas Centrales</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Jefe Inmediato:</strong> <span id="preview-jefe"></span></td>
+                                <td><strong>Fecha:</strong> <span id="preview-fecha"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Puesto:</strong> <span id="preview-puesto"></span></td>
+                                <td></td>
+                            </tr>
+                        </table>
 
-                        <table class="w-full border-collapse border border-slate-400 mb-4 text-xs">
+                        <!-- Tabla de equipo -->
+                        <table style="width: 100%; margin: 10px 0; font-size: 9pt;">
                             <thead>
-                                <tr class="bg-slate-100">
-                                    <th class="border border-slate-400 p-1.5 text-left">Descripción</th>
-                                    <th class="border border-slate-400 p-1.5 text-left">Marca</th>
-                                    <th class="border border-slate-400 p-1.5 text-left">Modelo</th>
-                                    <th class="border border-slate-400 p-1.5 text-left">Serie</th>
-                                    <th class="border border-slate-400 p-1.5 text-left">Estado</th>
+                                <tr style="background: #f0f0f0;">
+                                    <th style="border: 1px solid #000; padding: 4px;">Descripción</th>
+                                    <th style="border: 1px solid #000; padding: 4px;">Marca</th>
+                                    <th style="border: 1px solid #000; padding: 4px;">Modelo</th>
+                                    <th style="border: 1px solid #000; padding: 4px;">Serie</th>
+                                    <th style="border: 1px solid #000; padding: 4px;">Estado</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="border border-slate-400 p-1.5" id="preview-tipo"></td>
-                                    <td class="border border-slate-400 p-1.5" id="preview-marca"></td>
-                                    <td class="border border-slate-400 p-1.5" id="preview-modelo"></td>
-                                    <td class="border border-slate-400 p-1.5" id="preview-serie"></td>
-                                    <td class="border border-slate-400 p-1.5" id="preview-estado"></td>
+                                    <td style="border: 1px solid #000; padding: 4px;" id="preview-tipo"></td>
+                                    <td style="border: 1px solid #000; padding: 4px;" id="preview-marca"></td>
+                                    <td style="border: 1px solid #000; padding: 4px;" id="preview-modelo"></td>
+                                    <td style="border: 1px solid #000; padding: 4px;" id="preview-serie"></td>
+                                    <td style="border: 1px solid #000; padding: 4px;" id="preview-estado"></td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <div class="mb-4 text-xs">
-                            <p class="font-bold mb-1">Elementos Verificados:</p>
-                            <div id="preview-checks" class="grid grid-cols-2 gap-1"></div>
+                        <!-- Elementos y Software -->
+                        <div style="font-size: 9pt; margin: 10px 0;">
+                            <div style="margin: 3px 0;"><strong>Elementos Verificados:</strong> <span id="preview-checks">Ninguno</span></div>
+                            <div style="margin: 3px 0;"><strong>Software Instalado:</strong> <span id="preview-software">Ninguno</span></div>
+                            <div style="margin: 3px 0;"><strong>Comentarios:</strong> <span id="preview-comentarios"></span></div>
                         </div>
 
-                        <div class="mb-4 text-xs">
-                            <p class="font-bold mb-1">Software Instalado:</p>
-                            <div id="preview-software" class="grid grid-cols-2 gap-1"></div>
-                        </div>
-
-                        <div class="mb-4 text-xs">
-                            <p><strong>Comentarios:</strong></p>
-                            <p id="preview-comentarios" class="mt-1 p-1.5 bg-slate-50 rounded"></p>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-6 mt-8 pt-4 border-t border-slate-400">
-                            <div class="text-center">
-                                <div class="border-t border-slate-400 pt-1">
-                                    <p class="text-xs">Firma de Quien Recibe</p>
-                                    <p class="text-xs text-slate-500 mt-0.5">Nombre y fecha</p>
-                                </div>
+                        <!-- Políticas -->
+                        <div style="border-top: 1px solid #000; margin-top: 10px; padding-top: 5px; font-size: 8pt;">
+                            <p style="text-align: center; font-weight: bold; margin: 3px 0; font-size: 9pt;">POLÍTICAS DE RESPONSABILIDAD POR DAÑO O ROBO:</p>
+                            <div style="margin: 3px 0;">
+                                <strong>1. DAÑOS AL EQUIPO:</strong> Si el daño es ocasionado por mal uso, negligencia o cualquier acción ajena al desgaste normal, el usuario será responsable de cubrir el costo de reparación.
                             </div>
-                            <div class="text-center">
-                                <div class="border-t border-slate-400 pt-1">
-                                    <p class="text-xs">Firma de Quien Entrega</p>
-                                    <p class="text-xs text-slate-500 mt-0.5">Departamento IT</p>
-                                </div>
+                            <div style="margin: 3px 0;">
+                                <strong>2. ROBO DEL EQUIPO:</strong> Si el equipo es robado por descuido o falta de medidas de seguridad adecuadas, se aplicará un descuento equivalente al valor actual del equipo según su depreciación.
+                            </div>
+                            <div style="margin: 3px 0;">
+                                <strong>3. FORMA DE PAGO:</strong> Los costos asociados deberán ser cubiertos en un plazo de 90 días tras la notificación por escrito.
+                            </div>
+                            <div style="background: #fff9c4; padding: 5px; margin: 5px 0; border: 1px solid #000;">
+                                <p style="text-align: center; font-weight: bold; margin: 3px 0; font-size: 9pt;">RESPONSABILIDADES DEL USUARIO:</p>
+                                <ol style="margin: 3px 0; padding-left: 15px;">
+                                    <li>El equipo es propiedad de EL TEJAR. No está permitido instalar Software sin autorización.</li>
+                                    <li>El usuario se compromete a cuidar el equipo. No está permitido pegar Stickers.</li>
+                                    <li>Notificar de inmediato cualquier daño o mal funcionamiento al departamento de IT.</li>
+                                    <li>En caso de desvinculación laboral, el equipo deberá ser devuelto en las mismas condiciones.</li>
+                                </ol>
                             </div>
                         </div>
 
-                        <div class="mt-4 p-2 bg-slate-50 rounded text-xs">
-                            <p class="font-bold mb-1">POLÍTICAS DE RESPONSABILIDAD:</p>
-                            <ol class="list-decimal list-inside space-y-0.5">
-                                <li>El equipo es propiedad de EL TEJAR</li>
-                                <li>El usuario se compromete a cuidar y hacer buen uso del equipo</li>
-                                <li>Notificar de inmediato cualquier daño o mal funcionamiento</li>
-                                <li>En caso de desvinculación, el equipo deberá ser devuelto</li>
-                            </ol>
+                        <!-- Firmas -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; font-size: 9pt;">
+                            <div style="text-align: center; border-top: 1px solid #000; padding-top: 20px;">
+                                <div style="font-weight: bold;">Firma de Quien Recibe</div>
+                                <div style="font-size: 8pt;">Nombre y fecha</div>
+                            </div>
+                            <div style="text-align: center; border-top: 1px solid #000; padding-top: 20px;">
+                                <div style="font-weight: bold;">Firma de Quien Entrega</div>
+                                <div style="font-size: 8pt;">Departamento IT</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1287,18 +1328,18 @@
                         <select id="eqStore" required class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-yellow-50 transition-all" onchange="loadUsersForArea()">
                             <option value="">-- Selecciona una opción --</option>
                             <option value="Tienda Zona 1">🏪 Tienda Zona 1</option>
-                            <option value="Tienda Jutiapa">🏪 Tienda Jutiapa</option>
+                            <option value="Tienda Jutiapa"> Tienda Jutiapa</option>
                             <option value="Tienda Zacapa">🏪 Tienda Zacapa</option>
                             <option value="Tienda Coatepeque">🏪 Tienda Coatepeque</option>
                             <option value="Tienda Escuintla">🏪 Tienda Escuintla</option>
                             <option value="Tienda Chiquimula">🏪 Tienda Chiquimula</option>
                             <option value="Tienda Coban">🏪 Tienda Cobán</option>
                             <option value="Tienda Chimaltenango">🏪 Tienda Chimaltenango</option>
-                            <option value="Tienda Mazatenango">🏪 Tienda Mazatenango</option>
-                            <option value="Tienda Xela">🏪 Tienda Xela</option>
+                            <option value="Tienda Mazatenango"> Tienda Mazatenango</option>
+                            <option value="Tienda Xela"> Tienda Xela</option>
                             <option value="Tienda Retalhuleu">🏪 Tienda Retalhuleu</option>
                             <option value="Tienda Huehuetenango">🏪 Tienda Huehuetenango</option>
-                            <option value="Tienda Puerto Barrios"> Tienda Puerto Barrios</option>
+                            <option value="Tienda Puerto Barrios">🏪 Tienda Puerto Barrios</option>
                             <option value="Tienda Quiche">🏪 Tienda Quiché</option>
                             <option value="Tienda Morales">🏪 Tienda Morales</option>
                             <option value="Tienda Salama">🏪 Tienda Salamá</option>
@@ -1307,17 +1348,17 @@
                             <option value="Tienda Santa Lucia">🏪 Tienda Santa Lucía</option>
                             <option value="Tienda San Marcos">🏪 Tienda San Marcos</option>
                             <option value="Tienda Poptun">🏪 Tienda Poptún</option>
-                            <option value="Tienda Tactic">🏪 Tienda Tactic</option>
-                            <option value="Tienda Santa Elena"> Tienda Santa Elena</option>
-                            <option value="Tienda Tiquisate"> Tienda Tiquisate</option>
-                            <option value="Tienda Salcaja"> Tienda Salcajá</option>
+                            <option value="Tienda Tactic"> Tienda Tactic</option>
+                            <option value="Tienda Santa Elena">🏪 Tienda Santa Elena</option>
+                            <option value="Tienda Tiquisate">🏪 Tienda Tiquisate</option>
+                            <option value="Tienda Salcaja">🏪 Tienda Salcajá</option>
                             <option value="Tienda Asuncion Mita">🏪 Tienda Asunción Mita</option>
-                            <option value="Tienda Totonicapa">🏪 Tienda Totonicapán</option>
+                            <option value="Tienda Totonicapa"> Tienda Totonicapán</option>
                             <option value="Contabilidad">🏢 Contabilidad</option>
                             <option value="Tesorería">🏢 Tesorería</option>
                             <option value="Mercadeo">🏢 Mercadeo</option>
                             <option value="Categorías">🏢 Categorías</option>
-                            <option value="Auditoría">🏢 Auditoría</option>
+                            <option value="Auditoría"> Auditoría</option>
                             <option value="Gerentes Regionales">🏢 Gerentes Regionales</option>
                             <option value="SAC">🏢 SAC</option>
                             <option value="Sistemas">🏢 Sistemas</option>
@@ -1326,7 +1367,7 @@
                             <option value="Recepción">🏢 Recepción</option>
                             <option value="Logística">🏢 Logística</option>
                             <option value="GTH">🏢 GTH</option>
-                            <option value="Supervisores de Bodega">🏢 Supervisores de Bodega</option>
+                            <option value="Supervisores de Bodega"> Supervisores de Bodega</option>
                         </select>
                     </div>
                     <div>
@@ -1335,9 +1376,9 @@
                             <option value="">-- Selecciona una categoría --</option>
                             <option value="computadora">💻 Computadora</option>
                             <option value="impresora">🖨️ Impresora</option>
-                            <option value="monitor">🖥️ Monitor</option>
+                            <option value="monitor">️ Monitor</option>
                             <option value="tablet">📱 Tablet</option>
-                            <option value="telefono"> Teléfono</option>
+                            <option value="telefono">📞 Teléfono</option>
                         </select>
                     </div>
                 </div>
@@ -1375,12 +1416,10 @@
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">🚦 Estado del Equipo:</label>
                         <select id="eqStatus" class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-yellow-50 transition-all">
-                            <option value="activo">✅ Activo</option>
-                            <option value="reparacion">🔧 En reparación</option>
-                            <option value="fallas">⚠️ Con fallas</option>
-                            <option value="baja"> Dado de baja</option>
-                            <option value="bodega">📦 En bodega</option>
-                            <option value="pendiente">⏳ Pendiente</option>
+                            <option value="nuevo">✅ Nuevo</option>
+                            <option value="usado"> Usado</option>
+                            <option value="danado">⚠️ Dañado</option>
+                            <option value="bodega"> En Bodega</option>
                         </select>
                     </div>
                 </div>
@@ -1401,7 +1440,7 @@
                 </div>
 
                 <div class="border-t-2 border-slate-200 pt-6 mt-4">
-                    <h4 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-lg">📋 Checklist de Mantenimiento</h4>
+                    <h4 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-lg"> Checklist de Mantenimiento</h4>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                         <div>
@@ -1482,7 +1521,7 @@
                                 <option value="">-- Seleccionar estado --</option>
                                 <option value="Óptimo / Operativo">✅ Óptimo / Operativo</option>
                                 <option value="Operativo con observaciones">⚠️ Operativo con observaciones</option>
-                                <option value="Fuera de servicio (Requiere repuestos)">❌ Fuera de servicio (Requiere repuestos)</option>
+                                <option value="Fuera de servicio (Requiere repuestos)"> Fuera de servicio (Requiere repuestos)</option>
                             </select>
                         </div>
                     </div>
@@ -1627,7 +1666,6 @@
         let signaturePad = null;
         let dataLoaded = false;
 
-        // ✅ BASE DE DATOS DE DIRECCIONES
         const storeAddresses = {
             'Tienda El Tejar Asunción Mita': 'Km. 144 Asunción Mita, Jutiapa, a 500 metros de Hacienda San Carlos',
             'Tienda El Tejar Chimaltenango': 'Km 52.5 Carretera Interamericana, Finca Alameda, Chimaltenango',
@@ -1690,12 +1728,10 @@
         };
 
         const STATUS_LABELS = {
-            'activo': { label: '✅ Activo', class: 'status-activo' },
-            'reparacion': { label: ' En reparación', class: 'status-reparacion' },
-            'fallas': { label: '⚠️ Con fallas', class: 'status-fallas' },
-            'baja': { label: '❌ Dado de baja', class: 'status-baja' },
-            'bodega': { label: '📦 En bodega', class: 'status-bodega' },
-            'pendiente': { label: '⏳ Pendiente', class: 'status-pendiente' }
+            'nuevo': { label: '✅ Nuevo', class: 'status-nuevo' },
+            'usado': { label: '🔄 Usado', class: 'status-usado' },
+            'danado': { label: '⚠️ Dañado', class: 'status-danado' },
+            'bodega': { label: '📦 En Bodega', class: 'status-bodega' }
         };
 
         function normalizeArea(area) {
@@ -1766,7 +1802,7 @@
                 showToast(`✅ Conectado. Equipos cargados: ${inventory.length}`);
             } catch (e) {
                 console.error("❌ Error cargando datos:", e);
-                showToast('❌ Error al conectar: ' + e.message, 'error');
+                showToast(' Error al conectar: ' + e.message, 'error');
                 document.getElementById('emptyState').innerHTML = `
                     <div class="text-7xl mb-4">⚠️</div>
                     <p class="text-xl text-red-600 font-black">Error de conexión a la base de datos</p>
@@ -1798,22 +1834,17 @@
             }
         }
 
-        // ✅ FUNCIÓN PARA CARGAR USUARIOS POR ÁREA
         function loadUsersForArea() {
             const selectedArea = document.getElementById('eqStore').value;
             const usersContainer = document.getElementById('usersContainer');
             const usersList = document.getElementById('usersList');
-            const usuarioInput = document.getElementById('eqUsuario');
             
             if (!selectedArea || selectedArea === '') {
                 usersContainer.classList.add('hidden');
                 return;
             }
             
-            // Filtrar equipos del área seleccionada
             const equiposEnArea = inventory.filter(eq => eq.store === selectedArea);
-            
-            // Extraer usuarios únicos
             const usuariosUnicos = [...new Set(equiposEnArea.map(eq => eq.usuario).filter(u => u && u.trim() !== ''))];
             
             if (usuariosUnicos.length === 0) {
@@ -1821,36 +1852,46 @@
                 return;
             }
             
-            // Mostrar usuarios
             usersContainer.classList.remove('hidden');
             usersList.innerHTML = usuariosUnicos.map(usuario => `
-                <span class="user-badge cursor-pointer hover:scale-110 transition-transform" onclick="selectUser('${usuario}')">
+                <span class="user-badge" onclick="selectUser('${usuario}')">
                     👤 ${usuario}
                 </span>
             `).join('');
         }
 
-        // ✅ FUNCIÓN PARA SELECCIONAR USUARIO
         function selectUser(usuario) {
             document.getElementById('eqUsuario').value = usuario;
             showToast(`✅ Usuario seleccionado: ${usuario}`);
         }
 
-        // ✅ FUNCIÓN PARA AUTOCOMPLETAR DIRECCIÓN
         function autocompletarDireccion() {
             const tiendaSelect = document.getElementById('envio-tienda-select');
             const direccionInput = document.getElementById('envio-direccion');
-            const tiendaInput = document.getElementById('envio-tienda');
             
             const tiendaSeleccionada = tiendaSelect.value;
             
             if (tiendaSeleccionada && storeAddresses[tiendaSeleccionada]) {
                 direccionInput.value = storeAddresses[tiendaSeleccionada];
-                tiendaInput.value = tiendaSeleccionada;
             } else {
                 direccionInput.value = '';
-                tiendaInput.value = '';
             }
+        }
+
+        // ✅ FUNCIÓN PARA VERIFICAR SI EL USUARIO YA TIENE EQUIPO
+        function checkUserHasEquipment(usuario, currentId = null) {
+            if (!usuario || usuario.trim() === '') return { hasEquipment: false, equipos: [] };
+            
+            const usuarioNormalizado = usuario.trim().toLowerCase();
+            const equiposUsuario = inventory.filter(eq => {
+                if (eq.id === currentId) return false; // Excluir el equipo actual si es edición
+                return eq.usuario && eq.usuario.trim().toLowerCase() === usuarioNormalizado;
+            });
+            
+            return {
+                hasEquipment: equiposUsuario.length > 0,
+                equipos: equiposUsuario
+            };
         }
 
         async function saveEquipment(e) {
@@ -1870,6 +1911,20 @@
             if (!store || !marca || !model || !serial || !code) {
                 showToast('Por favor completa todos los campos obligatorios', 'error');
                 return;
+            }
+
+            // ✅ VERIFICAR SI EL USUARIO YA TIENE EQUIPO (SOLO AL AGREGAR, NO AL EDITAR)
+            if (!id) {
+                const result = checkUserHasEquipment(usuario);
+                if (result.hasEquipment) {
+                    const equiposList = result.equipos.map(eq => `• ${eq.marca} ${eq.model} (${eq.code || 'Sin código'})`).join('\n');
+                    const confirmacion = confirm(
+                        `⚠️ El usuario "${usuario}" ya tiene ${result.equipos.length} equipo(s) asignado(s):\n\n${equiposList}\n\n¿Estás seguro que deseas agregar otro equipo al mismo usuario?`
+                    );
+                    if (!confirmacion) {
+                        return; // Cancelar la operación
+                    }
+                }
             }
 
             const mantFecha = document.getElementById('eqMantFecha').value;
@@ -1964,7 +2019,7 @@
                 try {
                     await db.collection("reportes").doc(id).delete();
                     await loadData();
-                    showToast('🗑️ Reporte eliminado');
+                    showToast('️ Reporte eliminado');
                 } catch (e) {
                     console.error("Error eliminando reporte:", e);
                     showToast('❌ Error al eliminar reporte', 'error');
@@ -2128,7 +2183,7 @@
                             model: model || '',
                             serial: serial || '',
                             code: code || '',
-                            status: 'activo',
+                            status: 'nuevo',
                             notes: notes || '',
                             photo: null,
                             mantenimiento: {
@@ -2188,7 +2243,7 @@
                 showToast(`✅ Se eliminaron ${importadosHoy.length} equipos`);
                 await loadData();
             } catch (error) {
-                showToast(' Error: ' + error.message, 'error');
+                showToast('❌ Error: ' + error.message, 'error');
             }
         }
 
@@ -2253,7 +2308,7 @@
             return inventory.filter(item => {
                 const matchCat = currentFilter === 'all' || item.category === currentFilter;
                 const matchStore = currentStoreFilter === 'all' || item.store === currentStoreFilter;
-                const matchStatus = currentStatusFilter === 'all' || (item.status || 'pendiente') === currentStatusFilter;
+                const matchStatus = currentStatusFilter === 'all' || (item.status || 'nuevo') === currentStatusFilter;
                 
                 const usuario = (item.usuario || '').toLowerCase();
                 const matchUsuario = !searchUsuario || usuario.includes(searchUsuario);
@@ -2297,8 +2352,8 @@
             } else {
                 empty.classList.add('hidden');
                 tbody.innerHTML = filtered.map(item => {
-                    const status = item.status || 'pendiente';
-                    const statusInfo = STATUS_LABELS[status] || STATUS_LABELS['pendiente'];
+                    const status = item.status || 'nuevo';
+                    const statusInfo = STATUS_LABELS[status] || STATUS_LABELS['nuevo'];
                     return `
                     <tr class="table-row-hover">
                         <td class="px-4 py-3"><span class="badge badge-${item.category}">${getCategoryLabel(item.category)}</span></td>
@@ -2343,7 +2398,7 @@
             document.querySelectorAll('.check-eq').forEach(cb => cb.checked = false);
             document.getElementById('eqResultado').value = '';
             document.getElementById('eqObsMantenimiento').value = '';
-            document.getElementById('eqStatus').value = 'activo';
+            document.getElementById('eqStatus').value = 'nuevo';
             document.getElementById('eqUsuario').value = '';
             
             toggleChecklistByCategory('');
@@ -2361,7 +2416,7 @@
                     document.getElementById('eqModel').value = item.model;
                     document.getElementById('eqSerial').value = item.serial;
                     document.getElementById('eqCode').value = item.code || '';
-                    document.getElementById('eqStatus').value = item.status || 'pendiente';
+                    document.getElementById('eqStatus').value = item.status || 'nuevo';
                     document.getElementById('eqNotes').value = item.notes || '';
                     
                     if (item.photo) {
@@ -2486,14 +2541,14 @@
                         <p class="text-sm opacity-90 font-semibold mt-1"> ${formatDate(r.date)}</p>
                     </div>
                     <div class="p-5">
-                        <p class="text-sm text-slate-600 mb-3 font-semibold"><strong>👨‍ Técnico:</strong> ${escapeHtml(r.tech)}</p>
+                        <p class="text-sm text-slate-600 mb-3 font-semibold"><strong>👨‍🔧 Técnico:</strong> ${escapeHtml(r.tech)}</p>
                         <div class="flex gap-2 mb-4 flex-wrap">
                             <span class="text-xs bg-yellow-100 text-black px-3 py-1 rounded-full font-bold">📷 Antes: ${r.photosBefore.length}</span>
                             <span class="text-xs bg-slate-800 text-yellow-400 px-3 py-1 rounded-full font-bold">📸 Después: ${r.photosAfter.length}</span>
                             ${r.signature ? '<span class="text-xs bg-yellow-400 text-black px-3 py-1 rounded-full font-black">✍️ Firmado</span>' : ''}
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="viewReport('${r.id}')" class="flex-1 bg-yellow-100 text-black px-4 py-3 rounded-xl text-sm font-black hover:bg-yellow-200 transition-all hover:scale-105">👁️ Ver</button>
+                            <button onclick="viewReport('${r.id}')" class="flex-1 bg-yellow-100 text-black px-4 py-3 rounded-xl text-sm font-black hover:bg-yellow-200 transition-all hover:scale-105">️ Ver</button>
                             <button onclick="exportReportPDF('${r.id}')" class="flex-1 bg-slate-800 text-yellow-400 px-4 py-3 rounded-xl text-sm font-black hover:bg-black transition-all hover:scale-105">💾 PDF</button>
                             <button onclick="deleteReport('${r.id}')" class="bg-black text-yellow-400 px-4 py-3 rounded-xl text-sm hover:bg-yellow-400 hover:text-black transition-all hover:scale-105 font-black">🗑️</button>
                         </div>
@@ -2509,15 +2564,15 @@
             content.innerHTML = `
                 <div class="space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 bg-yellow-50 p-5 rounded-2xl border-l-8 border-black">
-                        <div class="font-semibold"><strong> Ubicación:</strong> ${escapeHtml(r.store)}</div>
+                        <div class="font-semibold"><strong>📍 Ubicación:</strong> ${escapeHtml(r.store)}</div>
                         <div class="font-semibold"><strong>📅 Fecha:</strong> ${formatDate(r.date)}</div>
-                        <div class="font-semibold"><strong>👨‍ Técnico:</strong> ${escapeHtml(r.tech)}</div>
+                        <div class="font-semibold"><strong>‍🔧 Técnico:</strong> ${escapeHtml(r.tech)}</div>
                         <div class="font-semibold"><strong>🕐 Creado:</strong> ${new Date(r.createdAt).toLocaleString('es-ES')}</div>
                     </div>
                     ${r.description ? `<div class="bg-slate-50 p-5 rounded-2xl border-l-8 border-yellow-400"><strong class="font-black">📝 Descripción:</strong><p class="text-slate-600 mt-2 font-semibold">${escapeHtml(r.description)}</p></div>` : ''}
                     ${r.photosBefore.length > 0 ? `
                         <div>
-                            <h4 class="font-black text-slate-700 mb-3 border-l-8 border-yellow-400 pl-3"> Fotos ANTES</h4>
+                            <h4 class="font-black text-slate-700 mb-3 border-l-8 border-yellow-400 pl-3">📷 Fotos ANTES</h4>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 ${r.photosBefore.map(p => `<img src="${p}" class="w-full h-48 object-cover rounded-2xl border-2 border-black cursor-pointer hover:scale-105 transition-all shadow-xl" onclick="window.open('${p}')">`).join('')}
                             </div>
@@ -2565,7 +2620,7 @@
             }
 
             try {
-                showToast('⏳ Generando PDF...');
+                showToast(' Generando PDF...');
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const pageWidth = pdf.internal.pageSize.getWidth();
@@ -2657,7 +2712,7 @@
                 const filterInfo = [];
                 if (currentStoreFilter !== 'all') filterInfo.push(`Tienda: ${getStoreShortName(currentStoreFilter)}`);
                 if (currentFilter !== 'all') filterInfo.push(`Categoría: ${getCategoryLabel(currentFilter).replace(/[^a-zA-ZÀ-ÿ\s]/g, '').trim()}`);
-                if (currentStatusFilter !== 'all') filterInfo.push(`Estado: ${(STATUS_LABELS[currentStatusFilter] || STATUS_LABELS['pendiente']).label}`);
+                if (currentStatusFilter !== 'all') filterInfo.push(`Estado: ${(STATUS_LABELS[currentStatusFilter] || STATUS_LABELS['nuevo']).label}`);
                 const searchUsuario = document.getElementById('searchUsuario')?.value.trim();
                 if (searchUsuario) filterInfo.push(`Usuario: "${searchUsuario}"`);
                 const searchGeneral = document.getElementById('searchGeneral')?.value.trim();
@@ -2669,7 +2724,7 @@
                 pdf.text(`Total de equipos: ${filteredInventory.length} | Fecha: ${new Date().toLocaleString('es-ES')}`, 15, y); y += 8;
 
                 const tableData = filteredInventory.map(item => {
-                    const status = (STATUS_LABELS[item.status || 'pendiente'] || STATUS_LABELS['pendiente']).label;
+                    const status = (STATUS_LABELS[item.status || 'nuevo'] || STATUS_LABELS['nuevo']).label;
                     return [
                         getCategoryLabel(item.category).replace(/[^a-zA-ZÀ-ÿ\s]/g, '').trim(),
                         getStoreShortName(item.store),
@@ -2710,7 +2765,7 @@
             if (filteredInventory.length === 0) { showToast('No hay datos', 'error'); return; }
             try {
                 const data = filteredInventory.map(item => {
-                    const status = (STATUS_LABELS[item.status || 'pendiente'] || STATUS_LABELS['pendiente']).label;
+                    const status = (STATUS_LABELS[item.status || 'nuevo'] || STATUS_LABELS['nuevo']).label;
                     return {
                         'Tienda / Área': getStoreShortName(item.store) || '',
                         'Categoría': getCategoryLabel(item.category),
@@ -2858,12 +2913,10 @@
             }).join('');
 
             const statusCounts = {
-                activo: inventory.filter(i => (i.status || 'pendiente') === 'activo').length,
-                reparacion: inventory.filter(i => i.status === 'reparacion').length,
-                fallas: inventory.filter(i => i.status === 'fallas').length,
-                baja: inventory.filter(i => i.status === 'baja').length,
-                bodega: inventory.filter(i => i.status === 'bodega').length,
-                pendiente: inventory.filter(i => !i.status || i.status === 'pendiente').length
+                nuevo: inventory.filter(i => (i.status || 'nuevo') === 'nuevo').length,
+                usado: inventory.filter(i => i.status === 'usado').length,
+                danado: inventory.filter(i => i.status === 'danado').length,
+                bodega: inventory.filter(i => i.status === 'bodega').length
             };
 
             const statusStatsHTML = Object.entries(statusCounts).filter(([_, count]) => count > 0).map(([status, count]) => {
@@ -2942,16 +2995,10 @@
             window._toastTimer = setTimeout(() => toast.classList.add('hidden'), 4000);
         }
 
-        // ✅ FUNCIONES PARA UTILIDADES
         function showUtilityForm(type) {
-            // Ocultar todos los formularios
             document.getElementById('form-etiqueta').classList.add('hidden');
             document.getElementById('form-entrega').classList.add('hidden');
-            
-            // Mostrar el seleccionado
             document.getElementById('form-' + type).classList.remove('hidden');
-            
-            // Scroll al formulario
             document.getElementById('form-' + type).scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -2992,7 +3039,6 @@
             document.getElementById('preview-serie').textContent = document.getElementById('entrega-serie').value || '';
             document.getElementById('preview-estado').textContent = document.getElementById('entrega-estado').value || '';
             
-            // Checks verificados
             const checks = [];
             if (document.getElementById('check-teclas').checked) checks.push('✓ Teclado');
             if (document.getElementById('check-touchpad').checked) checks.push('✓ Touchpad');
@@ -3003,16 +3049,15 @@
             if (document.getElementById('check-camara').checked) checks.push('✓ Cámara');
             if (document.getElementById('check-mouse').checked) checks.push('✓ Mouse');
             
-            document.getElementById('preview-checks').innerHTML = checks.length > 0 ? checks.map(c => `<span class="inline-block mr-2">${c}</span>`).join('') : 'Ninguno';
+            document.getElementById('preview-checks').textContent = checks.length > 0 ? checks.join(' ') : 'Ninguno';
             
-            // Software
             const software = [];
             if (document.getElementById('soft-office').checked) software.push('✓ Office');
             if (document.getElementById('soft-sap').checked) software.push('✓ SAP');
             if (document.getElementById('soft-antivirus').checked) software.push('✓ Antivirus');
             if (document.getElementById('soft-otros').checked) software.push('✓ Otros');
             
-            document.getElementById('preview-software').innerHTML = software.length > 0 ? software.map(s => `<span class="inline-block mr-2">${s}</span>`).join('') : 'Ninguno';
+            document.getElementById('preview-software').textContent = software.length > 0 ? software.join(' ') : 'Ninguno';
             
             document.getElementById('preview-comentarios').textContent = document.getElementById('entrega-comentarios').value || '';
             
