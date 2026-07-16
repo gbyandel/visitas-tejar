@@ -27,7 +27,6 @@
             min-height: 100vh;
         }
         
-        /* Efecto de fondo con múltiples capas */
         body::before {
             content: '';
             position: fixed;
@@ -71,14 +70,6 @@
             to { opacity: 1; transform: scale(1); }
         }
         
-        .bounce-in { animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale(0.3); }
-            50% { opacity: 1; transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        
         .modal-overlay { 
             background: rgba(0,0,0,0.7); 
             backdrop-filter: blur(12px); 
@@ -115,7 +106,6 @@
             box-shadow: 0 15px 35px rgba(251, 191, 36, 0.25);
         }
         
-        /* Botones con efectos premium */
         .btn-primary { 
             background: linear-gradient(135deg, #1f2937 0%, #000000 100%); 
             color: #FBBF24; 
@@ -135,9 +125,7 @@
             background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.4), transparent);
             transition: left 0.7s;
         }
-        .btn-primary:hover::before {
-            left: 100%;
-        }
+        .btn-primary:hover::before { left: 100%; }
         .btn-primary:hover { 
             transform: translateY(-4px); 
             box-shadow: 0 20px 40px rgba(31,41,55,0.5);
@@ -163,9 +151,7 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
             transition: left 0.7s;
         }
-        .btn-yellow:hover::before {
-            left: 100%;
-        }
+        .btn-yellow:hover::before { left: 100%; }
         .btn-yellow:hover { 
             transform: translateY(-4px); 
             box-shadow: 0 20px 40px rgba(251,191,36,0.6);
@@ -190,9 +176,7 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
             transition: left 0.7s;
         }
-        .btn-green:hover::before {
-            left: 100%;
-        }
+        .btn-green:hover::before { left: 100%; }
         .btn-green:hover { 
             transform: translateY(-4px); 
             box-shadow: 0 20px 40px rgba(16,185,129,0.6);
@@ -217,15 +201,37 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
             transition: left 0.7s;
         }
-        .btn-red:hover::before {
-            left: 100%;
-        }
+        .btn-red:hover::before { left: 100%; }
         .btn-red:hover { 
             transform: translateY(-4px); 
             box-shadow: 0 20px 40px rgba(220,38,38,0.6);
         }
         
-        /* Tarjetas con efectos 3D premium */
+        .btn-purple { 
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); 
+            color: #ffffff; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-purple::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.7s;
+        }
+        .btn-purple:hover::before { left: 100%; }
+        .btn-purple:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 20px 40px rgba(139,92,246,0.6);
+        }
+        
         .card-hover { 
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -249,11 +255,8 @@
             transform: translateY(-12px) scale(1.03); 
             box-shadow: 0 30px 60px rgba(0,0,0,0.2);
         }
-        .card-hover:hover::before {
-            opacity: 1;
-        }
+        .card-hover:hover::before { opacity: 1; }
         
-        /* Badges con gradientes modernos y efectos */
         .badge { 
             padding: 8px 16px; 
             border-radius: 9999px; 
@@ -270,55 +273,46 @@
             transform: scale(1.08) translateY(-2px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
-        .badge-computadora { 
-            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); 
-            color: #78350f; 
-            border: 2px solid rgba(120, 53, 15, 0.3);
+        .badge-computadora { background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); color: #78350f; border: 2px solid rgba(120, 53, 15, 0.3); }
+        .badge-impresora { background: linear-gradient(135deg, #1f2937 0%, #374151 100%); color: #FBBF24; border: 2px solid rgba(251, 191, 36, 0.4); }
+        .badge-monitor { background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%); color: #1f2937; border: 2px solid rgba(31, 41, 55, 0.3); }
+        .badge-tablet { background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); color: #78350f; border: 2px solid rgba(120, 53, 15, 0.3); }
+        .badge-telefono { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; border: 2px solid rgba(5, 150, 105, 0.4); }
+        .badge-tienda { background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%); color: #000000; border: 2px solid rgba(0, 0, 0, 0.15); }
+        .badge-area { background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%); color: #3730a3; border: 2px solid rgba(55, 48, 163, 0.3); }
+        
+        .badge-status { 
+            padding: 6px 14px; 
+            border-radius: 9999px; 
+            font-size: 11px; 
+            font-weight: 800; 
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .badge-impresora { 
-            background: linear-gradient(135deg, #1f2937 0%, #374151 100%); 
-            color: #FBBF24; 
-            border: 2px solid rgba(251, 191, 36, 0.4);
-        }
-        .badge-monitor { 
-            background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%); 
-            color: #1f2937; 
-            border: 2px solid rgba(31, 41, 55, 0.3);
-        }
-        .badge-tablet { 
-            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); 
-            color: #78350f; 
-            border: 2px solid rgba(120, 53, 15, 0.3);
-        }
-        .badge-telefono { 
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
-            color: #ffffff; 
-            border: 2px solid rgba(5, 150, 105, 0.4);
-        }
-        .badge-tienda { 
-            background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%); 
-            color: #000000; 
-            border: 2px solid rgba(0, 0, 0, 0.15);
-        }
-        .badge-area { 
-            background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%); 
-            color: #3730a3; 
-            border: 2px solid rgba(55, 48, 163, 0.3);
-        }
+        .badge-status:hover { transform: scale(1.1); }
+        .status-activo { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: 2px solid #047857; }
+        .status-reparacion { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: 2px solid #b45309; }
+        .status-fallas { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; border: 2px solid #c2410c; }
+        .status-baja { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; border: 2px solid #7f1d1d; }
+        .status-bodega { background: linear-gradient(135deg, #64748b 0%, #475569 100%); color: white; border: 2px solid #334155; }
+        .status-pendiente { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); color: white; border: 2px solid #475569; }
         
         .scrollbar-thin::-webkit-scrollbar { width: 10px; height: 10px; }
         .scrollbar-thin::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 5px; }
         .scrollbar-thin::-webkit-scrollbar-thumb { 
             background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%); 
             border-radius: 5px;
-            transition: background 0.3s;
             box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
         }
         .scrollbar-thin::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
         }
         
-        /* Header con efecto glassmorphism premium */
         .gradient-header { 
             background: linear-gradient(135deg, #1f2937 0%, #000000 100%);
             position: relative;
@@ -366,7 +360,7 @@
             background-size: 1.5em 1.5em;
             padding-right: 2.5rem;
             appearance: none;
-            border-radius: 12px;
+            border-radius:12px;
         }
         .filter-select:hover {
             border-color: #FBBF24;
@@ -399,9 +393,7 @@
             transition: transform 0.2s;
             border-radius: 4px;
         }
-        .custom-checkbox:hover {
-            transform: scale(1.3);
-        }
+        .custom-checkbox:hover { transform: scale(1.3); }
         .custom-radio { 
             accent-color: #FBBF24; 
             width: 20px; 
@@ -409,11 +401,8 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-        .custom-radio:hover {
-            transform: scale(1.3);
-        }
+        .custom-radio:hover { transform: scale(1.3); }
         
-        /* Logo con animación de pulso mejorada */
         .logo-container {
             animation: logoPulse 3s ease-in-out infinite;
             transition: transform 0.3s;
@@ -427,7 +416,6 @@
             50% { transform: scale(1.08); }
         }
         
-        /* Efectos en tabla mejorados */
         .table-row-hover {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-bottom: 1px solid rgba(226, 232, 240, 0.5);
@@ -438,23 +426,15 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
         }
         
-        /* Modal con efecto de entrada mejorado */
         .modal-content {
             animation: modalSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             border-radius: 24px;
         }
         @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-60px) scale(0.85);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(-60px) scale(0.85); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         
-        /* Toast mejorado con efectos */
         .toast-modern {
             animation: toastSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             backdrop-filter: blur(15px);
@@ -464,17 +444,10 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
         @keyframes toastSlideIn {
-            from {
-                opacity: 0;
-                transform: translateX(120px) scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0) scale(1);
-            }
+            from { opacity: 0; transform: translateX(120px) scale(0.8); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
         }
         
-        /* Efecto shine en iconos mejorado */
         .icon-shine {
             position: relative;
             display: inline-block;
@@ -485,7 +458,6 @@
             filter: brightness(1.2);
         }
         
-        /* Barras de progreso animadas mejoradas */
         .progress-bar {
             background: linear-gradient(90deg, #FBBF24 0%, #F59E0B 50%, #D97706 100%);
             background-size: 200% 100%;
@@ -498,7 +470,6 @@
             100% { background-position: -200% 0; }
         }
         
-        /* Inputs con efecto focus premium */
         input[type="text"]:focus,
         input[type="date"]:focus,
         textarea:focus,
@@ -508,14 +479,12 @@
             border-color: #FBBF24;
         }
         
-        /* Animación de entrada escalonada mejorada */
         .stagger-1 { animation-delay: 0.1s; }
         .stagger-2 { animation-delay: 0.2s; }
         .stagger-3 { animation-delay: 0.3s; }
         .stagger-4 { animation-delay: 0.4s; }
         .stagger-5 { animation-delay: 0.5s; }
         
-        /* Efecto glassmorphism en tarjetas premium */
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(15px);
@@ -524,7 +493,6 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         
-        /* Header sticky con sombra dinámica mejorada */
         header {
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -534,11 +502,7 @@
             background: rgba(255, 255, 255, 0.98);
         }
         
-        /* Efecto ripple en botones mejorado */
-        .ripple {
-            position: relative;
-            overflow: hidden;
-        }
+        .ripple { position: relative; overflow: hidden; }
         .ripple::after {
             content: '';
             position: absolute;
@@ -551,12 +515,8 @@
             transform: translate(-50%, -50%);
             transition: width 0.7s, height 0.7s;
         }
-        .ripple:active::after {
-            width: 400px;
-            height: 400px;
-        }
+        .ripple:active::after { width: 400px; height: 400px; }
         
-        /* Contador animado mejorado */
         .counter {
             display: inline-block;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -568,7 +528,6 @@
             text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
         }
         
-        /* Iconos SVG en stats */
         .stat-icon {
             width: 48px;
             height: 48px;
@@ -578,10 +537,7 @@
             transform: scale(1.2) rotate(10deg);
         }
         
-        /* Efecto de brillo en bordes */
-        .glow-border {
-            position: relative;
-        }
+        .glow-border { position: relative; }
         .glow-border::after {
             content: '';
             position: absolute;
@@ -596,24 +552,124 @@
             transition: opacity 0.4s;
             filter: blur(8px);
         }
-        .glow-border:hover::after {
-            opacity: 0.6;
+        .glow-border:hover::after { opacity: 0.6; }
+        
+        .advanced-search-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s, margin 0.3s;
+        }
+        .advanced-search-panel.open {
+            max-height: 500px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
         
-        /* Animación de escritura */
-        .typing-effect {
-            overflow: hidden;
-            border-right: 2px solid #FBBF24;
-            white-space: nowrap;
-            animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+        .utility-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
+        .utility-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
         }
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: #FBBF24 }
+        .utility-form input,
+        .utility-form textarea,
+        .utility-form select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        .utility-form input:focus,
+        .utility-form textarea:focus,
+        .utility-form select:focus {
+            outline: none;
+            border-color: #FBBF24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #f9fafb;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .checkbox-item:hover {
+            background: #f3f4f6;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-area, .print-area * {
+                visibility: visible;
+            }
+            .print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 10mm !important;
+                margin: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            @page {
+                margin: 10mm;
+                size: auto;
+            }
+        }
+        
+        .print-area {
+            background: white;
+            padding: 10mm;
+            margin: 2rem auto;
+            max-width: 210mm;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .user-badge {
+            background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
+            border: 2px solid #3730a3;
+            color: #3730a3;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+            margin: 2px;
+        }
+        
+        .el-tejar-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
@@ -649,6 +705,7 @@
             <button onclick="switchTab('inventario')" id="tab-inventario" class="tab-btn tab-active px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all ripple">📦 Inventario</button>
             <button onclick="switchTab('reportes')" id="tab-reportes" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple">📋 Reportes de Visita</button>
             <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple">📊 Estadísticas</button>
+            <button onclick="switchTab('utilidades')" id="tab-utilidades" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple">🛠️ Utilidades</button>
         </div>
     </header>
 
@@ -656,7 +713,7 @@
     <main class="max-w-7xl mx-auto px-4 py-8">
         <!-- Inventario Section -->
         <section id="section-inventario" class="fade-in">
-            <div class="glass-card shadow-2xl p-6 mb-8 border-l-8 border-yellow-400 slide-in">
+            <div class="glass-card shadow-2xl p-6 mb-6 border-l-8 border-yellow-400 slide-in">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">🏪 / 🏢 Filtrar por Tienda o Área:</label>
@@ -664,11 +721,11 @@
                             <option value="all">Todas las tiendas / áreas</option>
                             <option value="Tienda Zona 1">🏪 Tienda Zona 1</option>
                             <option value="Tienda Jutiapa">🏪 Tienda Jutiapa</option>
-                            <option value="Tienda Zacapa">🏪 Tienda Zacapa</option>
-                            <option value="Tienda Coatepeque">🏪 Tienda Coatepeque</option>
-                            <option value="Tienda Escuintla">🏪 Tienda Escuintla</option>
-                            <option value="Tienda Chiquimula">🏪 Tienda Chiquimula</option>
-                            <option value="Tienda Coban">🏪 Tienda Cobán</option>
+                            <option value="Tienda Zacapa"> Tienda Zacapa</option>
+                            <option value="Tienda Coatepeque"> Tienda Coatepeque</option>
+                            <option value="Tienda Escuintla"> Tienda Escuintla</option>
+                            <option value="Tienda Chiquimula"> Tienda Chiquimula</option>
+                            <option value="Tienda Coban"> Tienda Cobán</option>
                             <option value="Tienda Chimaltenango">🏪 Tienda Chimaltenango</option>
                             <option value="Tienda Mazatenango">🏪 Tienda Mazatenango</option>
                             <option value="Tienda Xela">🏪 Tienda Xela</option>
@@ -678,7 +735,7 @@
                             <option value="Tienda Quiche">🏪 Tienda Quiché</option>
                             <option value="Tienda Morales">🏪 Tienda Morales</option>
                             <option value="Tienda Salama">🏪 Tienda Salamá</option>
-                            <option value="Tienda Jalapa">🏪 Tienda Jalapa</option>
+                            <option value="Tienda Jalapa"> Tienda Jalapa</option>
                             <option value="Tienda Trinidad Malacatan">🏪 Tienda Trinidad Malacatán</option>
                             <option value="Tienda Santa Lucia">🏪 Tienda Santa Lucía</option>
                             <option value="Tienda San Marcos">🏪 Tienda San Marcos</option>
@@ -689,15 +746,15 @@
                             <option value="Tienda Salcaja">🏪 Tienda Salcajá</option>
                             <option value="Tienda Asuncion Mita">🏪 Tienda Asunción Mita</option>
                             <option value="Tienda Totonicapa">🏪 Tienda Totonicapán</option>
-                            <option value="Contabilidad">🏢 Contabilidad</option>
+                            <option value="Contabilidad"> Contabilidad</option>
                             <option value="Tesorería">🏢 Tesorería</option>
-                            <option value="Mercadeo">🏢 Mercadeo</option>
+                            <option value="Mercadeo"> Mercadeo</option>
                             <option value="Categorías">🏢 Categorías</option>
                             <option value="Auditoría">🏢 Auditoría</option>
                             <option value="Gerentes Regionales">🏢 Gerentes Regionales</option>
                             <option value="SAC">🏢 SAC</option>
                             <option value="Sistemas">🏢 Sistemas</option>
-                            <option value="Monitoreo">🏢 Monitoreo</option>
+                            <option value="Monitoreo"> Monitoreo</option>
                             <option value="Proyectos">🏢 Proyectos</option>
                             <option value="Recepción">🏢 Recepción</option>
                             <option value="Logística">🏢 Logística</option>
@@ -706,7 +763,7 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">📦 Filtrar por Categoría:</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2"> Filtrar por Categoría:</label>
                         <select id="categoryFilterSelect" onchange="filterCategory(this.value)" class="filter-select w-full px-4 py-3 cursor-pointer">
                             <option value="all">Todas las categorías</option>
                             <option value="computadora">💻 Computadoras</option>
@@ -717,33 +774,64 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">🔍 Buscar:</label>
-                        <input type="text" id="searchInput" placeholder="Modelo, serie, marca, codificación..." class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all" oninput="renderInventory()">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">🚦 Filtrar por Estado:</label>
+                        <select id="statusFilterSelect" onchange="filterStatus(this.value)" class="filter-select w-full px-4 py-3 cursor-pointer">
+                            <option value="all">Todos los estados</option>
+                            <option value="activo">✅ Activo</option>
+                            <option value="reparacion">🔧 En reparación</option>
+                            <option value="fallas">⚠️ Con fallas</option>
+                            <option value="baja">❌ Dado de baja</option>
+                            <option value="bodega"> En bodega</option>
+                            <option value="pendiente">⏳ Pendiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- ✅ BÚSQUEDA AVANZADA -->
+                <div class="mt-4 pt-4 border-t-2 border-slate-200">
+                    <button onclick="toggleAdvancedSearch()" class="flex items-center gap-2 text-sm font-bold text-slate-700 hover:text-yellow-600 transition-colors">
+                        <span id="advancedSearchIcon">▶</span> 🔍 Búsqueda Avanzada
+                    </button>
+                    <div id="advancedSearchPanel" class="advanced-search-panel">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">👤 Usuario Asignado:</label>
+                                <input type="text" id="searchUsuario" placeholder="Buscar por nombre de usuario..." class="w-full px-3 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all text-sm" oninput="renderInventory()">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">🔍 Búsqueda General:</label>
+                                <input type="text" id="searchGeneral" placeholder="Marca, modelo, serie, código, notas..." class="w-full px-3 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all text-sm" oninput="renderInventory()">
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <button onclick="clearAdvancedSearch()" class="text-xs px-3 py-1 bg-slate-200 hover:bg-slate-300 rounded-lg font-bold transition-all">🗑️ Limpiar filtros</button>
+                            <span id="advancedSearchInfo" class="text-xs text-slate-500 self-center"></span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-wrap gap-4 mb-8 justify-between items-center scale-in">
+            <div class="flex flex-wrap gap-4 mb-6 justify-between items-center scale-in">
                 <div class="text-sm text-slate-600 glass-card px-5 py-3 rounded-xl font-semibold">
                     Mostrando <span id="filteredCount" class="font-black text-black counter text-lg">0</span> de <span id="totalCount" class="font-black text-black counter text-lg">0</span> equipos
                 </div>
                 <div class="flex gap-3 flex-wrap">
-                    <button onclick="document.getElementById('importExcelInput').click()" class="btn-green px-6 py-3 rounded-xl font-bold flex items-center gap-2 ripple">
+                    <button onclick="document.getElementById('importExcelInput').click()" class="btn-green px-5 py-3 rounded-xl font-bold flex items-center gap-2 ripple text-sm">
                         <span class="icon-shine">📥</span> Importar Excel
                     </button>
                     <input type="file" id="importExcelInput" accept=".xlsx, .xls" class="hidden" onchange="importFromExcel(event)">
                     
-                    <button onclick="deleteLastImport()" class="btn-red px-6 py-3 rounded-xl font-bold flex items-center gap-2 ripple">
+                    <button onclick="deleteLastImport()" class="btn-red px-5 py-3 rounded-xl font-bold flex items-center gap-2 ripple text-sm">
                         <span class="icon-shine">🗑️</span> Deshacer Importación
                     </button>
                     
-                    <button onclick="openModal()" class="btn-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 ripple">
+                    <button onclick="openModal()" class="btn-primary px-5 py-3 rounded-xl font-bold flex items-center gap-2 ripple text-sm">
                         <span class="icon-shine">➕</span> Agregar Equipo
                     </button>
-                    <button onclick="exportInventoryPDF()" class="btn-green px-6 py-3 rounded-xl font-bold flex items-center gap-2 ripple">
+                    <button onclick="exportInventoryPDF()" class="btn-green px-5 py-3 rounded-xl font-bold flex items-center gap-2 ripple text-sm">
                         <span class="icon-shine">📄</span> Reporte PDF
                     </button>
-                    <button onclick="exportToExcel()" class="btn-yellow px-6 py-3 rounded-xl font-bold flex items-center gap-2 ripple">
+                    <button onclick="exportToExcel()" class="btn-yellow px-5 py-3 rounded-xl font-bold flex items-center gap-2 ripple text-sm">
                         <span class="icon-shine">💾</span> Excel Local
                     </button>
                 </div>
@@ -802,15 +890,16 @@
                     <table class="w-full">
                         <thead class="gradient-header text-yellow-400">
                             <tr>
-                                <th class="px-5 py-5 text-left text-sm font-bold">Categoría</th>
-                                <th class="px-5 py-5 text-left text-sm font-bold">Tienda / Área</th>
-                                <th class="px-5 py-5 text-left text-sm font-bold">Marca</th>
-                                <th class="px-5 py-5 text-left text-sm font-bold">Modelo</th>
-                                <th class="px-5 py-5 text-left text-sm font-bold">No. Serie</th>
-                                <th class="px-5 py-5 text-left text-sm font-bold">Codificación</th>
-                                <th class="px-5 py-5 text-left text-sm font-bold">Foto</th>
-                                <th class="px-5 py-5 text-left text-sm font-bold">Notas</th>
-                                <th class="px-5 py-5 text-center text-sm font-bold">Acciones</th>
+                                <th class="px-4 py-5 text-left text-xs font-bold">Categoría</th>
+                                <th class="px-4 py-5 text-left text-xs font-bold">Tienda / Área</th>
+                                <th class="px-4 py-5 text-left text-xs font-bold">👤 Usuario</th>
+                                <th class="px-4 py-5 text-left text-xs font-bold">Marca</th>
+                                <th class="px-4 py-5 text-left text-xs font-bold">Modelo</th>
+                                <th class="px-4 py-5 text-left text-xs font-bold">No. Serie</th>
+                                <th class="px-4 py-5 text-left text-xs font-bold">Código</th>
+                                <th class="px-4 py-5 text-left text-xs font-bold">🚦 Estado</th>
+                                <th class="px-4 py-5 text-left text-xs font-bold">Foto</th>
+                                <th class="px-4 py-5 text-center text-xs font-bold">Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="inventoryTableBody" class="divide-y divide-slate-200"></tbody>
@@ -854,6 +943,333 @@
                 </div>
             </div>
         </section>
+
+        <!-- ✅ NUEVA SECCIÓN: UTILIDADES -->
+        <section id="section-utilidades" class="hidden fade-in">
+            <h2 class="text-3xl font-black text-slate-800 mb-6">🛠️ Utilidades</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <button onclick="showUtilityForm('etiqueta')" class="glass-card p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all hover:scale-105 text-left">
+                    <div class="text-4xl mb-3">📦</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Etiqueta de Envío</h3>
+                    <p class="text-sm text-slate-600">Genera etiquetas de envío para equipos</p>
+                </button>
+                <button onclick="showUtilityForm('entrega')" class="glass-card p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all hover:scale-105 text-left">
+                    <div class="text-4xl mb-3">📋</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Recepción/Entrega de Equipo</h3>
+                    <p class="text-sm text-slate-600">Formato de entrega y recepción de equipos de cómputo</p>
+                </button>
+            </div>
+
+            <!-- Formulario de Etiqueta de Envío -->
+            <div id="form-etiqueta" class="utility-form hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-slate-800">📦 Etiqueta de Envío</h3>
+                    <button onclick="hideUtilityForm()" class="text-slate-500 hover:text-slate-700 text-2xl">&times;</button>
+                </div>
+                
+                <div class="form-grid">
+                    <div>
+                        <label>Seleccionar Tienda:</label>
+                        <select id="envio-tienda-select" onchange="autocompletarDireccion()" class="w-full px-4 py-3 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+                            <option value="">-- Selecciona una tienda --</option>
+                            <option value="Tienda El Tejar Asunción Mita">Tienda El Tejar Asunción Mita</option>
+                            <option value="Tienda El Tejar Chimaltenango">Tienda El Tejar Chimaltenango</option>
+                            <option value="Tienda El Tejar Chiquimula">Tienda El Tejar Chiquimula</option>
+                            <option value="Tienda El Tejar Coatepeque">Tienda El Tejar Coatepeque</option>
+                            <option value="Tienda El Tejar Coban">Tienda El Tejar Coban</option>
+                            <option value="Tienda El Tejar Escuintla">Tienda El Tejar Escuintla</option>
+                            <option value="Tienda El Tejar Huehuetenango">Tienda El Tejar Huehuetenango</option>
+                            <option value="Tienda El Tejar Jalapa">Tienda El Tejar Jalapa</option>
+                            <option value="Tienda El Tejar Malacatan">Tienda El Tejar Malacatan</option>
+                            <option value="Tienda El Tejar Mazatenango">Tienda El Tejar Mazatenango</option>
+                            <option value="Tienda El Tejar Morales">Tienda El Tejar Morales</option>
+                            <option value="Tienda El Tejar Poptun">Tienda El Tejar Poptun</option>
+                            <option value="Tienda El Tejar Puerto Barrios">Tienda El Tejar Puerto Barrios</option>
+                            <option value="Tienda El Tejar Quiche">Tienda El Tejar Quiche</option>
+                            <option value="Tienda El Tejar Retalhuleu">Tienda El Tejar Retalhuleu</option>
+                            <option value="Tienda El Tejar Salama">Tienda El Tejar Salama</option>
+                            <option value="Tienda El Tejar Salcaja">Tienda El Tejar Salcaja</option>
+                            <option value="Tienda El Tejar San Marcos">Tienda El Tejar San Marcos</option>
+                            <option value="Tienda El Tejar Santa Elena">Tienda El Tejar Santa Elena</option>
+                            <option value="Tienda El Tejar Santa Lucia">Tienda El Tejar Santa Lucia</option>
+                            <option value="Tienda El Tejar Tiquisate">Tienda El Tejar Tiquisate</option>
+                            <option value="Tienda El Tejar Quetzaltenango">Tienda El Tejar Quetzaltenango</option>
+                            <option value="Tienda El Tejar Zacapa">Tienda El Tejar Zacapa</option>
+                            <option value="Tienda El Tejar Totonicapán">Tienda El Tejar Totonicapán</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>PARA (Destinatario):</label>
+                        <input type="text" id="envio-para" placeholder="Nombre del destinatario">
+                    </div>
+                    <div>
+                        <label>Teléfono:</label>
+                        <input type="text" id="envio-tel" placeholder="Teléfono de contacto">
+                    </div>
+                    <div>
+                        <label>Dirección:</label>
+                        <input type="text" id="envio-direccion" placeholder="Dirección (se autocompleta)" readonly>
+                    </div>
+                    <div>
+                        <label>DE (Remitente):</label>
+                        <input type="text" id="envio-de" placeholder="Nombre del remitente" value="INFORMATICA">
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mt-6">
+                    <button onclick="previewEtiqueta()" class="btn-purple px-6 py-3 rounded-xl font-bold ripple flex items-center gap-2">
+                        <span>👁️</span> Vista Previa
+                    </button>
+                    <button onclick="printEtiqueta()" class="btn-green px-6 py-3 rounded-xl font-bold ripple flex items-center gap-2">
+                        <span>🖨️</span> Imprimir
+                    </button>
+                </div>
+
+                <!-- Área de impresión -->
+                <div id="print-etiqueta" class="print-area hidden mt-6">
+                    <div class="border-4 border-black p-4 rounded-lg">
+                        <!-- Logo El Tejar -->
+                        <div class="text-center mb-3">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBGb25kbyBhbWFyaWxsbyAtLT4KICA8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI0ZGQjEyNCIvPgogIDwhLS0gQ2FzYSAtLT4KICA8cGF0aCBkPSJNIDYwIDE2IEwgMjQgNDQgTCAyOCA0NCBMIDI4IDc2IEwgOTIgNzYgTCA5MiA0NCBMIDk2IDQ0IFoiIGZpbGw9IiNCMzEzMTUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPCEtLSBDaXJjdWxvIGFtYXJpbGxvIC0tPgogIDxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjIyIiBmaWxsPSIjRkZCMTI0IiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMyIvPgogIDwhLS0gTGV0cmEgVCAtLT4KICA8dGV4dCB4PSI2MCIgeT0iNjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNCMzEzMTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlQ8L3RleHQ+CiAgPCEtLSBUZXh0byAtLT4KICA8dGV4dCB4PSI2MCIgeT0iMTA4IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5FTCBURUpBUjwvdGV4dD4KPC9zdmc+" alt="El Tejar" class="el-tejar-logo">
+                        </div>
+                        
+                        <h2 class="text-xl font-bold mb-3 text-center">ETIQUETA DE ENVÍO</h2>
+                        <div class="text-left space-y-1.5 mb-3 text-sm">
+                            <p><strong>PARA:</strong> <span id="preview-para"></span></p>
+                            <p><strong>TEL:</strong> <span id="preview-tel"></span></p>
+                            <p><strong>Tienda:</strong> <span id="preview-tienda"></span></p>
+                            <p><strong>Dirección:</strong> <span id="preview-direccion"></span></p>
+                            <p><strong>DE:</strong> <span id="preview-de"></span></p>
+                        </div>
+                        <div class="mt-4 p-3 bg-yellow-100 rounded-lg border-2 border-red-600">
+                            <p class="text-lg font-bold text-red-600 text-center">⚠️ FRÁGIL</p>
+                            <p class="text-base font-bold text-red-600 text-center">FAVOR NO GOLPEAR</p>
+                            <p class="text-xs text-center">Maneje con cuidado</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de Recepción/Entrega -->
+            <div id="form-entrega" class="utility-form hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-slate-800">📋 Recepción y Entrega de Equipo</h3>
+                    <button onclick="hideUtilityForm()" class="text-slate-500 hover:text-slate-700 text-2xl">&times;</button>
+                </div>
+                
+                <div class="form-grid">
+                    <div>
+                        <label>Recibe:</label>
+                        <input type="text" id="entrega-recibe" placeholder="Nombre de quien recibe">
+                    </div>
+                    <div>
+                        <label>Departamento:</label>
+                        <input type="text" id="entrega-depto" placeholder="Departamento">
+                    </div>
+                    <div>
+                        <label>Jefe Inmediato:</label>
+                        <input type="text" id="entrega-jefe" placeholder="Nombre del jefe">
+                    </div>
+                    <div>
+                        <label>Puesto:</label>
+                        <input type="text" id="entrega-puesto" placeholder="Puesto del empleado">
+                    </div>
+                    <div>
+                        <label>Entrega (Departamento IT):</label>
+                        <input type="text" id="entrega-it" placeholder="Nombre de quien entrega" value="Departamento IT">
+                    </div>
+                    <div>
+                        <label>Ubicación:</label>
+                        <input type="text" id="entrega-ubicacion" placeholder="Ubicación" value="Oficinas Centrales">
+                    </div>
+                    <div>
+                        <label>Fecha:</label>
+                        <input type="date" id="entrega-fecha">
+                    </div>
+                </div>
+
+                <h4 class="font-bold text-lg mt-6 mb-3">Descripción del Equipo</h4>
+                <div class="form-grid">
+                    <div>
+                        <label>Tipo de Equipo:</label>
+                        <select id="entrega-tipo">
+                            <option value="Laptop">Laptop</option>
+                            <option value="Desktop">Desktop</option>
+                            <option value="Monitor">Monitor</option>
+                            <option value="Teléfono">Teléfono</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Marca:</label>
+                        <input type="text" id="entrega-marca" placeholder="Marca">
+                    </div>
+                    <div>
+                        <label>Modelo:</label>
+                        <input type="text" id="entrega-modelo" placeholder="Modelo">
+                    </div>
+                    <div>
+                        <label>Número de Serie:</label>
+                        <input type="text" id="entrega-serie" placeholder="Número de serie">
+                    </div>
+                    <div>
+                        <label>Estado del Equipo:</label>
+                        <select id="entrega-estado">
+                            <option value="Nuevo">Nuevo</option>
+                            <option value="Bueno">Bueno</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Malo">Malo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h4 class="font-bold text-lg mt-6 mb-3">Comprobación del Equipo</h4>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="check-teclas"> Teclado
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="check-touchpad"> Touchpad
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="check-usb"> Conexiones USB
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="check-red"> Conexiones de Red
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="check-pantalla"> Pantalla
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="check-cargador"> Conexión de Cargador
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="check-camara"> Cámara WEB
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="check-mouse"> Mouse
+                    </label>
+                </div>
+
+                <h4 class="font-bold text-lg mt-6 mb-3">Software Instalado</h4>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="soft-office"> Office
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="soft-sap"> SAP
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="soft-antivirus"> Antivirus
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="soft-otros"> Otros
+                    </label>
+                </div>
+
+                <div class="mt-6">
+                    <label>Comentarios/Observaciones:</label>
+                    <textarea id="entrega-comentarios" rows="3" placeholder="Observaciones adicionales..."></textarea>
+                </div>
+
+                <div class="flex gap-3 mt-6">
+                    <button onclick="previewEntrega()" class="btn-purple px-6 py-3 rounded-xl font-bold ripple flex items-center gap-2">
+                        <span>👁️</span> Vista Previa
+                    </button>
+                    <button onclick="printEntrega()" class="btn-green px-6 py-3 rounded-xl font-bold ripple flex items-center gap-2">
+                        <span>🖨️</span> Imprimir
+                    </button>
+                </div>
+
+                <!-- Área de impresión -->
+                <div id="print-entrega" class="print-area hidden mt-6">
+                    <div class="border border-slate-400 p-4">
+                        <!-- Logo El Tejar -->
+                        <div class="text-center mb-3">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBGb25kbyBhbWFyaWxsbyAtLT4KICA8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI0ZGQjEyNCIvPgogIDwhLS0gQ2FzYSAtLT4KICA8cGF0aCBkPSJNIDYwIDE2IEwgMjQgNDQgTCAyOCA0NCBMIDI4IDc2IEwgOTIgNzYgTCA5MiA0NCBMIDk2IDQ0IFoiIGZpbGw9IiNCMzEzMTUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPCEtLSBDaXJjdWxvIGFtYXJpbGxvIC0tPgogIDxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjIyIiBmaWxsPSIjRkZCMTI0IiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMyIvPgogIDwhLS0gTGV0cmEgVCAtLT4KICA8dGV4dCB4PSI2MCIgeT0iNjgiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzMiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNCMzEzMTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlQ8L3RleHQ+CiAgPCEtLSBUZXh0byAtLT4KICA8dGV4dCB4PSI2MCIgeT0iMTA4IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5FTCBURUpBUjwvdGV4dD4KPC9zdmc+" alt="El Tejar" class="el-tejar-logo">
+                        </div>
+                        
+                        <h2 class="text-xl font-bold text-center mb-4">ENTREGA/RECEPCIÓN DE EQUIPO DE CÓMPUTO</h2>
+                        
+                        <div class="grid grid-cols-2 gap-3 mb-4 text-xs">
+                            <div>
+                                <p><strong>Recibe:</strong> <span id="preview-recibe"></span></p>
+                                <p><strong>Departamento:</strong> <span id="preview-depto"></span></p>
+                                <p><strong>Jefe Inmediato:</strong> <span id="preview-jefe"></span></p>
+                                <p><strong>Puesto:</strong> <span id="preview-puesto"></span></p>
+                            </div>
+                            <div>
+                                <p><strong>Entrega:</strong> <span id="preview-it"></span></p>
+                                <p><strong>Ubicación:</strong> <span id="preview-ubicacion"></span></p>
+                                <p><strong>Fecha:</strong> <span id="preview-fecha"></span></p>
+                            </div>
+                        </div>
+
+                        <table class="w-full border-collapse border border-slate-400 mb-4 text-xs">
+                            <thead>
+                                <tr class="bg-slate-100">
+                                    <th class="border border-slate-400 p-1.5 text-left">Descripción</th>
+                                    <th class="border border-slate-400 p-1.5 text-left">Marca</th>
+                                    <th class="border border-slate-400 p-1.5 text-left">Modelo</th>
+                                    <th class="border border-slate-400 p-1.5 text-left">Serie</th>
+                                    <th class="border border-slate-400 p-1.5 text-left">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-slate-400 p-1.5" id="preview-tipo"></td>
+                                    <td class="border border-slate-400 p-1.5" id="preview-marca"></td>
+                                    <td class="border border-slate-400 p-1.5" id="preview-modelo"></td>
+                                    <td class="border border-slate-400 p-1.5" id="preview-serie"></td>
+                                    <td class="border border-slate-400 p-1.5" id="preview-estado"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="mb-4 text-xs">
+                            <p class="font-bold mb-1">Elementos Verificados:</p>
+                            <div id="preview-checks" class="grid grid-cols-2 gap-1"></div>
+                        </div>
+
+                        <div class="mb-4 text-xs">
+                            <p class="font-bold mb-1">Software Instalado:</p>
+                            <div id="preview-software" class="grid grid-cols-2 gap-1"></div>
+                        </div>
+
+                        <div class="mb-4 text-xs">
+                            <p><strong>Comentarios:</strong></p>
+                            <p id="preview-comentarios" class="mt-1 p-1.5 bg-slate-50 rounded"></p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-6 mt-8 pt-4 border-t border-slate-400">
+                            <div class="text-center">
+                                <div class="border-t border-slate-400 pt-1">
+                                    <p class="text-xs">Firma de Quien Recibe</p>
+                                    <p class="text-xs text-slate-500 mt-0.5">Nombre y fecha</p>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="border-t border-slate-400 pt-1">
+                                    <p class="text-xs">Firma de Quien Entrega</p>
+                                    <p class="text-xs text-slate-500 mt-0.5">Departamento IT</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-2 bg-slate-50 rounded text-xs">
+                            <p class="font-bold mb-1">POLÍTICAS DE RESPONSABILIDAD:</p>
+                            <ol class="list-decimal list-inside space-y-0.5">
+                                <li>El equipo es propiedad de EL TEJAR</li>
+                                <li>El usuario se compromete a cuidar y hacer buen uso del equipo</li>
+                                <li>Notificar de inmediato cualquier daño o mal funcionamiento</li>
+                                <li>En caso de desvinculación, el equipo deberá ser devuelto</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Modal Agregar/Editar Equipo -->
@@ -867,8 +1283,8 @@
                 <input type="hidden" id="equipmentId">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">🏪 / 🏢 Tienda o Área *</label>
-                        <select id="eqStore" required class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-yellow-50 transition-all">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">🏪 /  Tienda o Área *</label>
+                        <select id="eqStore" required class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-yellow-50 transition-all" onchange="loadUsersForArea()">
                             <option value="">-- Selecciona una opción --</option>
                             <option value="Tienda Zona 1">🏪 Tienda Zona 1</option>
                             <option value="Tienda Jutiapa">🏪 Tienda Jutiapa</option>
@@ -882,7 +1298,7 @@
                             <option value="Tienda Xela">🏪 Tienda Xela</option>
                             <option value="Tienda Retalhuleu">🏪 Tienda Retalhuleu</option>
                             <option value="Tienda Huehuetenango">🏪 Tienda Huehuetenango</option>
-                            <option value="Tienda Puerto Barrios">🏪 Tienda Puerto Barrios</option>
+                            <option value="Tienda Puerto Barrios"> Tienda Puerto Barrios</option>
                             <option value="Tienda Quiche">🏪 Tienda Quiché</option>
                             <option value="Tienda Morales">🏪 Tienda Morales</option>
                             <option value="Tienda Salama">🏪 Tienda Salamá</option>
@@ -892,9 +1308,9 @@
                             <option value="Tienda San Marcos">🏪 Tienda San Marcos</option>
                             <option value="Tienda Poptun">🏪 Tienda Poptún</option>
                             <option value="Tienda Tactic">🏪 Tienda Tactic</option>
-                            <option value="Tienda Santa Elena">🏪 Tienda Santa Elena</option>
-                            <option value="Tienda Tiquisate">🏪 Tienda Tiquisate</option>
-                            <option value="Tienda Salcaja">🏪 Tienda Salcajá</option>
+                            <option value="Tienda Santa Elena"> Tienda Santa Elena</option>
+                            <option value="Tienda Tiquisate"> Tienda Tiquisate</option>
+                            <option value="Tienda Salcaja"> Tienda Salcajá</option>
                             <option value="Tienda Asuncion Mita">🏪 Tienda Asunción Mita</option>
                             <option value="Tienda Totonicapa">🏪 Tienda Totonicapán</option>
                             <option value="Contabilidad">🏢 Contabilidad</option>
@@ -921,9 +1337,19 @@
                             <option value="impresora">🖨️ Impresora</option>
                             <option value="monitor">🖥️ Monitor</option>
                             <option value="tablet">📱 Tablet</option>
-                            <option value="telefono">📞 Teléfono</option>
+                            <option value="telefono"> Teléfono</option>
                         </select>
                     </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">👤 Usuario Asignado:</label>
+                    <div id="usersContainer" class="hidden mb-3">
+                        <p class="text-xs text-slate-600 mb-2">Usuarios con equipos en esta área:</p>
+                        <div id="usersList" class="flex flex-wrap gap-2 mb-3"></div>
+                    </div>
+                    <input type="text" id="eqUsuario" class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all" placeholder="Ej: Jairo Cermeño, Miguel Arevalo, etc.">
+                    <p class="text-xs text-slate-500 mt-1">Si el usuario ya existe, selecciónalo de la lista o escribe su nombre exacto</p>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -941,9 +1367,22 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Número de Codificación *</label>
-                    <input type="text" id="eqCode" required class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all" placeholder="Ej: COD-2024-001">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Número de Codificación *</label>
+                        <input type="text" id="eqCode" required class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all" placeholder="Ej: COD-2024-001">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">🚦 Estado del Equipo:</label>
+                        <select id="eqStatus" class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-yellow-50 transition-all">
+                            <option value="activo">✅ Activo</option>
+                            <option value="reparacion">🔧 En reparación</option>
+                            <option value="fallas">⚠️ Con fallas</option>
+                            <option value="baja"> Dado de baja</option>
+                            <option value="bodega">📦 En bodega</option>
+                            <option value="pendiente">⏳ Pendiente</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div>
@@ -961,7 +1400,6 @@
                     </div>
                 </div>
 
-                <!-- ✅ CHECKLIST DE MANTENIMIENTO -->
                 <div class="border-t-2 border-slate-200 pt-6 mt-4">
                     <h4 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-lg">📋 Checklist de Mantenimiento</h4>
                     
@@ -1053,16 +1491,15 @@
                         <textarea id="eqObsMantenimiento" rows="3" class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 text-sm transition-all font-semibold" placeholder="Detalles del servicio, repuestos cambiados, etc."></textarea>
                     </div>
                 </div>
-                <!-- ✅ FIN CHECKLIST -->
 
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-2">Notas Generales del Equipo</label>
-                    <textarea id="eqNotes" rows="3" class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all font-semibold" placeholder="Ubicación específica, usuario asignado, etc."></textarea>
+                    <textarea id="eqNotes" rows="3" class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all font-semibold" placeholder="Ubicación específica, contraseñas, etc."></textarea>
                 </div>
 
                 <div class="flex gap-4 pt-4">
                     <button type="button" onclick="closeModal()" class="flex-1 px-5 py-3 border-2 border-black rounded-xl text-black hover:bg-yellow-50 font-bold transition-all ripple">Cancelar</button>
-                    <button type="button" onclick="exportChecklistPDF()" class="flex-1 btn-green px-5 py-3 rounded-xl font-bold ripple">📄 Descargar Checklist PDF</button>
+                    <button type="button" onclick="exportChecklistPDF()" class="flex-1 btn-green px-5 py-3 rounded-xl font-bold ripple">📄 Checklist PDF</button>
                     <button type="button" onclick="saveEquipment(event)" class="flex-1 btn-yellow px-5 py-3 rounded-xl font-bold ripple">💾 Guardar Equipo</button>
                 </div>
             </form>
@@ -1184,10 +1621,39 @@
         let reports = [];
         let currentFilter = 'all';
         let currentStoreFilter = 'all';
+        let currentStatusFilter = 'all';
         let currentPhotos = { before: [], after: [] };
         let currentEquipmentPhoto = null;
         let signaturePad = null;
         let dataLoaded = false;
+
+        // ✅ BASE DE DATOS DE DIRECCIONES
+        const storeAddresses = {
+            'Tienda El Tejar Asunción Mita': 'Km. 144 Asunción Mita, Jutiapa, a 500 metros de Hacienda San Carlos',
+            'Tienda El Tejar Chimaltenango': 'Km 52.5 Carretera Interamericana, Finca Alameda, Chimaltenango',
+            'Tienda El Tejar Chiquimula': 'Km. 169 ruta a Esquipulas, Chiquimula 2da. entrada por la "Y"',
+            'Tienda El Tejar Coatepeque': '7 Avenida 15-64 Zona 2, Coatepeque Quetzaltenango',
+            'Tienda El Tejar Coban': 'C.C paseo candelaria Cobán',
+            'Tienda El Tejar Escuintla': 'Av. Centroamérica 10-83, Zona 3, Escuintla. A Unas Cuadras Del Igss',
+            'Tienda El Tejar Huehuetenango': 'Km. 258 Calzada Kaibil Balam, sector 5 Cambote, zona 11',
+            'Tienda El Tejar Jalapa': 'Alcazar Zona 7, Llano Grande Jalapa',
+            'Tienda El Tejar Malacatan': 'Centro Comercial La Trinidad Malacatan, 5ta Calle 9-55 Zona 2, Cantón Morazán',
+            'Tienda El Tejar Mazatenango': 'Carretera CA-2 Km. 162.5 circunvalación',
+            'Tienda El Tejar Morales': 'Morales, Izabal km. 243.5 carretera al Átlantico CA9',
+            'Tienda El Tejar Poptun': 'Las Delicias, Zona 0, 13 Av. Sheira Yaremi CA. Zona 0 Poptun',
+            'Tienda El Tejar Puerto Barrios': 'Km. 293 Calzada Jacobo Árbenz Guzmán. Red Plaza',
+            'Tienda El Tejar Quiche': 'Calzada Centenario Colonia El Ciprés, Zona 4 Santa Cruz De El Quiché',
+            'Tienda El Tejar Retalhuleu': 'Salida A Champerico 2-69 Local A Zona 5 Retalhuleu, Retalhuleu A La Par De Supermercados "la Barata"',
+            'Tienda El Tejar Salama': 'Aldea San Juan Zona 0 Baja Verapaz',
+            'Tienda El Tejar Salcaja': 'Km. 192.5, Libramiento de Salcaja, Quetzaltenango',
+            'Tienda El Tejar San Marcos': 'Carretera San Marcos, Boaner. Zona 0, San Marcos',
+            'Tienda El Tejar Santa Elena': '1 calle z.0 Santa Elena Carret. a Flores Tikal',
+            'Tienda El Tejar Santa Lucia': 'Carretera Al Pacífico Km 89 Villa Angelita Apartamento D. Zona 0',
+            'Tienda El Tejar Tiquisate': 'Plaza San Gabriel Antiguo predio de los circos',
+            'Tienda El Tejar Quetzaltenango': '9 Calle 0-50 Zona 7, Quetzaltenango',
+            'Tienda El Tejar Zacapa': 'Lote 20, Barrio El Bordo, Zacapa. Atrás De Zona Militar',
+            'Tienda El Tejar Totonicapán': 'Centro Comercial Los Altos'
+        };
 
         const AREA_MAP = {
             'contabilidad': 'Contabilidad',
@@ -1223,6 +1689,15 @@
             'bodega': 'Supervisores de Bodega'
         };
 
+        const STATUS_LABELS = {
+            'activo': { label: '✅ Activo', class: 'status-activo' },
+            'reparacion': { label: ' En reparación', class: 'status-reparacion' },
+            'fallas': { label: '⚠️ Con fallas', class: 'status-fallas' },
+            'baja': { label: '❌ Dado de baja', class: 'status-baja' },
+            'bodega': { label: '📦 En bodega', class: 'status-bodega' },
+            'pendiente': { label: '⏳ Pendiente', class: 'status-pendiente' }
+        };
+
         function normalizeArea(area) {
             if (!area) return '';
             const normalized = String(area).toLowerCase().trim();
@@ -1240,6 +1715,30 @@
             return 'computadora';
         }
 
+        function extractUsuarioFromObservaciones(obs) {
+            if (!obs) return '';
+            let texto = String(obs).trim();
+            
+            if (texto.includes(':')) {
+                texto = texto.split(':')[0];
+            }
+            if (texto.includes('\n')) {
+                texto = texto.split('\n')[0];
+            }
+            texto = texto.replace(/Jairo\s*Cermeño/gi, '')
+                         .replace(/Erick\s*Motta/gi, '')
+                         .replace(/Erick\s*Adam/gi, '')
+                         .replace(/Enri\s*Yandel/gi, '')
+                         .replace(/Admin\s*:/gi, '')
+                         .trim();
+            
+            texto = texto.replace(/\s+/g, ' ').trim();
+            
+            if (texto.length < 2) return '';
+            
+            return texto;
+        }
+
         function showConnectionStatus(show) {
             const status = document.getElementById('connectionStatus');
             if (show) {
@@ -1254,13 +1753,10 @@
         async function loadData() {
             showConnectionStatus(true);
             try {
-                console.log("🔄 Iniciando carga de datos desde Firebase...");
                 const invSnap = await db.collection("inventario").get();
-                console.log("📦 Documentos encontrados en 'inventario':", invSnap.size);
                 inventory = invSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
                 const repSnap = await db.collection("reportes").get();
-                console.log("📋 Documentos encontrados en 'reportes':", repSnap.size);
                 reports = repSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
                 dataLoaded = true;
@@ -1275,8 +1771,6 @@
                     <div class="text-7xl mb-4">⚠️</div>
                     <p class="text-xl text-red-600 font-black">Error de conexión a la base de datos</p>
                     <p class="text-sm text-slate-500 mt-2">Revisa la consola del navegador (F12) para más detalles.</p>
-                    <p class="text-xs text-slate-400 mt-3 bg-slate-100 p-3 rounded-xl">Detalle: ${e.message}</p>
-                    <p class="text-xs text-blue-600 mt-3 font-semibold">💡 Si abriste el archivo con doble clic (file://), usa la extensión "Live Server" de VS Code.</p>
                 `;
                 document.getElementById('emptyState').classList.remove('hidden');
             } finally {
@@ -1304,15 +1798,72 @@
             }
         }
 
+        // ✅ FUNCIÓN PARA CARGAR USUARIOS POR ÁREA
+        function loadUsersForArea() {
+            const selectedArea = document.getElementById('eqStore').value;
+            const usersContainer = document.getElementById('usersContainer');
+            const usersList = document.getElementById('usersList');
+            const usuarioInput = document.getElementById('eqUsuario');
+            
+            if (!selectedArea || selectedArea === '') {
+                usersContainer.classList.add('hidden');
+                return;
+            }
+            
+            // Filtrar equipos del área seleccionada
+            const equiposEnArea = inventory.filter(eq => eq.store === selectedArea);
+            
+            // Extraer usuarios únicos
+            const usuariosUnicos = [...new Set(equiposEnArea.map(eq => eq.usuario).filter(u => u && u.trim() !== ''))];
+            
+            if (usuariosUnicos.length === 0) {
+                usersContainer.classList.add('hidden');
+                return;
+            }
+            
+            // Mostrar usuarios
+            usersContainer.classList.remove('hidden');
+            usersList.innerHTML = usuariosUnicos.map(usuario => `
+                <span class="user-badge cursor-pointer hover:scale-110 transition-transform" onclick="selectUser('${usuario}')">
+                    👤 ${usuario}
+                </span>
+            `).join('');
+        }
+
+        // ✅ FUNCIÓN PARA SELECCIONAR USUARIO
+        function selectUser(usuario) {
+            document.getElementById('eqUsuario').value = usuario;
+            showToast(`✅ Usuario seleccionado: ${usuario}`);
+        }
+
+        // ✅ FUNCIÓN PARA AUTOCOMPLETAR DIRECCIÓN
+        function autocompletarDireccion() {
+            const tiendaSelect = document.getElementById('envio-tienda-select');
+            const direccionInput = document.getElementById('envio-direccion');
+            const tiendaInput = document.getElementById('envio-tienda');
+            
+            const tiendaSeleccionada = tiendaSelect.value;
+            
+            if (tiendaSeleccionada && storeAddresses[tiendaSeleccionada]) {
+                direccionInput.value = storeAddresses[tiendaSeleccionada];
+                tiendaInput.value = tiendaSeleccionada;
+            } else {
+                direccionInput.value = '';
+                tiendaInput.value = '';
+            }
+        }
+
         async function saveEquipment(e) {
             if (e) e.preventDefault();
             
             const store = document.getElementById('eqStore').value.trim();
             const category = document.getElementById('eqCategory').value;
+            const usuario = document.getElementById('eqUsuario').value.trim();
             const marca = document.getElementById('eqMarca').value.trim();
             const model = document.getElementById('eqModel').value.trim();
             const serial = document.getElementById('eqSerial').value.trim();
             const code = document.getElementById('eqCode').value.trim();
+            const status = document.getElementById('eqStatus').value;
             const notes = document.getElementById('eqNotes').value.trim();
             const id = document.getElementById('equipmentId').value;
 
@@ -1329,7 +1880,7 @@
             const mantObs = document.getElementById('eqObsMantenimiento').value.trim();
 
             const data = { 
-                store, category, marca, model, serial, code, notes,
+                store, category, usuario, marca, model, serial, code, status, notes,
                 photo: currentEquipmentPhoto,
                 mantenimiento: {
                     fecha: mantFecha || new Date().toISOString().split('T')[0],
@@ -1441,7 +1992,7 @@
             document.getElementById('equipmentPhotoPreview').classList.add('hidden');
         }
 
-        function viewEquipmentPhoto(photo, marca, model) {
+        function viewEquipmentPhoto(photo) {
             document.getElementById('viewPhotoImg').src = photo;
             document.getElementById('viewPhotoModal').classList.remove('hidden');
         }
@@ -1464,8 +2015,7 @@
                     showToast(`💾 ${description} guardado en: ${handle.name}`);
                     return true;
                 } catch (err) {
-                    if (err.name === 'AbortError') { showToast('Guardado cancelado por el usuario', 'error'); return false; }
-                    console.error('Error con File System API:', err);
+                    if (err.name === 'AbortError') { showToast('Guardado cancelado', 'error'); return false; }
                 }
             }
             return fallbackDownload(blob, suggestedName, description);
@@ -1481,8 +2031,7 @@
                 showToast(`💾 ${description} descargado: ${filename}`);
                 return true;
             } catch(e) {
-                console.error('Error en descarga:', e);
-                showToast('Error al descargar el archivo', 'error');
+                showToast('Error al descargar', 'error');
                 return false;
             }
         }
@@ -1498,8 +2047,7 @@
                 try {
                     const data = new Uint8Array(e.target.result);
                     const workbook = XLSX.read(data, { type: 'array', cellDates: true });
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
+                    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
                     
                     const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
                     
@@ -1518,7 +2066,7 @@
                     }
 
                     if (headerRowIndex === -1) {
-                        showToast('No se encontraron los encabezados en el Excel', 'error');
+                        showToast('No se encontraron los encabezados', 'error');
                         return;
                     }
 
@@ -1535,27 +2083,21 @@
 
                     const idxArea = findColIndex(['area', 'área', 'tienda', 'oficina']);
                     const idxCategoria = findColIndex(['categoria', 'categoría', 'tipo']);
-                    const idxObservaciones = findColIndex(['observacion', 'observación', 'nota', 'descripcion', 'descripción']);
+                    const idxObservaciones = findColIndex(['observacion', 'observación', 'nota', 'descripcion']);
                     const idxMarca = findColIndex(['marca']);
                     const idxModelo = findColIndex(['modelo']);
                     const idxSerie = findColIndex(['serie', 'serial', 's/n']);
                     const idxCodigo = findColIndex(['codificacion', 'codificación', 'codigo', 'código']);
 
-                    console.log('📋 Encabezados detectados:', headerRow);
-                    console.log('🔍 Índices:', { idxArea, idxCategoria, idxObservaciones, idxMarca, idxModelo, idxSerie, idxCodigo });
-
-                    const validRows = dataRows.filter(row => {
-                        return row.some(cell => String(cell).trim() !== '');
-                    });
+                    const validRows = dataRows.filter(row => row.some(cell => String(cell).trim() !== ''));
 
                     if (validRows.length === 0) {
-                        showToast('No hay datos válidos en el Excel', 'error');
+                        showToast('No hay datos válidos', 'error');
                         return;
                     }
 
-                    showToast(`⏳ Importando ${validRows.length} registros a Firebase...`);
+                    showToast(`⏳ Importando ${validRows.length} registros...`);
                     let successCount = 0;
-                    let skippedCount = 0;
 
                     for (const row of validRows) {
                         const areaRaw = idxArea >= 0 ? row[idxArea] : '';
@@ -1573,19 +2115,20 @@
                         const serial = String(serieRaw || '').trim();
                         const code = String(codigoRaw || '').trim();
                         const notes = String(observacionesRaw || '').trim();
+                        
+                        const usuario = extractUsuarioFromObservaciones(observacionesRaw);
 
-                        if (!area && !marca && !model && !serial) {
-                            skippedCount++;
-                            continue;
-                        }
+                        if (!area && !marca && !model && !serial) continue;
 
                         const equipmentData = {
                             store: area || '',
                             category,
+                            usuario,
                             marca: marca || '',
                             model: model || '',
                             serial: serial || '',
                             code: code || '',
+                            status: 'activo',
                             notes: notes || '',
                             photo: null,
                             mantenimiento: {
@@ -1604,12 +2147,12 @@
                         successCount++;
                     }
 
-                    showToast(`✅ Se importaron ${successCount} equipos${skippedCount > 0 ? ` (${skippedCount} filas vacías omitidas)` : ''}`);
+                    showToast(`✅ Se importaron ${successCount} equipos`);
                     await loadData();
                     
                 } catch (error) {
-                    console.error("Error importando Excel:", error);
-                    showToast('❌ Error al importar: ' + error.message, 'error');
+                    console.error("Error importando:", error);
+                    showToast('❌ Error: ' + error.message, 'error');
                 }
             };
             
@@ -1627,33 +2170,25 @@
             );
 
             if (importadosHoy.length === 0) {
-                showToast('ℹ️ No hay importaciones recientes de hoy para eliminar', 'error');
+                showToast('ℹ️ No hay importaciones recientes', 'error');
                 return;
             }
 
-            const confirmar = confirm(
-                `⚠️ ATENCIÓN: Se van a eliminar ${importadosHoy.length} equipos que fueron importados HOY desde Excel.\n\n` +
-                `¿Estás seguro de que quieres continuar?\n\n` +
-                `Esta acción NO se puede deshacer.`
-            );
-            
-            if (!confirmar) return;
+            if (!confirm(`⚠️ Se eliminarán ${importadosHoy.length} equipos importados HOY.\n\n¿Continuar?`)) return;
 
             showToast(`⏳ Eliminando ${importadosHoy.length} equipos...`);
             
             try {
                 const batch = db.batch();
                 importadosHoy.forEach(item => {
-                    const ref = db.collection("inventario").doc(item.id);
-                    batch.delete(ref);
+                    batch.delete(db.collection("inventario").doc(item.id));
                 });
                 await batch.commit();
                 
-                showToast(`✅ Se eliminaron ${importadosHoy.length} equipos importados`);
+                showToast(`✅ Se eliminaron ${importadosHoy.length} equipos`);
                 await loadData();
             } catch (error) {
-                console.error("Error eliminando importación:", error);
-                showToast('❌ Error al eliminar: ' + error.message, 'error');
+                showToast(' Error: ' + error.message, 'error');
             }
         }
 
@@ -1665,16 +2200,13 @@
             
             window.addEventListener('scroll', () => {
                 const header = document.querySelector('header');
-                if (window.scrollY > 10) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                if (window.scrollY > 10) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
             });
         });
 
         function switchTab(tab) {
-            ['inventario', 'reportes', 'stats'].forEach(t => {
+            ['inventario', 'reportes', 'stats', 'utilidades'].forEach(t => {
                 const section = document.getElementById('section-' + t);
                 const tabBtn = document.getElementById('tab-' + t);
                 if (t === tab) {
@@ -1692,14 +2224,50 @@
 
         function filterStore(store) { currentStoreFilter = store; renderInventory(); }
         function filterCategory(cat) { currentFilter = cat; renderInventory(); }
+        function filterStatus(status) { currentStatusFilter = status; renderInventory(); }
+
+        function toggleAdvancedSearch() {
+            const panel = document.getElementById('advancedSearchPanel');
+            const icon = document.getElementById('advancedSearchIcon');
+            panel.classList.toggle('open');
+            icon.textContent = panel.classList.contains('open') ? '▼' : '▶';
+        }
+
+        function clearAdvancedSearch() {
+            document.getElementById('searchUsuario').value = '';
+            document.getElementById('searchGeneral').value = '';
+            document.getElementById('storeFilterSelect').value = 'all';
+            document.getElementById('categoryFilterSelect').value = 'all';
+            document.getElementById('statusFilterSelect').value = 'all';
+            currentStoreFilter = 'all';
+            currentFilter = 'all';
+            currentStatusFilter = 'all';
+            renderInventory();
+            showToast('🗑️ Filtros limpiados');
+        }
 
         function getFilteredInventory() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
+            const searchUsuario = (document.getElementById('searchUsuario')?.value || '').toLowerCase().trim();
+            const searchGeneral = (document.getElementById('searchGeneral')?.value || '').toLowerCase().trim();
+            
             return inventory.filter(item => {
                 const matchCat = currentFilter === 'all' || item.category === currentFilter;
                 const matchStore = currentStoreFilter === 'all' || item.store === currentStoreFilter;
-                const matchSearch = !search || (item.marca && item.marca.toLowerCase().includes(search)) || (item.model && item.model.toLowerCase().includes(search)) || (item.serial && item.serial.toLowerCase().includes(search)) || (item.code && item.code.toLowerCase().includes(search)) || (item.store && item.store.toLowerCase().includes(search));
-                return matchCat && matchStore && matchSearch;
+                const matchStatus = currentStatusFilter === 'all' || (item.status || 'pendiente') === currentStatusFilter;
+                
+                const usuario = (item.usuario || '').toLowerCase();
+                const matchUsuario = !searchUsuario || usuario.includes(searchUsuario);
+                
+                const matchGeneral = !searchGeneral || 
+                    (item.marca || '').toLowerCase().includes(searchGeneral) ||
+                    (item.model || '').toLowerCase().includes(searchGeneral) ||
+                    (item.serial || '').toLowerCase().includes(searchGeneral) ||
+                    (item.code || '').toLowerCase().includes(searchGeneral) ||
+                    (item.notes || '').toLowerCase().includes(searchGeneral) ||
+                    (item.usuario || '').toLowerCase().includes(searchGeneral) ||
+                    (item.store || '').toLowerCase().includes(searchGeneral);
+                
+                return matchCat && matchStore && matchStatus && matchUsuario && matchGeneral;
             });
         }
 
@@ -1710,6 +2278,17 @@
             document.getElementById('filteredCount').textContent = filtered.length;
             document.getElementById('totalCount').textContent = inventory.length;
 
+            const activeFilters = [];
+            if (currentStoreFilter !== 'all') activeFilters.push('Tienda');
+            if (currentFilter !== 'all') activeFilters.push('Categoría');
+            if (currentStatusFilter !== 'all') activeFilters.push('Estado');
+            if (document.getElementById('searchUsuario')?.value) activeFilters.push('Usuario');
+            if (document.getElementById('searchGeneral')?.value) activeFilters.push('General');
+            const infoEl = document.getElementById('advancedSearchInfo');
+            if (infoEl) {
+                infoEl.textContent = activeFilters.length > 0 ? `✅ ${activeFilters.length} filtro(s) activo(s)` : '';
+            }
+
             if (filtered.length === 0) {
                 tbody.innerHTML = '';
                 if (!document.getElementById('emptyState').innerHTML.includes('Error de conexión')) {
@@ -1717,31 +2296,35 @@
                 }
             } else {
                 empty.classList.add('hidden');
-                tbody.innerHTML = filtered.map(item => `
+                tbody.innerHTML = filtered.map(item => {
+                    const status = item.status || 'pendiente';
+                    const statusInfo = STATUS_LABELS[status] || STATUS_LABELS['pendiente'];
+                    return `
                     <tr class="table-row-hover">
-                        <td class="px-5 py-4"><span class="badge badge-${item.category}">${getCategoryLabel(item.category)}</span></td>
-                        <td class="px-5 py-4"><span class="${item.store && item.store.includes('🏢') ? 'badge badge-area' : 'badge badge-tienda'}">${escapeHtml(getStoreShortName(item.store))}</span></td>
-                        <td class="px-5 py-4 font-bold text-slate-800">${escapeHtml(item.marca || '-')}</td>
-                        <td class="px-5 py-4 font-bold text-slate-800">${escapeHtml(item.model)}</td>
-                        <td class="px-5 py-4 text-slate-600 font-mono text-sm font-semibold">${escapeHtml(item.serial)}</td>
-                        <td class="px-5 py-4 text-slate-600 font-mono text-sm font-semibold">${escapeHtml(item.code || '-')}</td>
-                        <td class="px-5 py-4">
-                            ${item.photo ? `<button onclick="viewEquipmentPhoto('${item.photo}', '${escapeHtml(item.marca)}', '${escapeHtml(item.model)}')" class="text-blue-600 hover:text-blue-800 text-sm font-bold transition-colors">👁️ Ver Foto</button>` : '<span class="text-slate-400 text-sm font-semibold">Sin foto</span>'}
+                        <td class="px-4 py-3"><span class="badge badge-${item.category}">${getCategoryLabel(item.category)}</span></td>
+                        <td class="px-4 py-3"><span class="${item.store && item.store.includes('🏢') ? 'badge badge-area' : 'badge badge-tienda'}">${escapeHtml(getStoreShortName(item.store))}</span></td>
+                        <td class="px-4 py-3 text-sm font-bold text-slate-700">${escapeHtml(item.usuario || '-')}</td>
+                        <td class="px-4 py-3 font-bold text-slate-800">${escapeHtml(item.marca || '-')}</td>
+                        <td class="px-4 py-3 font-bold text-slate-800">${escapeHtml(item.model)}</td>
+                        <td class="px-4 py-3 text-slate-600 font-mono text-xs font-semibold">${escapeHtml(item.serial)}</td>
+                        <td class="px-4 py-3 text-slate-600 font-mono text-xs font-semibold">${escapeHtml(item.code || '-')}</td>
+                        <td class="px-4 py-3"><span class="badge-status ${statusInfo.class}">${statusInfo.label}</span></td>
+                        <td class="px-4 py-3">
+                            ${item.photo ? `<button onclick="viewEquipmentPhoto('${item.photo}')" class="text-blue-600 hover:text-blue-800 text-sm font-bold transition-colors">👁️ Ver</button>` : '<span class="text-slate-400 text-xs font-semibold">Sin foto</span>'}
                         </td>
-                        <td class="px-5 py-4 text-slate-600 text-sm max-w-xs truncate font-semibold">${escapeHtml(item.notes || '-')}</td>
-                        <td class="px-5 py-4 text-center whitespace-nowrap">
-                            <button onclick="editEquipment('${item.id}')" class="text-yellow-600 hover:text-yellow-800 mr-3 text-xl transition-all hover:scale-150" title="Editar">✏️</button>
-                            <button onclick="deleteEquipment('${item.id}')" class="text-black hover:text-red-600 text-xl transition-all hover:scale-150" title="Eliminar">🗑️</button>
+                        <td class="px-4 py-3 text-center whitespace-nowrap">
+                            <button onclick="editEquipment('${item.id}')" class="text-yellow-600 hover:text-yellow-800 mr-1 text-lg transition-all hover:scale-150" title="Editar">✏️</button>
+                            <button onclick="deleteEquipment('${item.id}')" class="text-black hover:text-red-600 text-lg transition-all hover:scale-150" title="Eliminar">🗑️</button>
                         </td>
                     </tr>
-                `).join('');
+                `}).join('');
             }
             updateStats();
         }
 
         function getStoreShortName(store) { if (!store) return 'Sin asignar'; return store.replace('Tienda ', '').replace('🏢 ', '').replace('🏪 ', ''); }
         function getCategoryLabel(cat) {
-            const labels = { computadora: '💻 Computadora', impresora: '🖨️ Impresora', monitor: '🖥️ Monitor', tablet: '📱 Tablet', telefono: '📞 Teléfono' };
+            const labels = { computadora: '💻 Computadora', impresora: '🖨️ Impresora', monitor: '🖥️ Monitor', tablet: '📱 Tablet', telefono: ' Teléfono' };
             return labels[cat] || cat;
         }
 
@@ -1752,6 +2335,7 @@
             document.getElementById('equipmentId').value = '';
             currentEquipmentPhoto = null;
             document.getElementById('equipmentPhotoPreview').classList.add('hidden');
+            document.getElementById('usersContainer').classList.add('hidden');
             
             document.getElementById('eqMantFecha').value = new Date().toISOString().split('T')[0];
             document.getElementById('eqMantTecnico').value = '';
@@ -1759,6 +2343,8 @@
             document.querySelectorAll('.check-eq').forEach(cb => cb.checked = false);
             document.getElementById('eqResultado').value = '';
             document.getElementById('eqObsMantenimiento').value = '';
+            document.getElementById('eqStatus').value = 'activo';
+            document.getElementById('eqUsuario').value = '';
             
             toggleChecklistByCategory('');
 
@@ -1770,10 +2356,12 @@
                     document.getElementById('eqStore').value = item.store || '';
                     document.getElementById('eqCategory').value = item.category;
                     toggleChecklistByCategory(item.category);
+                    document.getElementById('eqUsuario').value = item.usuario || '';
                     document.getElementById('eqMarca').value = item.marca || '';
                     document.getElementById('eqModel').value = item.model;
                     document.getElementById('eqSerial').value = item.serial;
                     document.getElementById('eqCode').value = item.code || '';
+                    document.getElementById('eqStatus').value = item.status || 'pendiente';
                     document.getElementById('eqNotes').value = item.notes || '';
                     
                     if (item.photo) {
@@ -1895,10 +2483,10 @@
                 <div class="glass-card rounded-3xl shadow-2xl card-hover overflow-hidden border-t-8 border-yellow-400">
                     <div class="gradient-header p-5 text-yellow-400">
                         <h3 class="font-black text-xl">📍 ${escapeHtml(r.store)}</h3>
-                        <p class="text-sm opacity-90 font-semibold mt-1">📅 ${formatDate(r.date)}</p>
+                        <p class="text-sm opacity-90 font-semibold mt-1"> ${formatDate(r.date)}</p>
                     </div>
                     <div class="p-5">
-                        <p class="text-sm text-slate-600 mb-3 font-semibold"><strong>👨‍🔧 Técnico:</strong> ${escapeHtml(r.tech)}</p>
+                        <p class="text-sm text-slate-600 mb-3 font-semibold"><strong>👨‍ Técnico:</strong> ${escapeHtml(r.tech)}</p>
                         <div class="flex gap-2 mb-4 flex-wrap">
                             <span class="text-xs bg-yellow-100 text-black px-3 py-1 rounded-full font-bold">📷 Antes: ${r.photosBefore.length}</span>
                             <span class="text-xs bg-slate-800 text-yellow-400 px-3 py-1 rounded-full font-bold">📸 Después: ${r.photosAfter.length}</span>
@@ -1921,15 +2509,15 @@
             content.innerHTML = `
                 <div class="space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 bg-yellow-50 p-5 rounded-2xl border-l-8 border-black">
-                        <div class="font-semibold"><strong>📍 Ubicación:</strong> ${escapeHtml(r.store)}</div>
+                        <div class="font-semibold"><strong> Ubicación:</strong> ${escapeHtml(r.store)}</div>
                         <div class="font-semibold"><strong>📅 Fecha:</strong> ${formatDate(r.date)}</div>
-                        <div class="font-semibold"><strong>👨‍🔧 Técnico:</strong> ${escapeHtml(r.tech)}</div>
+                        <div class="font-semibold"><strong>👨‍ Técnico:</strong> ${escapeHtml(r.tech)}</div>
                         <div class="font-semibold"><strong>🕐 Creado:</strong> ${new Date(r.createdAt).toLocaleString('es-ES')}</div>
                     </div>
                     ${r.description ? `<div class="bg-slate-50 p-5 rounded-2xl border-l-8 border-yellow-400"><strong class="font-black">📝 Descripción:</strong><p class="text-slate-600 mt-2 font-semibold">${escapeHtml(r.description)}</p></div>` : ''}
                     ${r.photosBefore.length > 0 ? `
                         <div>
-                            <h4 class="font-black text-slate-700 mb-3 border-l-8 border-yellow-400 pl-3">📷 Fotos ANTES</h4>
+                            <h4 class="font-black text-slate-700 mb-3 border-l-8 border-yellow-400 pl-3"> Fotos ANTES</h4>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 ${r.photosBefore.map(p => `<img src="${p}" class="w-full h-48 object-cover rounded-2xl border-2 border-black cursor-pointer hover:scale-105 transition-all shadow-xl" onclick="window.open('${p}')">`).join('')}
                             </div>
@@ -1972,12 +2560,12 @@
             const obs = document.getElementById('eqObsMantenimiento').value.trim();
 
             if (!store || !code) {
-                showToast('Por favor completa Tienda y Codificación antes de exportar', 'error');
+                showToast('Completa Tienda y Codificación', 'error');
                 return;
             }
 
             try {
-                showToast('⏳ Generando PDF del Checklist...');
+                showToast('⏳ Generando PDF...');
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const pageWidth = pdf.internal.pageSize.getWidth();
@@ -2022,9 +2610,6 @@
                         y += 5;
                     });
                     y += 5;
-                } else {
-                    pdf.setFont(undefined, 'italic');
-                    pdf.text('No se marcaron tareas específicas en el checklist.', 15, y); y += 10;
                 }
 
                 pdf.setFont(undefined, 'bold');
@@ -2036,35 +2621,19 @@
                     pdf.setFont(undefined, 'normal');
                     const splitObs = pdf.splitTextToSize(obs, pageWidth - 30);
                     pdf.text(splitObs, 15, y);
-                    y += (splitObs.length * 5) + 10;
                 }
-
-                y += 15;
-                pdf.setDrawColor(0, 0, 0);
-                pdf.line(15, y, 100, y);
-                pdf.setFontSize(9);
-                pdf.text('Firma del Técnico', 15, y + 5);
-                pdf.line(120, y, 195, y);
-                pdf.text('Firma del Responsable', 120, y + 5);
-
-                pdf.setFillColor(31, 41, 55);
-                pdf.rect(0, 280, pageWidth, 15, 'F');
-                pdf.setFontSize(8);
-                pdf.setTextColor(251, 191, 36);
-                pdf.text(`Documento generado el ${new Date().toLocaleString('es-ES')} - Visitas Tejar`, pageWidth/2, 288, { align: 'center' });
 
                 const pdfBlob = pdf.output('blob');
                 const filename = `Checklist_${store.replace(/\s+/g, '_')}_${code}_${fecha}.pdf`;
                 await saveFileLocally(pdfBlob, filename, 'Checklist PDF');
             } catch(e) {
-                console.error('Error generando PDF:', e);
-                showToast('Error al generar PDF: ' + e.message, 'error');
+                showToast('Error: ' + e.message, 'error');
             }
         }
 
         async function exportInventoryPDF() {
             const filteredInventory = getFilteredInventory();
-            if (filteredInventory.length === 0) { showToast('No hay datos para exportar con los filtros actuales', 'error'); return; }
+            if (filteredInventory.length === 0) { showToast('No hay datos para exportar', 'error'); return; }
             try {
                 showToast('⏳ Generando reporte PDF...');
                 const { jsPDF } = window.jspdf;
@@ -2081,140 +2650,94 @@
                 pdf.text('Sistema de Inventario y Reportes', pageWidth/2, 22, { align: 'center' });
                 y = 45;
 
-                pdf.setTextColor(0, 0, 0); pdf.setFontSize(13); pdf.setFont(undefined, 'bold');
-                pdf.text('Informacion del Filtro', 15, y); y += 8;
-                pdf.setFont(undefined, 'normal'); pdf.setFontSize(10);
+                pdf.setTextColor(0, 0, 0); pdf.setFontSize(11); pdf.setFont(undefined, 'bold');
+                pdf.text('Filtros Aplicados:', 15, y); y += 6;
+                pdf.setFont(undefined, 'normal'); pdf.setFontSize(9);
                 
                 const filterInfo = [];
-                if (currentStoreFilter !== 'all') filterInfo.push(`Tienda/Area: ${getStoreShortName(currentStoreFilter)}`);
-                if (currentFilter !== 'all') filterInfo.push(`Categoria: ${getCategoryLabel(currentFilter).replace(/[^a-zA-ZÀ-ÿ\s]/g, '').trim()}`);
-                const search = document.getElementById('searchInput').value.trim();
-                if (search) filterInfo.push(`Busqueda: "${search}"`);
+                if (currentStoreFilter !== 'all') filterInfo.push(`Tienda: ${getStoreShortName(currentStoreFilter)}`);
+                if (currentFilter !== 'all') filterInfo.push(`Categoría: ${getCategoryLabel(currentFilter).replace(/[^a-zA-ZÀ-ÿ\s]/g, '').trim()}`);
+                if (currentStatusFilter !== 'all') filterInfo.push(`Estado: ${(STATUS_LABELS[currentStatusFilter] || STATUS_LABELS['pendiente']).label}`);
+                const searchUsuario = document.getElementById('searchUsuario')?.value.trim();
+                if (searchUsuario) filterInfo.push(`Usuario: "${searchUsuario}"`);
+                const searchGeneral = document.getElementById('searchGeneral')?.value.trim();
+                if (searchGeneral) filterInfo.push(`Búsqueda: "${searchGeneral}"`);
                 
-                if (filterInfo.length > 0) { pdf.text(filterInfo.join(' | '), 15, y); y += 6; }
-                else { pdf.text('Sin filtros aplicados - Mostrando todos los equipos', 15, y); y += 6; }
+                if (filterInfo.length > 0) { pdf.text(filterInfo.join(' | '), 15, y); y += 5; }
+                else { pdf.text('Sin filtros - Mostrando todos los equipos', 15, y); y += 5; }
                 
-                pdf.text(`Total de equipos: ${filteredInventory.length}`, 15, y); y += 6;
-                pdf.text(`Fecha de generacion: ${new Date().toLocaleString('es-ES')}`, 15, y); y += 10;
+                pdf.text(`Total de equipos: ${filteredInventory.length} | Fecha: ${new Date().toLocaleString('es-ES')}`, 15, y); y += 8;
 
-                const counts = {
-                    computadora: filteredInventory.filter(i => i.category === 'computadora').length,
-                    impresora: filteredInventory.filter(i => i.category === 'impresora').length,
-                    monitor: filteredInventory.filter(i => i.category === 'monitor').length,
-                    tablet: filteredInventory.filter(i => i.category === 'tablet').length,
-                    telefono: filteredInventory.filter(i => i.category === 'telefono').length
-                };
-
-                pdf.setFontSize(12); pdf.setFont(undefined, 'bold'); pdf.text('Resumen por Categoria:', 15, y); y += 6;
-                pdf.setFontSize(9); pdf.setFont(undefined, 'normal');
-                pdf.text(`Computadoras: ${counts.computadora} | Impresoras: ${counts.impresora} | Monitores: ${counts.monitor} | Tablets: ${counts.tablet} | Telefonos: ${counts.telefono}`, 15, y); y += 10;
-
-                const categoryOrder = { 'computadora': 1, 'impresora': 2, 'monitor': 3, 'tablet': 4, 'telefono': 5 };
-                const sortedInventory = [...filteredInventory].sort((a, b) => {
-                    const orderA = categoryOrder[a.category] || 99;
-                    const orderB = categoryOrder[b.category] || 99;
-                    if (orderA !== orderB) return orderA - orderB;
-                    return (a.store || '').localeCompare(b.store || '');
+                const tableData = filteredInventory.map(item => {
+                    const status = (STATUS_LABELS[item.status || 'pendiente'] || STATUS_LABELS['pendiente']).label;
+                    return [
+                        getCategoryLabel(item.category).replace(/[^a-zA-ZÀ-ÿ\s]/g, '').trim(),
+                        getStoreShortName(item.store),
+                        item.usuario || '-',
+                        item.marca || '-',
+                        item.model,
+                        item.serial,
+                        item.code || '-',
+                        status
+                    ];
                 });
-
-                const tableData = sortedInventory.map(item => {
-                    const categoryText = { 'computadora': 'Computadora', 'impresora': 'Impresora', 'monitor': 'Monitor', 'tablet': 'Tablet', 'telefono': 'Telefono' }[item.category] || item.category;
-                    return [categoryText, getStoreShortName(item.store), item.marca || '-', item.model, item.serial, item.code || '-', item.notes || '-'];
-                });
-
-                pdf.setFontSize(13); pdf.setFont(undefined, 'bold'); pdf.text('Detalle del Inventario (Ordenado por Categoria)', 15, y); y += 5;
 
                 pdf.autoTable({
                     startY: y,
-                    head: [['Categoria', 'Tienda/Area', 'Marca', 'Modelo', 'No. Serie', 'Codificacion', 'Notas']],
+                    head: [['Categoría', 'Tienda/Área', 'Usuario', 'Marca', 'Modelo', 'No. Serie', 'Código', 'Estado']],
                     body: tableData, theme: 'grid',
-                    headStyles: { fillColor: [31, 41, 55], textColor: [251, 191, 36], fontStyle: 'bold', fontSize: 8 },
-                    bodyStyles: { fontSize: 7, textColor: [0, 0, 0] },
-                    didParseCell: function(data) {
-                        if (data.section === 'body' && data.column.index === 0) {
-                            const categoria = data.cell.raw;
-                            if (categoria === 'Computadora') data.cell.styles.fillColor = [254, 243, 199];
-                            else if (categoria === 'Impresora') data.cell.styles.fillColor = [226, 232, 240];
-                            else if (categoria === 'Monitor') data.cell.styles.fillColor = [241, 245, 249];
-                            else if (categoria === 'Tablet') data.cell.styles.fillColor = [254, 243, 199];
-                            else if (categoria === 'Telefono') data.cell.styles.fillColor = [209, 250, 229];
-                        }
-                    },
-                    margin: { top: 10, left: 15, right: 15 },
+                    headStyles: { fillColor: [31, 41, 55], textColor: [251, 191, 36], fontStyle: 'bold', fontSize: 7 },
+                    bodyStyles: { fontSize: 6, textColor: [0, 0, 0] },
+                    margin: { top: 10, left: 10, right: 10 },
                     didDrawPage: function(data) {
                         pdf.setFillColor(31, 41, 55); pdf.rect(0, pageHeight - 15, pageWidth, 15, 'F');
                         pdf.setFontSize(8); pdf.setTextColor(251, 191, 36);
-                        pdf.text(`Pagina ${pdf.internal.getNumberOfPages()} - Visitas Tejar - ${new Date().toLocaleString('es-ES')}`, pageWidth/2, pageHeight - 5, { align: 'center' });
+                        pdf.text(`Página ${pdf.internal.getNumberOfPages()} - Visitas Tejar`, pageWidth/2, pageHeight - 5, { align: 'center' });
                     }
                 });
 
                 const pdfBlob = pdf.output('blob');
                 const storeName = currentStoreFilter !== 'all' ? getStoreShortName(currentStoreFilter).replace(/\s+/g, '_') : 'Todas';
-                const filename = `Reporte_Inventario_${storeName}_${new Date().toISOString().split('T')[0]}.pdf`;
-                await saveFileLocally(pdfBlob, filename, 'Reporte de Inventario PDF');
+                const filename = `Inventario_${storeName}_${new Date().toISOString().split('T')[0]}.pdf`;
+                await saveFileLocally(pdfBlob, filename, 'Reporte PDF');
             } catch(e) {
-                console.error('Error generando reporte PDF:', e);
-                showToast('Error al generar reporte PDF: ' + e.message, 'error');
+                showToast('Error: ' + e.message, 'error');
             }
         }
 
         async function exportToExcel() {
             const filteredInventory = getFilteredInventory();
-            if (filteredInventory.length === 0) { showToast('No hay datos para exportar con los filtros actuales', 'error'); return; }
+            if (filteredInventory.length === 0) { showToast('No hay datos', 'error'); return; }
             try {
-                const data = filteredInventory.map(item => ({
-                    'Tienda / Área': getStoreShortName(item.store) || '',
-                    'Categoría': getCategoryLabel(item.category),
-                    'Marca': item.marca || '', 'Modelo': item.model,
-                    'Número de Serie': item.serial, 'Número de Codificación': item.code || '',
-                    'Notas': item.notes || '',
-                    'Fecha de Registro': item.createdAt ? new Date(item.createdAt).toLocaleString('es-ES') : '',
-                    'Última Actualización': item.updatedAt ? new Date(item.updatedAt).toLocaleString('es-ES') : ''
-                }));
+                const data = filteredInventory.map(item => {
+                    const status = (STATUS_LABELS[item.status || 'pendiente'] || STATUS_LABELS['pendiente']).label;
+                    return {
+                        'Tienda / Área': getStoreShortName(item.store) || '',
+                        'Categoría': getCategoryLabel(item.category),
+                        'Usuario Asignado': item.usuario || '',
+                        'Marca': item.marca || '',
+                        'Modelo': item.model,
+                        'Número de Serie': item.serial,
+                        'Código': item.code || '',
+                        'Estado': status,
+                        'Notas': item.notes || '',
+                        'Fecha de Registro': item.createdAt ? new Date(item.createdAt).toLocaleString('es-ES') : ''
+                    };
+                });
 
                 const ws = XLSX.utils.json_to_sheet(data);
-                ws['!cols'] = [{ wch: 22 }, { wch: 18 }, { wch: 15 }, { wch: 25 }, { wch: 20 }, { wch: 22 }, { wch: 30 }, { wch: 20 }, { wch: 20 }];
+                ws['!cols'] = [{ wch: 22 }, { wch: 18 }, { wch: 25 }, { wch: 15 }, { wch: 25 }, { wch: 20 }, { wch: 22 }, { wch: 20 }, { wch: 30 }, { wch: 20 }];
                 
-                const filterInfo = [];
-                if (currentStoreFilter !== 'all') filterInfo.push(`Tienda/Área: ${getStoreShortName(currentStoreFilter)}`);
-                if (currentFilter !== 'all') filterInfo.push(`Categoría: ${getCategoryLabel(currentFilter)}`);
-                const search = document.getElementById('searchInput').value.trim();
-                if (search) filterInfo.push(`Búsqueda: "${search}"`);
-
-                if (filterInfo.length > 0) {
-                    const ws2 = XLSX.utils.aoa_to_sheet([
-                        ['Filtros aplicados:', filterInfo.join(' | ')],
-                        ['Total de registros:', filteredInventory.length],
-                        ['Fecha de exportación:', new Date().toLocaleString('es-ES')], []
-                    ]);
-                    const range = XLSX.utils.decode_range(ws2['!ref']);
-                    range.e.r += 1; ws2['!ref'] = XLSX.utils.encode_range(range);
-                    const invRange = XLSX.utils.decode_range(ws['!ref']);
-                    for (let R = invRange.s.r; R <= invRange.e.r; ++R) {
-                        for (let C = invRange.s.c; C <= invRange.e.c; ++C) {
-                            const cellAddress = XLSX.utils.encode_cell({r: R + 4, c: C});
-                            const oldAddress = XLSX.utils.encode_cell({r: R, c: C});
-                            ws2[cellAddress] = ws[oldAddress];
-                        }
-                    }
-                    ws2['!ref'] = XLSX.utils.encode_range({s: {r: 0, c: 0}, e: {r: invRange.e.r + 4, c: invRange.e.c}});
-                    const wb = XLSX.utils.book_new();
-                    XLSX.utils.book_append_sheet(wb, ws2, 'Inventario Filtrado');
-                    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-                    const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                    const filename = `VisitasTejar_Inventario_Filtrado_${new Date().toISOString().split('T')[0]}.xlsx`;
-                    await saveFileLocally(blob, filename, `Excel con ${filteredInventory.length} registros filtrados`);
-                } else {
-                    const wb = XLSX.utils.book_new();
-                    XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
-                    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-                    const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                    const filename = `VisitasTejar_Inventario_${new Date().toISOString().split('T')[0]}.xlsx`;
-                    await saveFileLocally(blob, filename, `Excel con ${filteredInventory.length} registros`);
-                }
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
+                const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                
+                const storeName = currentStoreFilter !== 'all' ? getStoreShortName(currentStoreFilter).replace(/\s+/g, '_') : 'Completo';
+                const filename = `Inventario_${storeName}_${new Date().toISOString().split('T')[0]}.xlsx`;
+                await saveFileLocally(blob, filename, `Excel con ${filteredInventory.length} registros`);
             } catch(e) {
-                console.error('Error exportando Excel:', e);
-                showToast('Error al exportar Excel', 'error');
+                showToast('Error: ' + e.message, 'error');
             }
         }
 
@@ -2238,13 +2761,13 @@
                 y = 45;
 
                 pdf.setTextColor(0, 0, 0); pdf.setFontSize(13); pdf.setFont(undefined, 'bold');
-                pdf.text('Informacion General', 15, y); y += 8;
+                pdf.text('Información General', 15, y); y += 8;
                 pdf.setFont(undefined, 'normal'); pdf.setFontSize(10);
-                pdf.text(`Tienda/Ubicacion: ${r.store}`, 15, y); y += 6;
+                pdf.text(`Tienda/Ubicación: ${r.store}`, 15, y); y += 6;
                 pdf.text(`Fecha de Visita: ${formatDate(r.date)}`, 15, y); y += 6;
-                pdf.text(`Tecnico Responsable: ${r.tech}`, 15, y); y += 6;
+                pdf.text(`Técnico Responsable: ${r.tech}`, 15, y); y += 6;
                 if (r.description) {
-                    pdf.setFont(undefined, 'bold'); pdf.text(`Descripcion:`, 15, y); y += 6;
+                    pdf.setFont(undefined, 'bold'); pdf.text(`Descripción:`, 15, y); y += 6;
                     pdf.setFont(undefined, 'normal');
                     const splitDesc = pdf.splitTextToSize(r.description, pageWidth - 30);
                     pdf.text(splitDesc, 15, y); y += splitDesc.length * 5 + 3;
@@ -2255,23 +2778,20 @@
                     if (photos.length === 0) return;
                     if (y > 230) { pdf.addPage(); y = 20; }
                     pdf.setFontSize(13); pdf.setFont(undefined, 'bold'); pdf.setTextColor(31, 41, 55);
-                    pdf.text(title, 15, y);
-                    pdf.setDrawColor(251, 191, 36); pdf.setLineWidth(1);
-                    pdf.line(15, y + 2, pageWidth - 15, y + 2); y += 8;
+                    pdf.text(title, 15, y); y += 8;
                     pdf.setFont(undefined, 'normal'); pdf.setTextColor(0, 0, 0);
                     for (let i = 0; i < photos.length; i++) {
                         if (y > 220) { pdf.addPage(); y = 20; }
                         try {
                             pdf.addImage(photos[i], 'JPEG', 15, y, 90, 65);
-                            pdf.setFontSize(9); pdf.text(`Foto ${i+1}`, 15, y + 68);
                             y += 75;
                         } catch(e) { y += 10; }
                     }
                     y += 5;
                 };
 
-                await addPhotos(r.photosBefore, 'Fotos ANTES de la visita');
-                await addPhotos(r.photosAfter, 'Fotos DESPUES de la visita');
+                await addPhotos(r.photosBefore, 'Fotos ANTES');
+                await addPhotos(r.photosAfter, 'Fotos DESPUÉS');
 
                 if (r.signature) {
                     if (y > 200) { pdf.addPage(); y = 20; }
@@ -2281,24 +2801,11 @@
                     y += 35;
                 }
 
-                if (y > 240) { pdf.addPage(); y = 20; }
-                y += 10; pdf.setDrawColor(0, 0, 0);
-                pdf.line(15, y + 15, 100, y + 15);
-                pdf.setFontSize(9); pdf.setFont(undefined, 'normal'); pdf.setTextColor(0, 0, 0);
-                pdf.text('Firma y Sello del Responsable', 15, y + 20);
-                pdf.line(120, y + 15, 195, y + 15);
-                pdf.text('Firma del Tecnico', 120, y + 20);
-
-                pdf.setFillColor(31, 41, 55); pdf.rect(0, pageHeight - 15, pageWidth, 15, 'F');
-                pdf.setFontSize(8); pdf.setTextColor(251, 191, 36);
-                pdf.text(`Documento generado el ${new Date().toLocaleString('es-ES')} - Visitas Tejar`, pageWidth/2, pageHeight - 5, { align: 'center' });
-
                 const pdfBlob = pdf.output('blob');
-                const filename = `VisitasTejar_Reporte_${getStoreShortName(r.store).replace(/\s+/g, '_')}_${r.date}.pdf`;
+                const filename = `Reporte_${getStoreShortName(r.store).replace(/\s+/g, '_')}_${r.date}.pdf`;
                 await saveFileLocally(pdfBlob, filename, 'Reporte PDF');
             } catch(e) {
-                console.error('Error generando PDF:', e);
-                showToast('Error al generar PDF: ' + e.message, 'error');
+                showToast('Error: ' + e.message, 'error');
             }
         }
 
@@ -2350,6 +2857,25 @@
                 `;
             }).join('');
 
+            const statusCounts = {
+                activo: inventory.filter(i => (i.status || 'pendiente') === 'activo').length,
+                reparacion: inventory.filter(i => i.status === 'reparacion').length,
+                fallas: inventory.filter(i => i.status === 'fallas').length,
+                baja: inventory.filter(i => i.status === 'baja').length,
+                bodega: inventory.filter(i => i.status === 'bodega').length,
+                pendiente: inventory.filter(i => !i.status || i.status === 'pendiente').length
+            };
+
+            const statusStatsHTML = Object.entries(statusCounts).filter(([_, count]) => count > 0).map(([status, count]) => {
+                const info = STATUS_LABELS[status];
+                return `
+                    <div class="flex justify-between p-3 bg-white rounded-xl border-2 border-slate-200 shadow-sm">
+                        <span class="badge-status ${info.class}">${info.label}</span>
+                        <span class="font-black text-black text-xl">${count}</span>
+                    </div>
+                `;
+            }).join('');
+
             const storeCounts = {};
             inventory.forEach(item => {
                 const store = getStoreShortName(item.store) || 'Sin asignar';
@@ -2367,8 +2893,15 @@
                 <div class="space-y-3">
                     <div class="flex justify-between p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-2xl border-l-8 border-black shadow-lg"><span class="text-slate-600 font-bold">Total de Equipos</span><span class="font-black text-slate-800 text-2xl">${inventory.length}</span></div>
                     <div class="flex justify-between p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-2xl border-l-8 border-yellow-400 shadow-lg"><span class="text-slate-600 font-bold">Total de Reportes</span><span class="font-black text-slate-800 text-2xl">${reports.length}</span></div>
-                    <div class="flex justify-between p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-2xl border-l-8 border-black shadow-lg"><span class="text-slate-600 font-bold">Tiendas/Áreas con equipos</span><span class="font-black text-slate-800 text-2xl">${Object.keys(storeCounts).length}</span></div>
-                    <div class="flex justify-between p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-2xl border-l-8 border-yellow-400 shadow-lg"><span class="text-slate-600 font-bold">Última Actualización</span><span class="font-black text-slate-800 text-sm">${inventory.length ? new Date(Math.max(...inventory.map(i => new Date(i.updatedAt || i.createdAt)))).toLocaleDateString('es-ES') : '-'}</span></div>
+                    <div class="flex justify-between p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-2xl border-l-8 border-black shadow-lg"><span class="text-slate-600 font-bold">Tiendas/Áreas</span><span class="font-black text-slate-800 text-2xl">${Object.keys(storeCounts).length}</span></div>
+                    
+                    <div class="mt-5">
+                        <h4 class="font-black text-slate-700 mb-3 border-l-8 border-green-500 pl-3">🚦 Equipos por Estado:</h4>
+                        <div class="space-y-2 mb-4">
+                            ${statusStatsHTML || '<p class="text-sm text-slate-500 font-semibold">Sin datos</p>'}
+                        </div>
+                    </div>
+                    
                     <div class="mt-5">
                         <h4 class="font-black text-slate-700 mb-3 border-l-8 border-yellow-400 pl-3">📊 Equipos por Tienda/Área:</h4>
                         <div class="space-y-2 max-h-64 overflow-y-auto scrollbar-thin">
@@ -2407,6 +2940,90 @@
             toast.classList.remove('hidden');
             clearTimeout(window._toastTimer);
             window._toastTimer = setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+
+        // ✅ FUNCIONES PARA UTILIDADES
+        function showUtilityForm(type) {
+            // Ocultar todos los formularios
+            document.getElementById('form-etiqueta').classList.add('hidden');
+            document.getElementById('form-entrega').classList.add('hidden');
+            
+            // Mostrar el seleccionado
+            document.getElementById('form-' + type).classList.remove('hidden');
+            
+            // Scroll al formulario
+            document.getElementById('form-' + type).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function hideUtilityForm() {
+            document.getElementById('form-etiqueta').classList.add('hidden');
+            document.getElementById('form-entrega').classList.add('hidden');
+        }
+
+        function previewEtiqueta() {
+            document.getElementById('preview-para').textContent = document.getElementById('envio-para').value || '';
+            document.getElementById('preview-tel').textContent = document.getElementById('envio-tel').value || '';
+            document.getElementById('preview-tienda').textContent = document.getElementById('envio-tienda-select').value || '';
+            document.getElementById('preview-direccion').textContent = document.getElementById('envio-direccion').value || '';
+            document.getElementById('preview-de').textContent = document.getElementById('envio-de').value || '';
+            
+            document.getElementById('print-etiqueta').classList.remove('hidden');
+        }
+
+        function printEtiqueta() {
+            previewEtiqueta();
+            setTimeout(() => {
+                window.print();
+            }, 100);
+        }
+
+        function previewEntrega() {
+            document.getElementById('preview-recibe').textContent = document.getElementById('entrega-recibe').value || '';
+            document.getElementById('preview-depto').textContent = document.getElementById('entrega-depto').value || '';
+            document.getElementById('preview-jefe').textContent = document.getElementById('entrega-jefe').value || '';
+            document.getElementById('preview-puesto').textContent = document.getElementById('entrega-puesto').value || '';
+            document.getElementById('preview-it').textContent = document.getElementById('entrega-it').value || '';
+            document.getElementById('preview-ubicacion').textContent = document.getElementById('entrega-ubicacion').value || '';
+            document.getElementById('preview-fecha').textContent = document.getElementById('entrega-fecha').value || '';
+            
+            document.getElementById('preview-tipo').textContent = document.getElementById('entrega-tipo').value || '';
+            document.getElementById('preview-marca').textContent = document.getElementById('entrega-marca').value || '';
+            document.getElementById('preview-modelo').textContent = document.getElementById('entrega-modelo').value || '';
+            document.getElementById('preview-serie').textContent = document.getElementById('entrega-serie').value || '';
+            document.getElementById('preview-estado').textContent = document.getElementById('entrega-estado').value || '';
+            
+            // Checks verificados
+            const checks = [];
+            if (document.getElementById('check-teclas').checked) checks.push('✓ Teclado');
+            if (document.getElementById('check-touchpad').checked) checks.push('✓ Touchpad');
+            if (document.getElementById('check-usb').checked) checks.push('✓ USB');
+            if (document.getElementById('check-red').checked) checks.push('✓ Red');
+            if (document.getElementById('check-pantalla').checked) checks.push('✓ Pantalla');
+            if (document.getElementById('check-cargador').checked) checks.push('✓ Cargador');
+            if (document.getElementById('check-camara').checked) checks.push('✓ Cámara');
+            if (document.getElementById('check-mouse').checked) checks.push('✓ Mouse');
+            
+            document.getElementById('preview-checks').innerHTML = checks.length > 0 ? checks.map(c => `<span class="inline-block mr-2">${c}</span>`).join('') : 'Ninguno';
+            
+            // Software
+            const software = [];
+            if (document.getElementById('soft-office').checked) software.push('✓ Office');
+            if (document.getElementById('soft-sap').checked) software.push('✓ SAP');
+            if (document.getElementById('soft-antivirus').checked) software.push('✓ Antivirus');
+            if (document.getElementById('soft-otros').checked) software.push('✓ Otros');
+            
+            document.getElementById('preview-software').innerHTML = software.length > 0 ? software.map(s => `<span class="inline-block mr-2">${s}</span>`).join('') : 'Ninguno';
+            
+            document.getElementById('preview-comentarios').textContent = document.getElementById('entrega-comentarios').value || '';
+            
+            document.getElementById('print-entrega').classList.remove('hidden');
+        }
+
+        function printEntrega() {
+            previewEntrega();
+            setTimeout(() => {
+                window.print();
+            }, 100);
         }
     </script>
 </body>
