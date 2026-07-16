@@ -696,6 +696,126 @@
             height: 60px;
             margin-bottom: 5px;
         }
+        
+        /* Modal de confirmación de usuario duplicado */
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .confirm-modal.show {
+            display: flex;
+        }
+        
+        .confirm-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        .confirm-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+        
+        .confirm-icon {
+            width: 40px;
+            height: 40px;
+            background: #fef3c7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .confirm-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .confirm-body {
+            margin-bottom: 1.5rem;
+        }
+        
+        .confirm-user {
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        
+        .equipment-list {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .equipment-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .equipment-item:last-child {
+            border-bottom: none;
+        }
+        
+        .confirm-question {
+            margin-top: 1rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .confirm-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .btn-confirm {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-accept {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .btn-accept:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-cancel {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .btn-cancel:hover {
+            background: #e5e7eb;
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -728,8 +848,8 @@
         </div>
         <div class="max-w-7xl mx-auto px-4 pb-4 flex gap-3 overflow-x-auto">
             <button onclick="switchTab('inventario')" id="tab-inventario" class="tab-btn tab-active px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all ripple">📦 Inventario</button>
-            <button onclick="switchTab('reportes')" id="tab-reportes" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple"> Reportes de Visita</button>
-            <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple">📊 Estadísticas</button>
+            <button onclick="switchTab('reportes')" id="tab-reportes" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple">📋 Reportes de Visita</button>
+            <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple"> Estadísticas</button>
             <button onclick="switchTab('utilidades')" id="tab-utilidades" class="tab-btn bg-white text-slate-700 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all hover:bg-slate-50 ripple">🛠️ Utilidades</button>
         </div>
     </header>
@@ -741,7 +861,7 @@
             <div class="glass-card shadow-2xl p-6 mb-6 border-l-8 border-yellow-400 slide-in">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2"> / 🏢 Filtrar por Tienda o Área:</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">🏪 / 🏢 Filtrar por Tienda o Área:</label>
                         <select id="storeFilterSelect" onchange="filterStore(this.value)" class="filter-select w-full px-4 py-3 cursor-pointer">
                             <option value="all">Todas las tiendas / áreas</option>
                             <option value="Tienda Zona 1">🏪 Tienda Zona 1</option>
@@ -757,21 +877,21 @@
                             <option value="Tienda Retalhuleu">🏪 Tienda Retalhuleu</option>
                             <option value="Tienda Huehuetenango">🏪 Tienda Huehuetenango</option>
                             <option value="Tienda Puerto Barrios"> Tienda Puerto Barrios</option>
-                            <option value="Tienda Quiche">🏪 Tienda Quiché</option>
+                            <option value="Tienda Quiche"> Tienda Quiché</option>
                             <option value="Tienda Morales">🏪 Tienda Morales</option>
                             <option value="Tienda Salama">🏪 Tienda Salamá</option>
-                            <option value="Tienda Jalapa"> Tienda Jalapa</option>
+                            <option value="Tienda Jalapa">🏪 Tienda Jalapa</option>
                             <option value="Tienda Trinidad Malacatan">🏪 Tienda Trinidad Malacatán</option>
                             <option value="Tienda Santa Lucia">🏪 Tienda Santa Lucía</option>
                             <option value="Tienda San Marcos">🏪 Tienda San Marcos</option>
                             <option value="Tienda Poptun">🏪 Tienda Poptún</option>
                             <option value="Tienda Tactic">🏪 Tienda Tactic</option>
-                            <option value="Tienda Santa Elena">🏪 Tienda Santa Elena</option>
-                            <option value="Tienda Tiquisate">🏪 Tienda Tiquisate</option>
-                            <option value="Tienda Salcaja">🏪 Tienda Salcajá</option>
+                            <option value="Tienda Santa Elena"> Tienda Santa Elena</option>
+                            <option value="Tienda Tiquisate"> Tienda Tiquisate</option>
+                            <option value="Tienda Salcaja"> Tienda Salcajá</option>
                             <option value="Tienda Asuncion Mita">🏪 Tienda Asunción Mita</option>
                             <option value="Tienda Totonicapa">🏪 Tienda Totonicapán</option>
-                            <option value="Contabilidad">🏢 Contabilidad</option>
+                            <option value="Contabilidad"> Contabilidad</option>
                             <option value="Tesorería">🏢 Tesorería</option>
                             <option value="Mercadeo">🏢 Mercadeo</option>
                             <option value="Categorías">🏢 Categorías</option>
@@ -791,15 +911,15 @@
                         <label class="block text-sm font-bold text-slate-700 mb-2">📦 Filtrar por Categoría:</label>
                         <select id="categoryFilterSelect" onchange="filterCategory(this.value)" class="filter-select w-full px-4 py-3 cursor-pointer">
                             <option value="all">Todas las categorías</option>
-                            <option value="computadora"> Computadoras</option>
+                            <option value="computadora">💻 Computadoras</option>
                             <option value="impresora">🖨️ Impresoras</option>
                             <option value="monitor">🖥️ Monitores</option>
                             <option value="tablet">📱 Tablets</option>
-                            <option value="telefono"> Teléfonos</option>
+                            <option value="telefono">📞 Teléfonos</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2"> Filtrar por Estado:</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">🚦 Filtrar por Estado:</label>
                         <select id="statusFilterSelect" onchange="filterStatus(this.value)" class="filter-select w-full px-4 py-3 cursor-pointer">
                             <option value="all">Todos los estados</option>
                             <option value="nuevo">✅ Nuevo</option>
@@ -821,7 +941,7 @@
                                 <input type="text" id="searchUsuario" placeholder="Buscar por nombre de usuario..." class="w-full px-3 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all text-sm" oninput="renderInventory()">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1"> Búsqueda General:</label>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">🔍 Búsqueda General:</label>
                                 <input type="text" id="searchGeneral" placeholder="Marca, modelo, serie, código, notas..." class="w-full px-3 py-2 border-2 border-black rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all text-sm" oninput="renderInventory()">
                             </div>
                         </div>
@@ -889,7 +1009,7 @@
                 </div>
                 <div class="glass-card rounded-3xl p-6 shadow-2xl card-hover border-l-8 border-slate-800 stagger-4 scale-in glow-border">
                     <div class="flex items-center justify-between mb-3">
-                        <p class="text-sm text-slate-500 font-semibold">🖥️ Monitores/Tablets</p>
+                        <p class="text-sm text-slate-500 font-semibold">️ Monitores/Tablets</p>
                         <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
@@ -945,7 +1065,7 @@
             </div>
             <div id="reportsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
             <div id="emptyReports" class="hidden glass-card rounded-3xl p-16 text-center text-slate-500 shadow-2xl">
-                <div class="text-7xl mb-4 icon-shine">📋</div>
+                <div class="text-7xl mb-4 icon-shine"></div>
                 <p class="text-xl font-bold">No hay reportes de visita</p>
                 <p class="text-sm mt-2">Crea tu primer reporte para documentar tus visitas</p>
             </div>
@@ -986,7 +1106,7 @@
             <!-- Formulario de Etiqueta de Envío -->
             <div id="form-etiqueta" class="utility-form hidden">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold text-slate-800"> Etiqueta de Envío</h3>
+                    <h3 class="text-2xl font-bold text-slate-800">📦 Etiqueta de Envío</h3>
                     <button onclick="hideUtilityForm()" class="text-slate-500 hover:text-slate-700 text-2xl">&times;</button>
                 </div>
                 
@@ -1069,7 +1189,7 @@
                             <p style="margin: 3px 0;"><strong>DE:</strong> <span id="preview-de"></span></p>
                         </div>
                         <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border: 2px solid #dc3545; text-align: center;">
-                            <p style="font-size: 14pt; font-weight: bold; color: #dc3545; margin: 5px 0;">️ FRÁGIL</p>
+                            <p style="font-size: 14pt; font-weight: bold; color: #dc3545; margin: 5px 0;">⚠️ FRÁGIL</p>
                             <p style="font-size: 12pt; font-weight: bold; color: #dc3545; margin: 5px 0;">FAVOR NO GOLPEAR</p>
                             <p style="font-size: 9pt; margin: 5px 0;">Maneje con cuidado</p>
                         </div>
@@ -1080,7 +1200,7 @@
             <!-- Formulario de Recepción/Entrega -->
             <div id="form-entrega" class="utility-form hidden">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold text-slate-800"> Recepción y Entrega de Equipo</h3>
+                    <h3 class="text-2xl font-bold text-slate-800">📋 Recepción y Entrega de Equipo</h3>
                     <button onclick="hideUtilityForm()" class="text-slate-500 hover:text-slate-700 text-2xl">&times;</button>
                 </div>
                 
@@ -1324,22 +1444,22 @@
                 <input type="hidden" id="equipmentId">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">🏪 /  Tienda o Área *</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">🏪 / 🏢 Tienda o Área *</label>
                         <select id="eqStore" required class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-yellow-50 transition-all" onchange="loadUsersForArea()">
                             <option value="">-- Selecciona una opción --</option>
                             <option value="Tienda Zona 1">🏪 Tienda Zona 1</option>
-                            <option value="Tienda Jutiapa"> Tienda Jutiapa</option>
+                            <option value="Tienda Jutiapa">🏪 Tienda Jutiapa</option>
                             <option value="Tienda Zacapa">🏪 Tienda Zacapa</option>
                             <option value="Tienda Coatepeque">🏪 Tienda Coatepeque</option>
                             <option value="Tienda Escuintla">🏪 Tienda Escuintla</option>
                             <option value="Tienda Chiquimula">🏪 Tienda Chiquimula</option>
                             <option value="Tienda Coban">🏪 Tienda Cobán</option>
                             <option value="Tienda Chimaltenango">🏪 Tienda Chimaltenango</option>
-                            <option value="Tienda Mazatenango"> Tienda Mazatenango</option>
-                            <option value="Tienda Xela"> Tienda Xela</option>
+                            <option value="Tienda Mazatenango">🏪 Tienda Mazatenango</option>
+                            <option value="Tienda Xela">🏪 Tienda Xela</option>
                             <option value="Tienda Retalhuleu">🏪 Tienda Retalhuleu</option>
                             <option value="Tienda Huehuetenango">🏪 Tienda Huehuetenango</option>
-                            <option value="Tienda Puerto Barrios">🏪 Tienda Puerto Barrios</option>
+                            <option value="Tienda Puerto Barrios"> Tienda Puerto Barrios</option>
                             <option value="Tienda Quiche">🏪 Tienda Quiché</option>
                             <option value="Tienda Morales">🏪 Tienda Morales</option>
                             <option value="Tienda Salama">🏪 Tienda Salamá</option>
@@ -1349,16 +1469,16 @@
                             <option value="Tienda San Marcos">🏪 Tienda San Marcos</option>
                             <option value="Tienda Poptun">🏪 Tienda Poptún</option>
                             <option value="Tienda Tactic"> Tienda Tactic</option>
-                            <option value="Tienda Santa Elena">🏪 Tienda Santa Elena</option>
-                            <option value="Tienda Tiquisate">🏪 Tienda Tiquisate</option>
-                            <option value="Tienda Salcaja">🏪 Tienda Salcajá</option>
+                            <option value="Tienda Santa Elena"> Tienda Santa Elena</option>
+                            <option value="Tienda Tiquisate"> Tienda Tiquisate</option>
+                            <option value="Tienda Salcaja"> Tienda Salcajá</option>
                             <option value="Tienda Asuncion Mita">🏪 Tienda Asunción Mita</option>
-                            <option value="Tienda Totonicapa"> Tienda Totonicapán</option>
+                            <option value="Tienda Totonicapa">🏪 Tienda Totonicapán</option>
                             <option value="Contabilidad">🏢 Contabilidad</option>
                             <option value="Tesorería">🏢 Tesorería</option>
                             <option value="Mercadeo">🏢 Mercadeo</option>
                             <option value="Categorías">🏢 Categorías</option>
-                            <option value="Auditoría"> Auditoría</option>
+                            <option value="Auditoría">🏢 Auditoría</option>
                             <option value="Gerentes Regionales">🏢 Gerentes Regionales</option>
                             <option value="SAC">🏢 SAC</option>
                             <option value="Sistemas">🏢 Sistemas</option>
@@ -1389,7 +1509,7 @@
                         <p class="text-xs text-slate-600 mb-2">Usuarios con equipos en esta área:</p>
                         <div id="usersList" class="flex flex-wrap gap-2 mb-3"></div>
                     </div>
-                    <input type="text" id="eqUsuario" class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all" placeholder="Ej: Jairo Cermeño, Miguel Arevalo, etc.">
+                    <input type="text" id="eqUsuario" class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all" placeholder="Ej: Jairo Cermeño, Miguel Arevalo, etc." onblur="checkUserEquipmentOnBlur()">
                     <p class="text-xs text-slate-500 mt-1">Si el usuario ya existe, selecciónalo de la lista o escribe su nombre exacto</p>
                 </div>
                 
@@ -1417,9 +1537,9 @@
                         <label class="block text-sm font-bold text-slate-700 mb-2">🚦 Estado del Equipo:</label>
                         <select id="eqStatus" class="w-full px-4 py-3 border-2 border-black rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-yellow-50 transition-all">
                             <option value="nuevo">✅ Nuevo</option>
-                            <option value="usado"> Usado</option>
-                            <option value="danado">⚠️ Dañado</option>
-                            <option value="bodega"> En Bodega</option>
+                            <option value="usado">🔄 Usado</option>
+                            <option value="danado">️ Dañado</option>
+                            <option value="bodega">📦 En Bodega</option>
                         </select>
                     </div>
                 </div>
@@ -1440,7 +1560,7 @@
                 </div>
 
                 <div class="border-t-2 border-slate-200 pt-6 mt-4">
-                    <h4 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-lg"> Checklist de Mantenimiento</h4>
+                    <h4 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-lg">📋 Checklist de Mantenimiento</h4>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                         <div>
@@ -1521,7 +1641,7 @@
                                 <option value="">-- Seleccionar estado --</option>
                                 <option value="Óptimo / Operativo">✅ Óptimo / Operativo</option>
                                 <option value="Operativo con observaciones">⚠️ Operativo con observaciones</option>
-                                <option value="Fuera de servicio (Requiere repuestos)"> Fuera de servicio (Requiere repuestos)</option>
+                                <option value="Fuera de servicio (Requiere repuestos)">❌ Fuera de servicio (Requiere repuestos)</option>
                             </select>
                         </div>
                     </div>
@@ -1542,6 +1662,26 @@
                     <button type="button" onclick="saveEquipment(event)" class="flex-1 btn-yellow px-5 py-3 rounded-xl font-bold ripple">💾 Guardar Equipo</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación de Usuario Duplicado -->
+    <div id="confirmUserModal" class="confirm-modal">
+        <div class="confirm-content">
+            <div class="confirm-header">
+                <div class="confirm-icon">⚠️</div>
+                <div class="confirm-title">Usuario con Equipo Asignado</div>
+            </div>
+            <div class="confirm-body">
+                <p class="confirm-user" id="confirmUserName"></p>
+                <p style="margin-bottom: 0.5rem;">Este usuario ya tiene el siguiente equipo asignado:</p>
+                <div class="equipment-list" id="confirmEquipmentList"></div>
+                <p class="confirm-question">¿Estás seguro que deseas agregar otro equipo al mismo usuario?</p>
+            </div>
+            <div class="confirm-buttons">
+                <button class="btn-confirm btn-cancel" onclick="closeConfirmModal(false)">Cancelar</button>
+                <button class="btn-confirm btn-accept" onclick="closeConfirmModal(true)">Aceptar</button>
+            </div>
         </div>
     </div>
 
@@ -1665,6 +1805,7 @@
         let currentEquipmentPhoto = null;
         let signaturePad = null;
         let dataLoaded = false;
+        let allowSaveEquipment = false; // Variable para controlar si se permite guardar
 
         const storeAddresses = {
             'Tienda El Tejar Asunción Mita': 'Km. 144 Asunción Mita, Jutiapa, a 500 metros de Hacienda San Carlos',
@@ -1802,7 +1943,7 @@
                 showToast(`✅ Conectado. Equipos cargados: ${inventory.length}`);
             } catch (e) {
                 console.error("❌ Error cargando datos:", e);
-                showToast(' Error al conectar: ' + e.message, 'error');
+                showToast('❌ Error al conectar: ' + e.message, 'error');
                 document.getElementById('emptyState').innerHTML = `
                     <div class="text-7xl mb-4">⚠️</div>
                     <p class="text-xl text-red-600 font-black">Error de conexión a la base de datos</p>
@@ -1862,7 +2003,60 @@
 
         function selectUser(usuario) {
             document.getElementById('eqUsuario').value = usuario;
+            checkUserEquipment(usuario); // Verificar equipo al seleccionar
             showToast(`✅ Usuario seleccionado: ${usuario}`);
+        }
+
+        // ✅ NUEVA FUNCIÓN: Verificar equipo cuando el usuario pierde el foco del input
+        function checkUserEquipmentOnBlur() {
+            const usuario = document.getElementById('eqUsuario').value.trim();
+            if (usuario) {
+                checkUserEquipment(usuario);
+            }
+        }
+
+        // ✅ NUEVA FUNCIÓN: Verificar y mostrar advertencia de equipo duplicado
+        function checkUserEquipment(usuario) {
+            if (!usuario || usuario.trim() === '') return;
+            
+            const usuarioNormalizado = usuario.trim().toLowerCase();
+            const equiposUsuario = inventory.filter(eq => {
+                return eq.usuario && eq.usuario.trim().toLowerCase() === usuarioNormalizado;
+            });
+            
+            if (equiposUsuario.length > 0) {
+                showConfirmModal(usuario, equiposUsuario);
+            }
+        }
+
+        // ✅ NUEVA FUNCIÓN: Mostrar modal de confirmación
+        function showConfirmModal(usuario, equipos) {
+            const modal = document.getElementById('confirmUserModal');
+            const userName = document.getElementById('confirmUserName');
+            const equipmentList = document.getElementById('confirmEquipmentList');
+            
+            userName.textContent = `El usuario "${usuario}" ya tiene ${equipos.length} equipo(s) asignado(s):`;
+            
+            equipmentList.innerHTML = equipos.map(eq => `
+                <div class="equipment-item">
+                    <strong>${eq.marca || 'Sin marca'}</strong> ${eq.model || ''} 
+                    ${eq.code ? `(${eq.code})` : '(Sin código)'}
+                </div>
+            `).join('');
+            
+            modal.classList.add('show');
+        }
+
+        // ✅ NUEVA FUNCIÓN: Cerrar modal de confirmación
+        function closeConfirmModal(accepted) {
+            const modal = document.getElementById('confirmUserModal');
+            modal.classList.remove('show');
+            allowSaveEquipment = accepted;
+            
+            if (!accepted) {
+                // Si canceló, limpiar el campo de usuario
+                document.getElementById('eqUsuario').value = '';
+            }
         }
 
         function autocompletarDireccion() {
@@ -1878,28 +2072,26 @@
             }
         }
 
-        // ✅ FUNCIÓN PARA VERIFICAR SI EL USUARIO YA TIENE EQUIPO
-        function checkUserHasEquipment(usuario, currentId = null) {
-            if (!usuario || usuario.trim() === '') return { hasEquipment: false, equipos: [] };
-            
-            const usuarioNormalizado = usuario.trim().toLowerCase();
-            const equiposUsuario = inventory.filter(eq => {
-                if (eq.id === currentId) return false; // Excluir el equipo actual si es edición
-                return eq.usuario && eq.usuario.trim().toLowerCase() === usuarioNormalizado;
-            });
-            
-            return {
-                hasEquipment: equiposUsuario.length > 0,
-                equipos: equiposUsuario
-            };
-        }
-
         async function saveEquipment(e) {
             if (e) e.preventDefault();
             
+            const usuario = document.getElementById('eqUsuario').value.trim();
+            
+            // Verificar si el usuario tiene equipo y no ha confirmado
+            if (!allowSaveEquipment && usuario) {
+                const usuarioNormalizado = usuario.trim().toLowerCase();
+                const equiposUsuario = inventory.filter(eq => {
+                    return eq.usuario && eq.usuario.trim().toLowerCase() === usuarioNormalizado;
+                });
+                
+                if (equiposUsuario.length > 0) {
+                    showConfirmModal(usuario, equiposUsuario);
+                    return; // Detener la ejecución hasta que confirme
+                }
+            }
+            
             const store = document.getElementById('eqStore').value.trim();
             const category = document.getElementById('eqCategory').value;
-            const usuario = document.getElementById('eqUsuario').value.trim();
             const marca = document.getElementById('eqMarca').value.trim();
             const model = document.getElementById('eqModel').value.trim();
             const serial = document.getElementById('eqSerial').value.trim();
@@ -1911,20 +2103,6 @@
             if (!store || !marca || !model || !serial || !code) {
                 showToast('Por favor completa todos los campos obligatorios', 'error');
                 return;
-            }
-
-            // ✅ VERIFICAR SI EL USUARIO YA TIENE EQUIPO (SOLO AL AGREGAR, NO AL EDITAR)
-            if (!id) {
-                const result = checkUserHasEquipment(usuario);
-                if (result.hasEquipment) {
-                    const equiposList = result.equipos.map(eq => `• ${eq.marca} ${eq.model} (${eq.code || 'Sin código'})`).join('\n');
-                    const confirmacion = confirm(
-                        `⚠️ El usuario "${usuario}" ya tiene ${result.equipos.length} equipo(s) asignado(s):\n\n${equiposList}\n\n¿Estás seguro que deseas agregar otro equipo al mismo usuario?`
-                    );
-                    if (!confirmacion) {
-                        return; // Cancelar la operación
-                    }
-                }
             }
 
             const mantFecha = document.getElementById('eqMantFecha').value;
@@ -1958,6 +2136,7 @@
                     showToast('✅ Equipo agregado correctamente');
                 }
                 
+                allowSaveEquipment = false; // Resetear la bandera
                 await loadData();
                 closeModal();
             } catch (e) {
@@ -1971,7 +2150,7 @@
                 try {
                     await db.collection("inventario").doc(id).delete();
                     await loadData();
-                    showToast('🗑️ Equipo eliminado');
+                    showToast('️ Equipo eliminado');
                 } catch (e) {
                     console.error("Error eliminando:", e);
                     showToast('❌ Error al eliminar equipo', 'error');
@@ -2377,9 +2556,9 @@
             updateStats();
         }
 
-        function getStoreShortName(store) { if (!store) return 'Sin asignar'; return store.replace('Tienda ', '').replace('🏢 ', '').replace('🏪 ', ''); }
+        function getStoreShortName(store) { if (!store) return 'Sin asignar'; return store.replace('Tienda ', '').replace('🏢 ', '').replace(' ', ''); }
         function getCategoryLabel(cat) {
-            const labels = { computadora: '💻 Computadora', impresora: '🖨️ Impresora', monitor: '🖥️ Monitor', tablet: '📱 Tablet', telefono: ' Teléfono' };
+            const labels = { computadora: '💻 Computadora', impresora: '🖨️ Impresora', monitor: '🖥️ Monitor', tablet: '📱 Tablet', telefono: '📞 Teléfono' };
             return labels[cat] || cat;
         }
 
@@ -2391,6 +2570,7 @@
             currentEquipmentPhoto = null;
             document.getElementById('equipmentPhotoPreview').classList.add('hidden');
             document.getElementById('usersContainer').classList.add('hidden');
+            allowSaveEquipment = false;
             
             document.getElementById('eqMantFecha').value = new Date().toISOString().split('T')[0];
             document.getElementById('eqMantTecnico').value = '';
@@ -2451,7 +2631,10 @@
             modal.classList.remove('hidden');
         }
 
-        function closeModal() { document.getElementById('equipmentModal').classList.add('hidden'); }
+        function closeModal() { 
+            document.getElementById('equipmentModal').classList.add('hidden');
+            allowSaveEquipment = false;
+        }
         function editEquipment(id) { openModal(id); }
 
         function openReportModal() {
@@ -2537,7 +2720,7 @@
             container.innerHTML = reports.slice().reverse().map(r => `
                 <div class="glass-card rounded-3xl shadow-2xl card-hover overflow-hidden border-t-8 border-yellow-400">
                     <div class="gradient-header p-5 text-yellow-400">
-                        <h3 class="font-black text-xl">📍 ${escapeHtml(r.store)}</h3>
+                        <h3 class="font-black text-xl"> ${escapeHtml(r.store)}</h3>
                         <p class="text-sm opacity-90 font-semibold mt-1"> ${formatDate(r.date)}</p>
                     </div>
                     <div class="p-5">
@@ -2580,7 +2763,7 @@
                     ` : ''}
                     ${r.photosAfter.length > 0 ? `
                         <div>
-                            <h4 class="font-black text-slate-700 mb-3 border-l-8 border-black pl-3">📸 Fotos DESPUÉS</h4>
+                            <h4 class="font-black text-slate-700 mb-3 border-l-8 border-black pl-3"> Fotos DESPUÉS</h4>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 ${r.photosAfter.map(p => `<img src="${p}" class="w-full h-48 object-cover rounded-2xl border-2 border-black cursor-pointer hover:scale-105 transition-all shadow-xl" onclick="window.open('${p}')">`).join('')}
                             </div>
@@ -2620,7 +2803,7 @@
             }
 
             try {
-                showToast(' Generando PDF...');
+                showToast('⏳ Generando PDF...');
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const pageWidth = pdf.internal.pageSize.getWidth();
