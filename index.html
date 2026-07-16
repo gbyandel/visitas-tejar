@@ -33,6 +33,8 @@
         .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(251,191,36,0.4); }
         .btn-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; transition: all 0.3s; }
         .btn-green:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(16,185,129,0.4); }
+        .btn-red { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: #ffffff; transition: all 0.3s; }
+        .btn-red:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(220,38,38,0.4); }
         .card-hover { transition: all 0.3s; }
         .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         .badge { padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; }
@@ -174,6 +176,15 @@
                     Mostrando <span id="filteredCount" class="font-bold text-black">0</span> de <span id="totalCount" class="font-bold text-black">0</span> equipos
                 </div>
                 <div class="flex gap-2 flex-wrap">
+                    <button onclick="document.getElementById('importExcelInput').click()" class="btn-green px-5 py-2 rounded-lg font-bold flex items-center gap-2">
+                        📥 Importar Excel
+                    </button>
+                    <input type="file" id="importExcelInput" accept=".xlsx, .xls" class="hidden" onchange="importFromExcel(event)">
+                    
+                    <button onclick="deleteLastImport()" class="btn-red px-5 py-2 rounded-lg font-bold flex items-center gap-2">
+                        🗑️ Deshacer Importación
+                    </button>
+                    
                     <button onclick="openModal()" class="btn-primary px-5 py-2 rounded-lg font-medium flex items-center gap-2">
                         <span>➕</span> Agregar Equipo
                     </button>
@@ -373,7 +384,7 @@
                     </div>
                 </div>
 
-                <!-- ✅ CHECKLIST DE MANTENIMIENTO (Filtrado por Categoría) -->
+                <!-- ✅ CHECKLIST DE MANTENIMIENTO -->
                 <div class="border-t-2 border-slate-200 pt-4 mt-2">
                     <h4 class="font-bold text-slate-800 mb-3 flex items-center gap-2">📋 Checklist de Mantenimiento</h4>
                     
@@ -398,10 +409,8 @@
                     </div>
 
                     <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-6">
-                        <!-- Computadora (Oculto por defecto) -->
                         <div id="checklist-computadora" class="space-y-3 hidden">
                             <h5 class="font-semibold text-sm text-slate-700 border-b border-slate-300 pb-1">💻 COMPUTADORA (PC/ Laptop)</h5>
-                            
                             <div>
                                 <p class="text-xs font-bold text-slate-500 uppercase mb-1">A. Preventivo (Hardware y Limpieza)</p>
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Apagar y desconectar el equipo"> Apagar y desconectar el equipo</label>
@@ -410,7 +419,6 @@
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Verificación de conexiones internas"> Verificación de conexiones internas</label>
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Revisión de cables y periféricos"> Revisión de cables y periféricos</label>
                             </div>
-
                             <div>
                                 <p class="text-xs font-bold text-slate-500 uppercase mb-1">A. Preventivo (Software y Sistema)</p>
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Eliminación de archivos temporales"> Eliminación de archivos temporales</label>
@@ -419,7 +427,6 @@
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Desinstalación de software no autorizado"> Desinstalación de software no autorizado</label>
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Verificación del estado del disco duro/SSD"> Verificación del estado del disco duro/SSD</label>
                             </div>
-
                             <div>
                                 <p class="text-xs font-bold text-slate-500 uppercase mb-1">B. Correctivo</p>
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Eliminación de virus/malware"> Eliminación de virus/malware</label>
@@ -432,10 +439,8 @@
                             </div>
                         </div>
 
-                        <!-- Impresora (Oculto por defecto) -->
                         <div id="checklist-impresora" class="space-y-3 hidden">
                             <h5 class="font-semibold text-sm text-slate-700 border-b border-slate-300 pb-1">🖨️ IMPRESORA (Láser o Inyección)</h5>
-                            
                             <div>
                                 <p class="text-xs font-bold text-slate-500 uppercase mb-1">A. Preventivo (Limpieza y Mecánica)</p>
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Limpieza externa y de bandejas"> Limpieza externa y de bandejas</label>
@@ -444,7 +449,6 @@
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Limpieza de cabezales/escáner"> Limpieza de cabezales/escáner</label>
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Verificación de nivel de tóner/tinta"> Verificación de nivel de tóner/tinta</label>
                             </div>
-
                             <div>
                                 <p class="text-xs font-bold text-slate-500 uppercase mb-1">A. Preventivo (Software y Configuración)</p>
                                 <label class="flex items-start gap-2 text-xs cursor-pointer mb-1"><input type="checkbox" class="check-eq custom-checkbox mt-0.5" value="Alineación de cabezales"> Alineación de cabezales</label>
@@ -599,19 +603,6 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        const TIENDAS = [
-            'Tienda Zona 1', 'Tienda Jutiapa', 'Tienda Zacapa', 'Tienda Coatepeque',
-            'Tienda Escuintla', 'Tienda Chiquimula', 'Tienda Coban', 'Tienda Chimaltenango',
-            'Tienda Mazatenango', 'Tienda Xela', 'Tienda Retalhuleu', 'Tienda Huehuetenango',
-            'Tienda Puerto Barrios', 'Tienda Quiche', 'Tienda Morales', 'Tienda Salama',
-            'Tienda Jalapa', 'Tienda Trinidad Malacatan', 'Tienda Santa Lucia', 'Tienda San Marcos',
-            'Tienda Poptun', 'Tienda Tactic', 'Tienda Santa Elena', 'Tienda Tiquisate',
-            'Tienda Salcaja', 'Tienda Asuncion Mita', 'Tienda Totonicapa',
-            'Contabilidad', 'Tesorería', 'Mercadeo', 'Categorías', 'Auditoría', 
-            'Gerentes Regionales', 'SAC', 'Sistemas', 'Monitoreo', 'Proyectos', 
-            'Recepción', 'Logística', 'GTH', 'Supervisores de Bodega'
-        ];
-
         let inventory = [];
         let reports = [];
         let currentFilter = 'all';
@@ -620,6 +611,58 @@
         let currentEquipmentPhoto = null;
         let signaturePad = null;
         let dataLoaded = false;
+
+        // ✅ MAPEO DE ÁREAS: Convierte los nombres del Excel a los nombres del sistema
+        const AREA_MAP = {
+            'contabilidad': 'Contabilidad',
+            'tesoreria': 'Tesorería',
+            'tesorería': 'Tesorería',
+            'mercadeo': 'Mercadeo',
+            'categorias': 'Categorías',
+            'categorías': 'Categorías',
+            'auditoria': 'Auditoría',
+            'auditoría': 'Auditoría',
+            'ventas supervisores': 'Gerentes Regionales',
+            'supervisores de ventas': 'Gerentes Regionales',
+            'gerentes regionales': 'Gerentes Regionales',
+            'servicio al cliente': 'SAC',
+            'sac': 'SAC',
+            'sistemas': 'Sistemas',
+            'sistema': 'Sistemas',
+            'it': 'Sistemas',
+            'monitoreo': 'Monitoreo',
+            'proyectos': 'Proyectos',
+            'recepcion': 'Recepción',
+            'recepción': 'Recepción',
+            'logistica': 'Logística',
+            'logística': 'Logística',
+            'logistica / operaciones': 'Logística',
+            'logística / operaciones': 'Logística',
+            'operaciones': 'Logística',
+            'rrhh': 'GTH',
+            'gth': 'GTH',
+            'recursos humanos': 'GTH',
+            'supervisores de bodega': 'Supervisores de Bodega',
+            'supervisor de bodega': 'Supervisores de Bodega',
+            'bodega': 'Supervisores de Bodega'
+        };
+
+        function normalizeArea(area) {
+            if (!area) return '';
+            const normalized = String(area).toLowerCase().trim();
+            return AREA_MAP[normalized] || String(area).trim();
+        }
+
+        function normalizeCategory(cat) {
+            if (!cat) return 'computadora';
+            const c = String(cat).toLowerCase().trim();
+            if (c.includes('computadora') || c.includes('pc') || c.includes('laptop') || c.includes('notebook') || c.includes('desktop')) return 'computadora';
+            if (c.includes('impresora')) return 'impresora';
+            if (c.includes('monitor')) return 'monitor';
+            if (c.includes('tablet')) return 'tablet';
+            if (c.includes('telefono') || c.includes('celular') || c.includes('teléfono')) return 'telefono';
+            return 'computadora';
+        }
 
         function showConnectionStatus(show) {
             const status = document.getElementById('connectionStatus');
@@ -665,7 +708,6 @@
             }
         }
 
-        // ✅ FUNCIÓN PARA FILTRAR CHECKLIST POR CATEGORÍA
         function toggleChecklistByCategory(category) {
             const compSection = document.getElementById('checklist-computadora');
             const printSection = document.getElementById('checklist-impresora');
@@ -703,7 +745,6 @@
                 return;
             }
 
-            // ✅ Capturar datos del checklist de mantenimiento
             const mantFecha = document.getElementById('eqMantFecha').value;
             const mantTecnico = document.getElementById('eqMantTecnico').value.trim();
             const mantTipo = document.querySelector('input[name="mantTipo"]:checked')?.value || '';
@@ -870,6 +911,185 @@
             }
         }
 
+        // ✅ FUNCIÓN MEJORADA PARA IMPORTAR EXCEL (Compatible con tu archivo)
+        async function importFromExcel(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            showToast('⏳ Leyendo archivo Excel...');
+            const reader = new FileReader();
+            
+            reader.onload = async (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    
+                    // ✅ Leer el Excel como matriz para detectar el encabezado real
+                    const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+                    
+                    if (rawData.length === 0) {
+                        showToast('El archivo Excel está vacío', 'error');
+                        return;
+                    }
+
+                    // ✅ Buscar la fila de encabezados (la que contenga palabras clave)
+                    let headerRowIndex = -1;
+                    for (let i = 0; i < Math.min(rawData.length, 10); i++) {
+                        const row = rawData[i].map(c => String(c).toLowerCase());
+                        if (row.some(c => c.includes('area') || c.includes('marca') || c.includes('modelo') || c.includes('serie'))) {
+                            headerRowIndex = i;
+                            break;
+                        }
+                    }
+
+                    if (headerRowIndex === -1) {
+                        showToast('No se encontraron los encabezados en el Excel', 'error');
+                        return;
+                    }
+
+                    // ✅ Usar la fila de encabezados encontrada
+                    const headerRow = rawData[headerRowIndex];
+                    const dataRows = rawData.slice(headerRowIndex + 1);
+
+                    // ✅ Mapeo flexible de columnas
+                    const findColIndex = (keywords) => {
+                        for (let i = 0; i < headerRow.length; i++) {
+                            const colName = String(headerRow[i] || '').toLowerCase().trim();
+                            if (keywords.some(kw => colName.includes(kw))) return i;
+                        }
+                        return -1;
+                    };
+
+                    const idxArea = findColIndex(['area', 'área', 'tienda', 'oficina']);
+                    const idxCategoria = findColIndex(['categoria', 'categoría', 'tipo']);
+                    const idxObservaciones = findColIndex(['observacion', 'observación', 'nota', 'descripcion', 'descripción']);
+                    const idxMarca = findColIndex(['marca']);
+                    const idxModelo = findColIndex(['modelo']);
+                    const idxSerie = findColIndex(['serie', 'serial', 's/n']);
+                    const idxCodigo = findColIndex(['codificacion', 'codificación', 'codigo', 'código']);
+
+                    console.log('📋 Encabezados detectados:', headerRow);
+                    console.log('🔍 Índices:', { idxArea, idxCategoria, idxObservaciones, idxMarca, idxModelo, idxSerie, idxCodigo });
+
+                    // ✅ Filtrar filas vacías
+                    const validRows = dataRows.filter(row => {
+                        return row.some(cell => String(cell).trim() !== '');
+                    });
+
+                    if (validRows.length === 0) {
+                        showToast('No hay datos válidos en el Excel', 'error');
+                        return;
+                    }
+
+                    showToast(`⏳ Importando ${validRows.length} registros a Firebase...`);
+                    let successCount = 0;
+                    let skippedCount = 0;
+
+                    for (const row of validRows) {
+                        const areaRaw = idxArea >= 0 ? row[idxArea] : '';
+                        const categoriaRaw = idxCategoria >= 0 ? row[idxCategoria] : '';
+                        const observacionesRaw = idxObservaciones >= 0 ? row[idxObservaciones] : '';
+                        const marcaRaw = idxMarca >= 0 ? row[idxMarca] : '';
+                        const modeloRaw = idxModelo >= 0 ? row[idxModelo] : '';
+                        const serieRaw = idxSerie >= 0 ? row[idxSerie] : '';
+                        const codigoRaw = idxCodigo >= 0 ? row[idxCodigo] : '';
+
+                        // Convertir todo a string y limpiar
+                        const area = normalizeArea(areaRaw);
+                        const category = normalizeCategory(categoriaRaw);
+                        const marca = String(marcaRaw || '').trim();
+                        const model = String(modeloRaw || '').trim();
+                        const serial = String(serieRaw || '').trim();
+                        const code = String(codigoRaw || '').trim();
+                        const notes = String(observacionesRaw || '').trim();
+
+                        // ✅ Si no hay datos mínimos, saltar la fila
+                        if (!area && !marca && !model && !serial) {
+                            skippedCount++;
+                            continue;
+                        }
+
+                        const equipmentData = {
+                            store: area || '',
+                            category,
+                            marca: marca || '',
+                            model: model || '',
+                            serial: serial || '',
+                            code: code || '',
+                            notes: notes || '',
+                            photo: null,
+                            mantenimiento: {
+                                fecha: new Date().toISOString().split('T')[0],
+                                tecnico: 'Importación Masiva',
+                                tipo: '',
+                                items: [],
+                                resultado: 'Pendiente de revisión',
+                                observaciones: 'Datos cargados desde archivo Excel'
+                            },
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        };
+
+                        await db.collection("inventario").add(equipmentData);
+                        successCount++;
+                    }
+
+                    showToast(`✅ Se importaron ${successCount} equipos${skippedCount > 0 ? ` (${skippedCount} filas vacías omitidas)` : ''}`);
+                    await loadData();
+                    
+                } catch (error) {
+                    console.error("Error importando Excel:", error);
+                    showToast('❌ Error al importar: ' + error.message, 'error');
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+            event.target.value = '';
+        }
+
+        // ✅ FUNCIÓN PARA DESHACER LA ÚLTIMA IMPORTACIÓN
+        async function deleteLastImport() {
+            const hoy = new Date().toISOString().split('T')[0];
+            const importadosHoy = inventory.filter(item => 
+                item.mantenimiento && 
+                item.mantenimiento.tecnico === 'Importación Masiva' &&
+                item.createdAt && 
+                item.createdAt.startsWith(hoy)
+            );
+
+            if (importadosHoy.length === 0) {
+                showToast('ℹ️ No hay importaciones recientes de hoy para eliminar', 'error');
+                return;
+            }
+
+            const confirmar = confirm(
+                `⚠️ ATENCIÓN: Se van a eliminar ${importadosHoy.length} equipos que fueron importados HOY desde Excel.\n\n` +
+                `¿Estás seguro de que quieres continuar?\n\n` +
+                `Esta acción NO se puede deshacer.`
+            );
+            
+            if (!confirmar) return;
+
+            showToast(`⏳ Eliminando ${importadosHoy.length} equipos...`);
+            
+            try {
+                const batch = db.batch();
+                importadosHoy.forEach(item => {
+                    const ref = db.collection("inventario").doc(item.id);
+                    batch.delete(ref);
+                });
+                await batch.commit();
+                
+                showToast(`✅ Se eliminaron ${importadosHoy.length} equipos importados`);
+                await loadData();
+            } catch (error) {
+                console.error("Error eliminando importación:", error);
+                showToast('❌ Error al eliminar: ' + error.message, 'error');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             const dateStr = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             document.getElementById('currentDate').textContent = dateStr;
@@ -928,7 +1148,7 @@
                         <td class="px-4 py-3 font-medium text-slate-800">${escapeHtml(item.marca || '-')}</td>
                         <td class="px-4 py-3 font-medium text-slate-800">${escapeHtml(item.model)}</td>
                         <td class="px-4 py-3 text-slate-600 font-mono text-sm">${escapeHtml(item.serial)}</td>
-                        <td class="px-4 py-3 text-slate-600 font-mono text-sm">${escapeHtml(item.code)}</td>
+                        <td class="px-4 py-3 text-slate-600 font-mono text-sm">${escapeHtml(item.code || '-')}</td>
                         <td class="px-4 py-3">
                             ${item.photo ? `<button onclick="viewEquipmentPhoto('${item.photo}', '${escapeHtml(item.marca)}', '${escapeHtml(item.model)}')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">👁️ Ver Foto</button>` : '<span class="text-slate-400 text-sm">Sin foto</span>'}
                         </td>
@@ -957,7 +1177,6 @@
             currentEquipmentPhoto = null;
             document.getElementById('equipmentPhotoPreview').classList.add('hidden');
             
-            // Resetear checklist
             document.getElementById('eqMantFecha').value = new Date().toISOString().split('T')[0];
             document.getElementById('eqMantTecnico').value = '';
             document.querySelectorAll('input[name="mantTipo"]').forEach(r => r.checked = false);
@@ -965,7 +1184,6 @@
             document.getElementById('eqResultado').value = '';
             document.getElementById('eqObsMantenimiento').value = '';
             
-            // Ocultar checklists por defecto
             toggleChecklistByCategory('');
 
             if (id) {
@@ -975,14 +1193,11 @@
                     document.getElementById('equipmentId').value = item.id;
                     document.getElementById('eqStore').value = item.store || '';
                     document.getElementById('eqCategory').value = item.category;
-                    
-                    // Mostrar el checklist correcto según la categoría del equipo
                     toggleChecklistByCategory(item.category);
-                    
                     document.getElementById('eqMarca').value = item.marca || '';
                     document.getElementById('eqModel').value = item.model;
                     document.getElementById('eqSerial').value = item.serial;
-                    document.getElementById('eqCode').value = item.code;
+                    document.getElementById('eqCode').value = item.code || '';
                     document.getElementById('eqNotes').value = item.notes || '';
                     
                     if (item.photo) {
@@ -991,7 +1206,6 @@
                         document.getElementById('equipmentPhotoPreview').classList.remove('hidden');
                     }
 
-                    // Cargar datos de mantenimiento si existen
                     if (item.mantenimiento) {
                         const mant = item.mantenimiento;
                         document.getElementById('eqMantFecha').value = mant.fecha ? mant.fecha.split('T')[0] : '';
@@ -1172,7 +1386,6 @@
 
         function closeViewReportModal() { document.getElementById('viewReportModal').classList.add('hidden'); }
 
-        // ✅ FUNCIÓN PARA EXPORTAR SOLO EL CHECKLIST A PDF
         async function exportChecklistPDF() {
             const fecha = document.getElementById('eqMantFecha').value || new Date().toISOString().split('T')[0];
             const tecnico = document.getElementById('eqMantTecnico').value.trim() || 'No especificado';
@@ -1194,7 +1407,6 @@
                 const pageWidth = pdf.internal.pageSize.getWidth();
                 let y = 20;
 
-                // Header
                 pdf.setFillColor(31, 41, 55);
                 pdf.rect(0, 0, pageWidth, 25, 'F');
                 pdf.setFillColor(251, 191, 36);
@@ -1210,7 +1422,6 @@
                 pdf.text('Visitas Tejar - Sistema de Inventario', pageWidth/2, 22, { align: 'center' });
                 y = 40;
 
-                // Info General
                 pdf.setTextColor(0, 0, 0);
                 pdf.setFontSize(12);
                 pdf.setFont(undefined, 'bold');
@@ -1224,7 +1435,6 @@
                 pdf.text(`Codificación: ${code}`, 15, y); y += 6;
                 pdf.text(`Tipo: ${tipo}`, 15, y); y += 10;
 
-                // Items realizados
                 const items = Array.from(document.querySelectorAll('.check-eq:checked')).map(cb => cb.value);
                 if (items.length > 0) {
                     pdf.setFont(undefined, 'bold');
@@ -1241,11 +1451,9 @@
                     pdf.text('No se marcaron tareas específicas en el checklist.', 15, y); y += 10;
                 }
 
-                // Resultado
                 pdf.setFont(undefined, 'bold');
                 pdf.text(`RESULTADO FINAL: ${resultado}`, 15, y); y += 8;
 
-                // Observaciones
                 if (obs) {
                     pdf.setFont(undefined, 'bold');
                     pdf.text('OBSERVACIONES:', 15, y); y += 6;
@@ -1255,7 +1463,6 @@
                     y += (splitObs.length * 5) + 10;
                 }
 
-                // Firmas
                 y += 15;
                 pdf.setDrawColor(0, 0, 0);
                 pdf.line(15, y, 100, y);
@@ -1264,7 +1471,6 @@
                 pdf.line(120, y, 195, y);
                 pdf.text('Firma del Responsable', 120, y + 5);
 
-                // Footer
                 pdf.setFillColor(31, 41, 55);
                 pdf.rect(0, 280, pageWidth, 15, 'F');
                 pdf.setFontSize(8);
@@ -1337,7 +1543,7 @@
 
                 const tableData = sortedInventory.map(item => {
                     const categoryText = { 'computadora': 'Computadora', 'impresora': 'Impresora', 'monitor': 'Monitor', 'tablet': 'Tablet', 'telefono': 'Telefono' }[item.category] || item.category;
-                    return [categoryText, getStoreShortName(item.store), item.marca || '-', item.model, item.serial, item.code, item.notes || '-'];
+                    return [categoryText, getStoreShortName(item.store), item.marca || '-', item.model, item.serial, item.code || '-', item.notes || '-'];
                 });
 
                 pdf.setFontSize(13); pdf.setFont(undefined, 'bold'); pdf.text('Detalle del Inventario (Ordenado por Categoria)', 15, y); y += 5;
@@ -1384,7 +1590,7 @@
                     'Tienda / Área': getStoreShortName(item.store) || '',
                     'Categoría': getCategoryLabel(item.category),
                     'Marca': item.marca || '', 'Modelo': item.model,
-                    'Número de Serie': item.serial, 'Número de Codificación': item.code,
+                    'Número de Serie': item.serial, 'Número de Codificación': item.code || '',
                     'Notas': item.notes || '',
                     'Fecha de Registro': item.createdAt ? new Date(item.createdAt).toLocaleString('es-ES') : '',
                     'Última Actualización': item.updatedAt ? new Date(item.updatedAt).toLocaleString('es-ES') : ''
